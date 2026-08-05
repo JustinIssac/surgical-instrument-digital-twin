@@ -19,10 +19,15 @@ class VideoPublisher(Node):
             '/home/inoruske/surgical_twin_ws/demo_data_right'
         )
         self.declare_parameter('fps', 10.0)
+        # R6: looping is right for a demo but corrupts evaluation, which
+        # must see each frame exactly once.
+        self.declare_parameter('loop', True)
 
         frames_path       = self.get_parameter('frames_path').value
         right_frames_path = self.get_parameter('right_frames_path').value
         fps               = self.get_parameter('fps').value
+        self.loop         = bool(self.get_parameter('loop').value)
+        self.passes       = 0
 
         self.left_pub  = self.create_publisher(
             Image, '/camera/image_raw', 10
@@ -82,7 +87,18 @@ class VideoPublisher(Node):
             f'{os.path.basename(left_path)}'
         )
 
-        self.index = (self.index + 1) % len(self.left_frames)
+        self.index += 1
+        if self.index >= len(self.left_frames):
+            self.passes += 1
+            if self.loop:
+                self.index = 0
+                self.get_logger().info(f'--- loop {self.passes} complete ---')
+            else:
+                self.index = len(self.left_frames) - 1
+                self.timer.cancel()
+                self.get_logger().info(
+                    f'single pass complete: {len(self.left_frames)} frames. '
+                    f'Publisher idle.')
 
 
 def main(args=None):

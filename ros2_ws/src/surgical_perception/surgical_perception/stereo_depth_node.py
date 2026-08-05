@@ -31,11 +31,16 @@ class StereoDepthNode(Node):
         self.declare_parameter('depth_min_m', 0.02)   # 3 cm
         self.declare_parameter('depth_max_m', 0.15)   # 20 cm
         self.declare_parameter('max_depth_jump_m', 0.015)
+        # R2: SGBM at 1920x1080 with 192 disparities is far too slow for
+        # 10 fps. Compute at reduced scale and upsample; disparity scales
+        # linearly with image width so values are corrected accordingly.
+        self.declare_parameter('disp_scale', 0.5)
 
         calib_path = self.get_parameter('calib_path').value
         self.dmin  = self.get_parameter('depth_min_m').value
         self.dmax  = self.get_parameter('depth_max_m').value
         self.djump = self.get_parameter('max_depth_jump_m').value
+        self.dscale = float(self.get_parameter('disp_scale').value)
 
         with open(calib_path) as f:
             cfg = yaml.safe_load(f)
@@ -78,7 +83,8 @@ class StereoDepthNode(Node):
                                     cv2.INTER_NEAREST) > 127
 
         self.stereo = cv2.StereoSGBM_create(
-            minDisparity=0, numDisparities=192, blockSize=7,
+            minDisparity=0,
+            numDisparities=int(192*self.dscale)//16*16, blockSize=7,
             P1=8*3*7**2, P2=32*3*7**2,
             disp12MaxDiff=1, uniquenessRatio=12,
             speckleWindowSize=150, speckleRange=2,
@@ -86,7 +92,7 @@ class StereoDepthNode(Node):
 
         self.bridge   = CvBridge()
         self.disp     = None
-        self.last_depth = {}
+        self.last_depth = {}    # cls -> (depth, frame_id)
         self.stats = {'stereo': 0, 'gate': 0, 'nodisp': 0, 'jump': 0}
 
         # ---- Time-synchronised stereo subscription (Finding 2.5) ----
@@ -112,6 +118,7 @@ class StereoDepthNode(Node):
 
     # ------------------------------------------------------------------
     def stereo_callback(self, lmsg, rmsg):
+        import time as _t; _t0 = _t.monotonic()
         left  = self.bridge.imgmsg_to_cv2(lmsg, 'bgr8')
         right = self.bridge.imgmsg_to_cv2(rmsg, 'bgr8')
 
@@ -121,10 +128,20 @@ class StereoDepthNode(Node):
         lg = cv2.cvtColor(lr, cv2.COLOR_BGR2GRAY)
         rg = cv2.cvtColor(rr, cv2.COLOR_BGR2GRAY)
 
-        d = self.stereo.compute(lg, rg).astype(np.float32) / 16.0
+        if self.dscale != 1.0:
+            sh = (int(lg.shape[1]*self.dscale), int(lg.shape[0]*self.dscale))
+            lg_s = cv2.resize(lg, sh, interpolation=cv2.INTER_AREA)
+            rg_s = cv2.resize(rg, sh, interpolation=cv2.INTER_AREA)
+            d_s  = self.stereo.compute(lg_s, rg_s).astype(np.float32) / 16.0
+            # disparity is in pixels -> rescale with image width
+            d = cv2.resize(d_s, (lg.shape[1], lg.shape[0]),
+                           interpolation=cv2.INTER_NEAREST) / self.dscale
+        else:
+            d = self.stereo.compute(lg, rg).astype(np.float32) / 16.0
         d[~self.valid_mask] = np.nan
         d[d <= 0.5] = np.nan          # sub-pixel noise floor
         self.disp = d
+        self.last_disp_ms = (_t.monotonic() - _t0) * 1000.0
 
         vis = cv2.normalize(np.nan_to_num(d), None, 0, 255,
                             cv2.NORM_MINMAX, cv2.CV_8U)
@@ -174,9 +191,16 @@ class StereoDepthNode(Node):
             if z is not None and not (self.dmin <= z <= self.dmax):
                 z, why = None, 'gate'
 
-            # Temporal plausibility: instruments cannot jump in depth
+            # Temporal plausibility, with two corrections:
+            #  (a) the reference must expire, else one rejection cascades
+            #      into permanent rejection (the reference goes stale and
+            #      every later sample looks like a jump)
+            #  (b) the allowance scales with elapsed frames, since a gap
+            #      of N frames permits N times the movement
             if z is not None and cls in self.last_depth:
-                if abs(z - self.last_depth[cls]) > self.djump:
+                z_prev, f_prev = self.last_depth[cls]
+                gap = max(1, data['frame_id'] - f_prev)
+                if gap <= 15 and abs(z - z_prev) > self.djump * gap:
                     z, why = None, 'jump'
 
             if z is None:
@@ -185,7 +209,7 @@ class StereoDepthNode(Node):
                 self.stats[why] = self.stats.get(why, 0) + 1
             else:
                 method = 'stereo'
-                self.last_depth[cls] = z
+                self.last_depth[cls] = (z, data['frame_id'])
                 self.stats['stereo'] += 1
 
             # Back-project using RECTIFIED intrinsics, then report in
@@ -219,7 +243,8 @@ class StereoDepthNode(Node):
                 f"({self.stats['stereo']/tot*100:.0f}%)  "
                 f"gate={self.stats.get('gate',0)} "
                 f"nodisp={self.stats.get('nodisp',0)} "
-                f"jump={self.stats.get('jump',0)}")
+                f"jump={self.stats.get('jump',0)}  "
+                f"sgbm={getattr(self, 'last_disp_ms', 0):.0f}ms")
 
 
 def main(args=None):

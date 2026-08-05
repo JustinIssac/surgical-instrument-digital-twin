@@ -115,6 +115,10 @@ class PoseEstimatorNode(Node):
                 'shaft_yaw_rad': det.get('shaft_yaw_rad'),
                 'yaw_observed':  yaw_known,
                 'depth_method':  det.get('depth_method', 'unknown'),
+                # R3: identity must survive to the twin, else the UNKNOWN
+                # safety feature is silently discarded downstream
+                'identity':      det.get('identity', 'known'),
+                'predicted_class': det.get('predicted_class'),
                 'tip_px':        det.get('tip_px'),
                 'centroid_px':   det.get('centroid_px'),
                 'frame_id':      data.get('frame_id', 0),

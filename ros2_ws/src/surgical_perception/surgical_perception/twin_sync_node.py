@@ -29,10 +29,12 @@ class Track:
     """Constant-velocity Kalman track: state [x,y,z,vx,vy,vz]."""
     _next_id = 0
 
-    def __init__(self, pos, class_id, class_name, stamp):
+    def __init__(self, pos, class_id, class_name, stamp, identity='known'):
         self.id = Track._next_id; Track._next_id += 1
         self.class_id, self.class_name = class_id, class_name
         self.class_votes = {class_id: 1}
+        self.identity = identity          # 'known' | 'unknown'
+        self.id_votes = {identity: 1}
 
         self.x = np.array([*pos, 0.0, 0.0, 0.0], dtype=np.float64)
         self.P = np.diag([1e-3, 1e-3, 1e-3, 1e-2, 1e-2, 1e-2])
@@ -55,7 +57,7 @@ class Track:
         self.P = F @ self.P @ F.T + Q
         return self.x[:3]
 
-    def update(self, pos, class_id, dir_world):
+    def update(self, pos, class_id, dir_world, identity='known'):
         z = np.array(pos, dtype=np.float64)
         y = z - self.H @ self.x
         S = self.H @ self.P @ self.H.T + np.eye(3) * self.r
@@ -68,6 +70,9 @@ class Track:
             self.path_len += float(np.linalg.norm(self.x[:3] - self.last_pos))
         self.last_pos = self.x[:3].copy()
 
+        self.id_votes[identity] = self.id_votes.get(identity, 0) + 1
+        # majority vote: a track is UNKNOWN only if persistently unknown
+        self.identity = max(self.id_votes, key=self.id_votes.get)
         self.class_votes[class_id] = self.class_votes.get(class_id, 0) + 1
         # majority vote -> immune to single-frame label flips
         self.class_id = max(self.class_votes, key=self.class_votes.get)
@@ -153,9 +158,16 @@ class TwinSyncNode(Node):
             f'max misses {MAX_MISSES}')
 
     # ------------------------------------------------------------------
+    def display_name(self, track):
+        """R4: an UNKNOWN track must not be labelled as a specific
+        instrument type in the twin or in rviz."""
+        return ('UNKNOWN' if track.identity == 'unknown'
+                else self.class_names[track.class_id])
+
     def spawn(self, track):
-        name = f"instrument_{track.id}_{self.class_names[track.class_id]}"
-        r, g, b = self.colors[track.class_id % len(self.colors)]
+        name = f"instrument_{track.id}_{self.display_name(track)}"
+        r, g, b = ((0.55, 0.55, 0.55) if track.identity == 'unknown'
+                   else self.colors[track.class_id % len(self.colors)])
         req = ef_pb2.EntityFactory()
         req.sdf  = self.sdf_tpl.format(name=name, r=r, g=g, b=b)
         req.name = name
@@ -226,7 +238,10 @@ class TwinSyncNode(Node):
             self.get_logger().info('sequence loop detected — EoM reset')
         self.last_frame_id = fid
 
-        dets = [d for d in data.get('poses', []) if d.get('confidence', 0) >= 0.5]
+        # R3: keep low-confidence detections; they are tracked and displayed
+        # as UNKNOWN rather than dropped. Silently discarding an unrecognised
+        # instrument is the worst failure mode for a safety-framed system.
+        dets = [d for d in data.get('poses', []) if d.get('confidence', 0) >= 0.25]
         for t in self.tracks: t.predict(stamp)
 
         # B6: greedy nearest-neighbour association within the gate
@@ -249,7 +264,8 @@ class TwinSyncNode(Node):
             p = dets[di]['position_3d']
             self.tracks[ti].update([p['x'], p['y'], p['z']],
                                    dets[di]['class_id'],
-                                   dets[di].get('shaft_dir_world'))
+                                   dets[di].get('shaft_dir_world'),
+                                   dets[di].get('identity', 'known'))
             assigned_t.add(ti); assigned_d.add(di)
 
         # unmatched detections -> new tracks
@@ -257,7 +273,8 @@ class TwinSyncNode(Node):
             if di in assigned_d: continue
             p = d['position_3d']
             self.tracks.append(Track([p['x'], p['y'], p['z']],
-                                     d['class_id'], d['class_name'], stamp))
+                                     d['class_id'], d['class_name'], stamp,
+                                     d.get('identity', 'known')))
 
         # unmatched tracks -> coast, possibly die
         alive = []
@@ -280,7 +297,9 @@ class TwinSyncNode(Node):
             'frame_id': fid,
             'tracks': [{
                 'track_id':   t.id,
-                'class_name': self.class_names[t.class_id],
+                'class_name': self.display_name(t),
+                'identity':   t.identity,
+                'predicted_class': self.class_names[t.class_id],
                 'position':   [round(float(v), 5) for v in t.position],
                 'speed_mps':  round(t.speed, 4),
                 'path_len_m': round(t.path_len, 5),
@@ -293,7 +312,7 @@ class TwinSyncNode(Node):
             for t in self.tracks:
                 if t.confirmed:
                     self.get_logger().info(
-                        f'  track {t.id} {self.class_names[t.class_id]}: '
+                        f'  track {t.id} {self.display_name(t)}: '
                         f'path {t.path_len*1000:.1f} mm, '
                         f'speed {t.speed*1000:.1f} mm/s')
 

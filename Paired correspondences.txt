@@ -1,40 +1,111 @@
-cat > ~/surgical_twin_ws/train_temporal.py << 'ENDOFFILE'
+cat > ~/surgical_twin_ws/test_lr_shortcut.py << 'ENDOFFILE'
 """
-Retrain on the temporal split to quantify leakage in the random-split result.
-Hyperparameters IDENTICAL to surgical_proper_split so the only variable
-is the validation protocol.
+B9 -- does the model use instrument APPEARANCE or IMAGE POSITION
+to decide Left vs Right?
+
+Method: horizontally mirror each frame. A position-dependent model will
+flip its Left/Right labels; an appearance-dependent one will not.
+
+Mirroring is applied to the ACTIVE image region only, so the padding
+stays put and the instrument lands where a real mirrored view would.
 """
+import cv2, numpy as np, sys
+from pathlib import Path
+from collections import defaultdict
 from ultralytics import YOLO
 
-model = YOLO("yolo11s-seg.pt")
-model.train(
-    data         = "/home/inoruske/surgical_twin_ws/data/surgical_temporal.yaml",
-    epochs       = 100,
-    imgsz        = 640,
-    batch        = 4,
-    device       = 0,
-    workers      = 0,
-    project      = "/home/inoruske/surgical_twin_ws/models",
-    name         = "surgical_temporal",
-    save         = True,
-    plots        = True,
-    optimizer    = "AdamW",
-    lr0          = 0.0003,
-    cos_lr       = True,
-    warmup_epochs= 5,
-    freeze       = 10,
-    patience     = 25,
-    close_mosaic = 20,
-    hsv_h=0.015, hsv_s=0.5, hsv_v=0.4,
-    fliplr=0.5,  mosaic=0.8, mixup=0.15,
-    degrees=15.0, translate=0.1, scale=0.4,
-    copy_paste=0.15, erasing=0.3,
-    seed=0,
-)
-print("Training complete")
+WS     = Path("/home/inoruske/surgical_twin_ws")
+MODEL  = sys.argv[1] if len(sys.argv) > 1 else str(WS/"models/best.pt")
+ACTIVE = dict(x=328, y=32, w=1272, h=1016)
+
+NAMES = ['Large_Needle_Driver_Left','Large_Needle_Driver_Right',
+         'Prograsp_Forceps_Left','Prograsp_Forceps_Right',
+         'Maryland_Bipolar_Forceps','Bipolar_Forceps',
+         'Monopolar_Curved_Scissors','Grasping_Retractor_Right']
+# id -> mirrored id (sided classes swap, unsided map to themselves)
+MIRROR = {0:1, 1:0, 2:3, 3:2, 4:4, 5:5, 6:6, 7:7}
+SIDED  = {0,1,2,3}
+
+def mirror_active(img):
+    out = img.copy()
+    x, y, w, h = ACTIVE['x'], ACTIVE['y'], ACTIVE['w'], ACTIVE['h']
+    out[y:y+h, x:x+w] = img[y:y+h, x:x+w][:, ::-1]
+    return out
+
+def detect(model, img):
+    r = model(img, conf=0.5, verbose=False)[0]
+    out = []
+    if r.boxes is None: return out
+    for b in r.boxes:
+        x1, _, x2, _ = b.xyxy[0].tolist()
+        out.append((int(b.cls[0]), float(b.conf[0]), (x1+x2)/2))
+    return out
+
+model = YOLO(MODEL)
+frames = sorted((WS/"demo_data").glob("*.png"))
+if not frames:
+    frames = sorted((WS/"test_data").glob("*.png"))[:100]
+print(f"model  : {Path(MODEL).name}")
+print(f"frames : {len(frames)}\n")
+
+same = flipped = other = 0
+per = defaultdict(lambda: {'same':0,'flip':0,'other':0})
+side_bias = defaultdict(list)
+
+for fp in frames:
+    img = cv2.imread(str(fp))
+    mir = mirror_active(img)
+    do, dm = detect(model, img), detect(model, mir)
+
+    for cid, conf, cx in do:
+        if cid in SIDED:
+            # which half of the ACTIVE region is it in?
+            rel = (cx - ACTIVE['x']) / ACTIVE['w']
+            side_bias[cid].append(rel)
+
+    # match original detections to mirrored ones by mirrored x position
+    for cid, conf, cx in do:
+        cx_m = 2*ACTIVE['x'] + ACTIVE['w'] - cx
+        best, bd = None, 1e9
+        for cid2, conf2, cx2 in dm:
+            d = abs(cx2 - cx_m)
+            if d < bd: best, bd = cid2, d
+        if best is None or bd > 120: continue
+        if best == cid:
+            same += 1;  per[cid]['same'] += 1
+        elif best == MIRROR[cid]:
+            flipped += 1; per[cid]['flip'] += 1
+        else:
+            other += 1; per[cid]['other'] += 1
+
+tot = same + flipped + other
+print(f"matched detections: {tot}")
+print(f"  label UNCHANGED under mirror : {same:5d}  ({same/tot*100:5.1f}%)")
+print(f"  label FLIPPED L<->R          : {flipped:5d}  ({flipped/tot*100:5.1f}%)")
+print(f"  other class                  : {other:5d}  ({other/tot*100:5.1f}%)")
+
+print(f"\n{'class':28s} {'same':>6s} {'flip':>6s} {'other':>6s}   reading")
+print("-"*70)
+for cid in sorted(per):
+    d = per[cid]; t = sum(d.values())
+    if t == 0: continue
+    fr = d['flip']/t
+    tag = ("POSITION-dependent" if fr > 0.6 else
+           "appearance-dependent" if fr < 0.25 else "mixed")
+    print(f"{NAMES[cid]:28s} {d['same']:6d} {d['flip']:6d} {d['other']:6d}   {tag}")
+
+print(f"\n--- where sided classes actually appear (0=left edge, 1=right edge) ---")
+for cid in sorted(side_bias):
+    v = np.array(side_bias[cid])
+    print(f"  {NAMES[cid]:28s} n={len(v):4d}  mean {v.mean():.3f}  "
+          f"[{np.percentile(v,10):.2f}, {np.percentile(v,90):.2f}]")
+
+print(f"\nInterpretation:")
+print(f"  high FLIP  -> model keys on image position (shortcut)")
+print(f"  high SAME  -> model keys on instrument appearance")
+print(f"  If sided classes occupy disjoint image halves, the dataset")
+print(f"  itself confounds side with position and the distinction")
+print(f"  cannot be learned from appearance alone.")
 ENDOFFILE
 
-cd ~/surgical_twin_ws
-nohup python3 train_temporal.py > train_temporal.log 2>&1 &
-echo "PID $!"
-sleep 90 && tail -5 train_temporal.log
+echo "written — run after training completes"

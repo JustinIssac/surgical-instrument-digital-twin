@@ -29,12 +29,12 @@ class PerceptionNode(Node):
         super().__init__('perception_node')
 
         self.declare_parameter(
-            'model_path', '/home/inoruske/surgical_twin_ws/models/best.pt')
+            'model_path', '/home/inoruske/surgical_twin_ws/models/best_temporal.pt')
         self.declare_parameter('confidence_threshold', 0.25)
         self.declare_parameter('device', 'cuda')
         self.declare_parameter('tail_frac', TAIL_FRAC)
         # B11: below this, a detection is reported but marked UNKNOWN
-        self.declare_parameter('known_conf', 0.70)
+        self.declare_parameter('known_conf', 0.55)
 
         model_path     = self.get_parameter('model_path').value
         self.conf      = self.get_parameter('confidence_threshold').value

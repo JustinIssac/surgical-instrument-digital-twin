@@ -3,6 +3,8 @@
 #   ./launch_pipeline.sh          -> pipeline + rviz
 #   ./launch_pipeline.sh --gazebo -> also start Gazebo
 set -e
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+export CYCLONEDDS_URI=file:///home/inoruske/surgical_twin_ws/config/cyclonedds.xml
 source /opt/ros/jazzy/setup.bash
 source ~/surgical_twin_ws/install/setup.bash
 export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$HOME/surgical_twin_ws/models

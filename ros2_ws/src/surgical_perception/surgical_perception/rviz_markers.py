@@ -120,8 +120,10 @@ class RvizMarkerNode(Node):
             live.add(tid)
             pos  = np.array(tr['position'], dtype=float)
             name = tr['class_name']
+            unknown = tr.get('identity') == 'unknown'
             cidx = CLASS_NAMES.index(name) if name in CLASS_NAMES else 0
-            r, g, b = PALETTE[cidx % len(PALETTE)]
+            r, g, b = ((0.55, 0.55, 0.55) if unknown
+                       else PALETTE[cidx % len(PALETTE)])
             d = np.array(tr.get('shaft_dir', [1.0, 0.0, 0.0]), dtype=float)
             n = np.linalg.norm(d)
             d = d / n if n > 1e-9 else np.array([1.0, 0.0, 0.0])
@@ -130,7 +132,8 @@ class RvizMarkerNode(Node):
             s = self._base(tid*10 + 0, Marker.SPHERE, stamp)
             s.pose.position.x, s.pose.position.y, s.pose.position.z = pos
             s.scale.x = s.scale.y = s.scale.z = 0.010
-            s.color = ColorRGBA(r=0.1, g=1.0, b=0.2, a=1.0)
+            s.color = (ColorRGBA(r=1.0, g=0.65, b=0.0, a=1.0) if unknown
+                       else ColorRGBA(r=0.1, g=1.0, b=0.2, a=1.0))
             arr.markers.append(s)
 
             # --- shaft arrow, proximal -> distal ---
@@ -149,7 +152,9 @@ class RvizMarkerNode(Node):
             t.pose.position.z = float(pos[2]) + 0.022
             t.scale.z = 0.012
             t.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=0.9)
-            t.text = (f"#{tid} {name}\n"
+            label = ("UNKNOWN (pred: "
+                     + str(tr.get("predicted_class", "?")) + ")") if unknown else name
+            t.text = (f"#{tid} {label}\n"
                       f"{tr.get('speed_mps',0)*1000:.0f} mm/s  "
                       f"path {tr.get('path_len_m',0)*1000:.0f} mm")
             arr.markers.append(t)
