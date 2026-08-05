@@ -1,370 +1,301 @@
+"""
+Digital twin synchronisation with multi-object tracking.
+
+  B6  track-ID based data association (greedy NN with a distance gate)
+      replaces per-class Kalman filters. Handles duplicate classes and
+      survives single-frame classification flips.
+  B7  Economy of Motion resets on sequence loop and on track death;
+      only integrates while a track is confirmed.
+  dt  derived from message timestamps, not hardcoded.
+  Orientation from the world-frame shaft direction vector.
+"""
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 import gz.transport13
-import gz.msgs10.entity_factory_pb2 as entity_factory_pb2
-import gz.msgs10.boolean_pb2 as boolean_pb2
+import gz.msgs10.entity_factory_pb2 as ef_pb2
+import gz.msgs10.boolean_pb2 as bool_pb2
 import gz.msgs10.pose_pb2 as pose_pb2
-import json
-import math
+import gz.msgs10.entity_pb2 as entity_pb2
 import numpy as np
+import json, math, time
+
+GATE_M       = 0.035    # max association distance (m)
+CONFIRM_HITS = 3        # detections before a track is spawned
+MAX_MISSES   = 8        # frames coasting before a track dies
 
 
-class InstrumentKalmanFilter:
-    """
-    3D Kalman filter for a single surgical instrument.
-    State vector: [x, y, z, vx, vy, vz]
-    - Position (x, y, z) in metres
-    - Velocity (vx, vy, vz) in metres/second
-    """
+class Track:
+    """Constant-velocity Kalman track: state [x,y,z,vx,vy,vz]."""
+    _next_id = 0
 
-    def __init__(self, initial_pos, dt=0.1):
-        self.dt = dt  # time step (10 FPS = 0.1s)
+    def __init__(self, pos, class_id, class_name, stamp):
+        self.id = Track._next_id; Track._next_id += 1
+        self.class_id, self.class_name = class_id, class_name
+        self.class_votes = {class_id: 1}
 
-        # State vector [x, y, z, vx, vy, vz]
-        self.x = np.array([
-            initial_pos[0], initial_pos[1], initial_pos[2],
-            0.0, 0.0, 0.0
-        ], dtype=np.float64)
+        self.x = np.array([*pos, 0.0, 0.0, 0.0], dtype=np.float64)
+        self.P = np.diag([1e-3, 1e-3, 1e-3, 1e-2, 1e-2, 1e-2])
+        self.H = np.hstack([np.eye(3), np.zeros((3, 3))])
+        self.q, self.r = 5e-3, 2e-4      # process / measurement noise
 
-        # State transition matrix F
-        # Models: new_pos = old_pos + velocity * dt
-        self.F = np.array([
-            [1, 0, 0, dt, 0,  0 ],
-            [0, 1, 0, 0,  dt, 0 ],
-            [0, 0, 1, 0,  0,  dt],
-            [0, 0, 0, 1,  0,  0 ],
-            [0, 0, 0, 0,  1,  0 ],
-            [0, 0, 0, 0,  0,  1 ],
-        ], dtype=np.float64)
+        self.hits, self.misses = 1, 0
+        self.confirmed = False
+        self.path_len  = 0.0
+        self.last_pos  = np.array(pos, dtype=np.float64)
+        self.stamp     = stamp
+        self.dir_world = np.array([1.0, 0.0, 0.0])
 
-        # Observation matrix H
-        # We only observe position, not velocity
-        self.H = np.array([
-            [1, 0, 0, 0, 0, 0],
-            [0, 1, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0, 0],
-        ], dtype=np.float64)
-
-        # Process noise Q - how much we trust the motion model
-        # Higher = allows faster movements
-        q = 0.01
-        self.Q = np.eye(6, dtype=np.float64) * q
-
-        # Measurement noise R - how much we trust the detector
-        # Higher = smoother but slower to respond
-        r = 0.005
-        self.R = np.eye(3, dtype=np.float64) * r
-
-        # Initial covariance P
-        self.P = np.eye(6, dtype=np.float64) * 0.1
-
-        # Track consecutive missed detections
-        self.missed_frames   = 0
-        self.max_missed      = 10  # remove after 10 missed frames
-        self.is_active       = True
-
-    def predict(self):
-        """Predict next state based on motion model."""
-        self.x = self.F @ self.x
-        self.P = self.F @ self.P @ self.F.T + self.Q
-        return self.x[:3]  # return predicted position
-
-    def update(self, measurement):
-        """
-        Update state with new measurement.
-        measurement: [x, y, z] observed position
-        """
-        z = np.array(measurement, dtype=np.float64)
-
-        # Innovation (difference between measurement and prediction)
-        y = z - self.H @ self.x
-
-        # Innovation covariance
-        S = self.H @ self.P @ self.H.T + self.R
-
-        # Kalman gain - how much to trust measurement vs prediction
-        K = self.P @ self.H.T @ np.linalg.inv(S)
-
-        # Update state
-        self.x = self.x + K @ y
-
-        # Update covariance
-        I = np.eye(6)
-        self.P = (I - K @ self.H) @ self.P
-
-        self.missed_frames = 0
-        return self.x[:3]  # return filtered position
-
-    def mark_missed(self):
-        """Call when no detection found for this instrument."""
-        self.missed_frames += 1
-        if self.missed_frames > self.max_missed:
-            self.is_active = False
-        return self.predict()  # keep predicting even when missed
-
-    @property
-    def position(self):
+    def predict(self, stamp):
+        dt = max(1e-3, min(0.5, stamp - self.stamp))   # clamp against stalls
+        self.stamp = stamp
+        F = np.eye(6); F[0, 3] = F[1, 4] = F[2, 5] = dt
+        self.x = F @ self.x
+        Q = np.eye(6) * self.q * dt
+        self.P = F @ self.P @ F.T + Q
         return self.x[:3]
 
+    def update(self, pos, class_id, dir_world):
+        z = np.array(pos, dtype=np.float64)
+        y = z - self.H @ self.x
+        S = self.H @ self.P @ self.H.T + np.eye(3) * self.r
+        K = self.P @ self.H.T @ np.linalg.inv(S)
+        self.x = self.x + K @ y
+        self.P = (np.eye(6) - K @ self.H) @ self.P
+
+        # B7: integrate path length only while confirmed
+        if self.confirmed:
+            self.path_len += float(np.linalg.norm(self.x[:3] - self.last_pos))
+        self.last_pos = self.x[:3].copy()
+
+        self.class_votes[class_id] = self.class_votes.get(class_id, 0) + 1
+        # majority vote -> immune to single-frame label flips
+        self.class_id = max(self.class_votes, key=self.class_votes.get)
+
+        if dir_world is not None:
+            self.dir_world = np.asarray(dir_world, dtype=np.float64)
+
+        self.hits += 1; self.misses = 0
+        if self.hits >= CONFIRM_HITS:
+            self.confirmed = True
+
+    def mark_missed(self):
+        self.misses += 1
+        return self.misses > MAX_MISSES
+
     @property
-    def velocity(self):
-        return self.x[3:]
+    def position(self): return self.x[:3]
+    @property
+    def speed(self):    return float(np.linalg.norm(self.x[3:]))
+
+
+def dir_to_quat(d):
+    """Quaternion rotating model +Z onto world direction d."""
+    d = np.asarray(d, dtype=np.float64)
+    n = np.linalg.norm(d)
+    if n < 1e-9: return (1.0, 0.0, 0.0, 0.0)
+    d = d / n
+    z = np.array([0.0, 0.0, 1.0])
+    v = np.cross(z, d); c = float(np.dot(z, d))
+    if c < -0.999999: return (0.0, 1.0, 0.0, 0.0)   # 180-degree flip
+    s = math.sqrt((1.0 + c) * 2.0)
+    return (s * 0.5, v[0] / s, v[1] / s, v[2] / s)  # w,x,y,z
 
 
 class TwinSyncNode(Node):
     def __init__(self):
         super().__init__('twin_sync_node')
+        self.gz = gz.transport13.Node()
 
-        self.gz_node = gz.transport13.Node()
+        self.class_names = [
+            'Large_Needle_Driver_Left','Large_Needle_Driver_Right',
+            'Prograsp_Forceps_Left','Prograsp_Forceps_Right',
+            'Maryland_Bipolar_Forceps','Bipolar_Forceps',
+            'Monopolar_Curved_Scissors','Grasping_Retractor_Right']
+        self.colors = [(0.2,0.6,1.0),(1.0,0.4,0.2),(0.2,1.0,0.4),(1.0,0.2,0.8),
+                       (0.8,0.8,0.2),(0.6,0.2,1.0),(0.2,0.8,0.8),(1.0,0.6,0.2)]
 
-        self.instrument_models = {
-            0: 'instrument_needle_left',
-            1: 'instrument_needle_right',
-            2: 'instrument_prograsp_left',
-            3: 'instrument_prograsp_right',
-            4: 'instrument_maryland',
-            5: 'instrument_bipolar',
-            6: 'instrument_scissors',
-            7: 'instrument_retractor',
-        }
-
-        self.spawned_models = set()
-
-        # Kalman filters — one per instrument class
-        self.kalman_filters = {}
-
-        # Track path length for Economy of Motion (Phase 5)
-        self.path_lengths = {}
-        self.last_positions = {}
-
-        self.class_colors = {
-            0: (0.2, 0.6, 1.0),
-            1: (1.0, 0.4, 0.2),
-            2: (0.2, 1.0, 0.4),
-            3: (1.0, 0.2, 0.8),
-            4: (0.8, 0.8, 0.2),
-            5: (0.6, 0.2, 1.0),
-            6: (0.2, 0.8, 0.8),
-            7: (1.0, 0.6, 0.2),
-        }
-
-        self.sdf_template = """<?xml version="1.0" ?>
+        self.sdf_tpl = """<?xml version="1.0" ?>
 <sdf version="1.8">
   <model name="{name}">
     <static>true</static>
     <link name="shaft">
-      <visual name="shaft_visual">
-        <geometry>
-          <cylinder><radius>0.005</radius><length>0.35</length></cylinder>
-        </geometry>
-        <material>
-          <ambient>{r} {g} {b} 1</ambient>
-          <diffuse>{r} {g} {b} 1</diffuse>
-        </material>
+      <pose>0 0 -0.18 0 0 0</pose>
+      <visual name="v">
+        <geometry><cylinder><radius>0.005</radius><length>0.35</length></cylinder></geometry>
+        <material><ambient>{r} {g} {b} 1</ambient><diffuse>{r} {g} {b} 1</diffuse></material>
       </visual>
     </link>
-    <link name="tip">
-      <pose>0 0 0.18 0 0 0</pose>
-      <visual name="tip_visual">
+    <link name="jaws">
+      <pose>0 0 0 0 0 0</pose>
+      <visual name="v">
         <geometry><sphere><radius>0.008</radius></sphere></geometry>
-        <material>
-          <ambient>1.0 1.0 0.0 1</ambient>
-          <diffuse>1.0 1.0 0.0 1</diffuse>
-        </material>
+        <material><ambient>1 1 0 1</ambient><diffuse>1 1 0 1</diffuse></material>
       </visual>
     </link>
-    <joint name="shaft_tip_joint" type="fixed">
-      <parent>shaft</parent><child>tip</child>
-    </joint>
+    <joint name="j" type="fixed"><parent>shaft</parent><child>jaws</child></joint>
   </model>
 </sdf>"""
 
-        # Publisher for filtered poses (useful for evaluation)
+        self.tracks, self.spawned = [], {}
+        self.spawn_failed = {}        # track_id -> consecutive failures
+        self.gazebo_ok    = True      # degrade gracefully if Gazebo is absent
+        self.last_frame_id = -1
+
         self.filtered_pub = self.create_publisher(
-            String,
-            '/instrument_poses_filtered',
-            10
-        )
+            String, '/instrument_poses_filtered', 10)
+        self.create_subscription(
+            String, '/instrument_poses_3d', self.callback, 10)
 
-        self.sub = self.create_subscription(
-            String,
-            '/instrument_poses_3d',
-            self.pose_callback,
-            10
-        )
+        self.get_logger().info(
+            f'Twin sync ready — track-based association\n'
+            f'  gate {GATE_M*1000:.0f} mm, confirm {CONFIRM_HITS}, '
+            f'max misses {MAX_MISSES}')
 
-        self.frame_count = 0
-        self.get_logger().info('Twin sync node with Kalman filter ready ✅')
-
-    def spawn_instrument(self, class_id, model_name):
-        r, g, b = self.class_colors.get(class_id, (0.7, 0.7, 0.7))
-        sdf     = self.sdf_template.format(name=model_name, r=r, g=g, b=b)
-
-        req      = entity_factory_pb2.EntityFactory()
-        req.sdf  = sdf
-        req.name = model_name
-        req.pose.position.x = 0.0
-        req.pose.position.y = 0.0
+    # ------------------------------------------------------------------
+    def spawn(self, track):
+        name = f"instrument_{track.id}_{self.class_names[track.class_id]}"
+        r, g, b = self.colors[track.class_id % len(self.colors)]
+        req = ef_pb2.EntityFactory()
+        req.sdf  = self.sdf_tpl.format(name=name, r=r, g=g, b=b)
+        req.name = name
         req.pose.position.z = 0.5
-
-        result = self.gz_node.request(
-            '/world/empty/create',
-            req,
-            entity_factory_pb2.EntityFactory,
-            boolean_pb2.Boolean,
-            2000
-        )
-
-        if result:
-            self.spawned_models.add(model_name)
-            self.get_logger().info(f'Spawned: {model_name}')
+        if not self.gazebo_ok:
+            return                      # stop hammering a dead service
+        try:
+            ok = self.gz.request('/world/empty/create', req,
+                                 ef_pb2.EntityFactory, bool_pb2.Boolean, 400)
+        except Exception:
+            ok = False
+        if ok:
+            self.spawned[track.id] = name
+            self.spawn_failed.pop(track.id, None)
+            self.get_logger().info(f'spawned {name}')
         else:
-            self.get_logger().warn(f'Failed to spawn: {model_name}')
+            n = self.spawn_failed.get(track.id, 0) + 1
+            self.spawn_failed[track.id] = n
+            if n == 1:
+                self.get_logger().warn(f'spawn failed for {name}')
+            if sum(self.spawn_failed.values()) >= 6:
+                self.gazebo_ok = False
+                self.get_logger().warn(
+                    'Gazebo unreachable - continuing without the 3D twin. '
+                    'Tracking and rviz markers are unaffected.')
 
-    def move_instrument(self, model_name, x, y, z, roll, pitch, yaw):
-        pose_msg            = pose_pb2.Pose()
-        pose_msg.name       = model_name
-        pose_msg.position.x = float(x)
-        pose_msg.position.y = float(y)
-        pose_msg.position.z = float(z)
+    def move(self, track):
+        name = self.spawned.get(track.id)
+        if not name: return
+        p = pose_pb2.Pose(); p.name = name
+        pos = track.position
+        p.position.x, p.position.y, p.position.z = map(float, pos)
+        w, x, y, z = dir_to_quat(track.dir_world)
+        p.orientation.w, p.orientation.x = w, x
+        p.orientation.y, p.orientation.z = y, z
+        if not self.gazebo_ok:
+            return
+        try:
+            self.gz.request('/world/empty/set_pose', p,
+                            pose_pb2.Pose, bool_pb2.Boolean, 150)
+        except Exception:
+            pass
 
-        cy = math.cos(yaw   * 0.5)
-        sy = math.sin(yaw   * 0.5)
-        cp = math.cos(pitch * 0.5)
-        sp = math.sin(pitch * 0.5)
-        cr = math.cos(roll  * 0.5)
-        sr = math.sin(roll  * 0.5)
+    def remove(self, tid):
+        """B23: delete the Gazebo model too, not just the bookkeeping entry.
+        Otherwise dead tracks leave ghost instruments frozen in the scene."""
+        name = self.spawned.pop(tid, None)
+        self.spawn_failed.pop(tid, None)
+        if name and self.gazebo_ok:
+            try:
+                ent = entity_pb2.Entity()
+                ent.name = name
+                ent.type = entity_pb2.Entity.MODEL
+                self.gz.request('/world/empty/remove', ent,
+                                entity_pb2.Entity, bool_pb2.Boolean, 150)
+            except Exception:
+                pass
 
-        pose_msg.orientation.w = cr * cp * cy + sr * sp * sy
-        pose_msg.orientation.x = sr * cp * cy - cr * sp * sy
-        pose_msg.orientation.y = cr * sp * cy + sr * cp * sy
-        pose_msg.orientation.z = cr * cp * sy - sr * sp * cy
+    # ------------------------------------------------------------------
+    def callback(self, msg):
+        data  = json.loads(msg.data)
+        fid   = data.get('frame_id', 0)
+        stamp = time.monotonic()
 
-        self.gz_node.request(
-            '/world/empty/set_pose',
-            pose_msg,
-            pose_pb2.Pose,
-            boolean_pb2.Boolean,
-            500
-        )
+        # B7: sequence looped -> reset all path lengths
+        if fid < self.last_frame_id:
+            for t in self.tracks: t.path_len = 0.0
+            self.get_logger().info('sequence loop detected — EoM reset')
+        self.last_frame_id = fid
 
-    def update_path_length(self, class_id, new_pos):
-        """Track cumulative path length for Economy of Motion."""
-        if class_id in self.last_positions:
-            last = self.last_positions[class_id]
-            dist = np.linalg.norm(
-                np.array(new_pos) - np.array(last)
-            )
-            self.path_lengths[class_id] = (
-                self.path_lengths.get(class_id, 0.0) + dist
-            )
-        self.last_positions[class_id] = new_pos
+        dets = [d for d in data.get('poses', []) if d.get('confidence', 0) >= 0.5]
+        for t in self.tracks: t.predict(stamp)
 
-    def pose_callback(self, msg):
-        data       = json.loads(msg.data)
-        poses      = data.get('poses', [])
-        frame_id   = data.get('frame_id', 0)
-        self.frame_count += 1
+        # B6: greedy nearest-neighbour association within the gate
+        unmatched = list(range(len(dets)))
+        used = set()
+        pairs = []
+        for ti, t in enumerate(self.tracks):
+            for di in unmatched:
+                p = dets[di]['position_3d']
+                d = float(np.linalg.norm(
+                    t.position - np.array([p['x'], p['y'], p['z']])))
+                if d <= GATE_M:
+                    # class agreement halves the effective cost
+                    cost = d * (0.5 if dets[di]['class_id'] == t.class_id else 1.0)
+                    pairs.append((cost, ti, di))
+        pairs.sort()
+        assigned_t, assigned_d = set(), set()
+        for cost, ti, di in pairs:
+            if ti in assigned_t or di in assigned_d: continue
+            p = dets[di]['position_3d']
+            self.tracks[ti].update([p['x'], p['y'], p['z']],
+                                   dets[di]['class_id'],
+                                   dets[di].get('shaft_dir_world'))
+            assigned_t.add(ti); assigned_d.add(di)
 
-        # Track which class IDs were detected this frame
-        detected_ids  = set()
-        filtered_poses = []
+        # unmatched detections -> new tracks
+        for di, d in enumerate(dets):
+            if di in assigned_d: continue
+            p = d['position_3d']
+            self.tracks.append(Track([p['x'], p['y'], p['z']],
+                                     d['class_id'], d['class_name'], stamp))
 
-        for pose in poses:
-            class_id   = pose['class_id']
-            class_name = pose['class_name']
-            pos        = pose['position_3d']
-            ori        = pose['orientation']
-            conf       = pose['confidence']
+        # unmatched tracks -> coast, possibly die
+        alive = []
+        for ti, t in enumerate(self.tracks):
+            if ti in assigned_t or t.hits == 1:
+                alive.append(t); continue
+            if t.mark_missed():
+                self.remove(t.id)          # B7: path length dies with track
+            else:
+                alive.append(t)
+        self.tracks = alive
 
-            if conf < 0.6:
-                continue
+        for t in self.tracks:
+            if not t.confirmed: continue
+            if t.id not in self.spawned: self.spawn(t)
+            self.move(t)
 
-            detected_ids.add(class_id)
-            model_name  = self.instrument_models.get(
-                class_id, f'instrument_{class_id}'
-            )
-            measurement = [pos['x'], pos['y'], pos['z']]
+        out = String()
+        out.data = json.dumps({
+            'frame_id': fid,
+            'tracks': [{
+                'track_id':   t.id,
+                'class_name': self.class_names[t.class_id],
+                'position':   [round(float(v), 5) for v in t.position],
+                'speed_mps':  round(t.speed, 4),
+                'path_len_m': round(t.path_len, 5),
+                'hits': t.hits, 'misses': t.misses,
+                'shaft_dir':  [round(float(v), 5) for v in t.dir_world],
+            } for t in self.tracks if t.confirmed]})
+        self.filtered_pub.publish(out)
 
-            # Initialise Kalman filter on first detection
-            if class_id not in self.kalman_filters:
-                self.kalman_filters[class_id] = InstrumentKalmanFilter(
-                    measurement
-                )
-                self.get_logger().info(
-                    f'Initialised Kalman filter for {class_name}'
-                )
-
-            # Predict then update
-            kf = self.kalman_filters[class_id]
-            kf.predict()
-            filtered_pos = kf.update(measurement)
-
-            # Update path length
-            self.update_path_length(class_id, filtered_pos.tolist())
-
-            # Spawn if needed
-            if model_name not in self.spawned_models:
-                self.spawn_instrument(class_id, model_name)
-
-            # Move to FILTERED position
-            self.move_instrument(
-                model_name,
-                filtered_pos[0], filtered_pos[1], filtered_pos[2],
-                ori['roll'], ori['pitch'], ori['yaw']
-            )
-
-            filtered_poses.append({
-                'class_id'       : class_id,
-                'class_name'     : class_name,
-                'raw_position'   : [pos['x'], pos['y'], pos['z']],
-                'filtered_position': filtered_pos.tolist(),
-                'velocity'       : kf.velocity.tolist(),
-                'path_length_m'  : round(
-                    self.path_lengths.get(class_id, 0.0), 4
-                ),
-                'confidence'     : conf,
-            })
-
-            self.get_logger().info(
-                f'[KF] {class_name}: '
-                f'raw=({pos["x"]:.3f},{pos["y"]:.3f}) '
-                f'filtered=({filtered_pos[0]:.3f},{filtered_pos[1]:.3f})'
-            )
-
-        # Run predict-only for instruments not detected this frame
-        for class_id, kf in self.kalman_filters.items():
-            if class_id not in detected_ids and kf.is_active:
-                predicted = kf.mark_missed()
-                model_name = self.instrument_models.get(class_id)
-                if model_name and model_name in self.spawned_models:
-                    self.move_instrument(
-                        model_name,
-                        predicted[0], predicted[1], predicted[2],
-                        0.0, 0.0, 0.0
-                    )
-
-        # Publish filtered poses for evaluation
-        out_msg      = String()
-        out_msg.data = json.dumps({
-            'frame_id'     : frame_id,
-            'poses'        : filtered_poses,
-            'path_lengths' : {
-                str(k): round(v, 4)
-                for k, v in self.path_lengths.items()
-            }
-        })
-        self.filtered_pub.publish(out_msg)
-
-        # Log path lengths every 100 frames
-        if self.frame_count % 100 == 0 and self.path_lengths:
-            self.get_logger().info('--- Economy of Motion ---')
-            for cid, length in self.path_lengths.items():
-                name = self.instrument_models.get(cid, f'class_{cid}')
-                self.get_logger().info(
-                    f'  {name}: {length*1000:.1f} mm total path'
-                )
+        if fid % 50 == 0 and self.tracks:
+            for t in self.tracks:
+                if t.confirmed:
+                    self.get_logger().info(
+                        f'  track {t.id} {self.class_names[t.class_id]}: '
+                        f'path {t.path_len*1000:.1f} mm, '
+                        f'speed {t.speed*1000:.1f} mm/s')
 
 
 def main(args=None):
@@ -373,7 +304,7 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        node.get_logger().info('Twin sync node shutting down...')
+        pass
     finally:
         node.destroy_node()
         if rclpy.ok():

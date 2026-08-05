@@ -1,0 +1,33 @@
+"""
+Retrain on the temporal split to quantify leakage in the random-split result.
+Hyperparameters IDENTICAL to surgical_proper_split so the only variable
+is the validation protocol.
+"""
+from ultralytics import YOLO
+
+model = YOLO("yolo11s-seg.pt")
+model.train(
+    data         = "/home/inoruske/surgical_twin_ws/data/surgical_temporal.yaml",
+    epochs       = 100,
+    imgsz        = 640,
+    batch        = 4,
+    device       = 0,
+    workers      = 0,
+    project      = "/home/inoruske/surgical_twin_ws/models",
+    name         = "surgical_temporal",
+    save         = True,
+    plots        = True,
+    optimizer    = "AdamW",
+    lr0          = 0.0003,
+    cos_lr       = True,
+    warmup_epochs= 5,
+    freeze       = 10,
+    patience     = 25,
+    close_mosaic = 20,
+    hsv_h=0.015, hsv_s=0.5, hsv_v=0.4,
+    fliplr=0.5,  mosaic=0.8, mixup=0.15,
+    degrees=15.0, translate=0.1, scale=0.4,
+    copy_paste=0.15, erasing=0.3,
+    seed=0,
+)
+print("Training complete")

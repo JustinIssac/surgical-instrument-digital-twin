@@ -9,7 +9,8 @@
 This project builds a complete software pipeline that:
 1. **Detects and segments** surgical instruments in endoscopic video using YOLOv11
 2. **Estimates 3D position** of each instrument using stereo camera geometry and real calibration data
-3. **Filters trajectories** using a Kalman filter for smooth, physically plausible tracking
+3. **Estimates the jaws (tip) position** via mask PCA, validated at 2.81 mm median error against ground-truth jaw labels
+4. **Filters trajectories** using a Kalman filter for smooth, physically plausible tracking
 4. **Synchronises a Digital Twin** in Gazebo Sim in real time, mirroring instrument movements
 5. **Tracks Economy of Motion** — cumulative path length per instrument for surgical skill assessment
 
@@ -37,6 +38,17 @@ The system runs entirely on ROS 2 Jazzy and achieves **95.8% mask mAP50** across
 
 ## Results
 
+> **Evaluation protocol.** Results below are on a custom **temporal split**
+> of the EndoVis 2017 *training* sequences (frames 0-160 train, 161-168
+> discarded as a guard gap, 169-224 validation). This is **not** the official
+> challenge test set, and the metric is **mAP50** (instance segmentation),
+> not the **IoU** reported by the challenge leaderboard. Figures here are
+> therefore **not directly comparable** to published EndoVis 2017 results.
+>
+> Two classes (`Maryland_Bipolar_Forceps`, `Grasping_Retractor_Right`) occur
+> in a single contiguous block within a single sequence and cannot be
+> temporally validated without leakage; they are reported as train-only.
+
 ### Segmentation Model (YOLOv11s-seg)
 
 | Class | Instances | Mask mAP50 | Mask mAP50-95 |
@@ -59,7 +71,9 @@ The system runs entirely on ROS 2 Jazzy and achieves **95.8% mask mAP50** across
 | Real-time capability | ~83 FPS |
 | Model size | 20.5MB |
 | Stereo depth method | SGBM (Semi-Global Block Matching) |
-| Stereo baseline | 4.2773mm (real EndoVis calibration) |
+| Stereo baseline | 4.2773 mm (EndoVis calibration)
+| Rectified focal length | 1125.55 px |
+| Active image region | 1272x1016 at offset (328, 32) | |
 | Kalman filter state | [x, y, z, vx, vy, vz] |
 
 ---
@@ -270,7 +284,7 @@ surgical-instrument-digital-twin/
 This project uses the **MICCAI EndoVis 2017 Robotic Instrument Segmentation** dataset.
 
 - 8 surgical sequences, 225 frames each (1,800 total)
-- 1920×1080 resolution, part-level segmentation masks
+- 1920×1080 resolution, part-level segmentation masks (10=shaft, 20=wrist, 30=jaws)
 - Stereo camera with calibration parameters
 - License: Creative Commons Non-Commercial
 

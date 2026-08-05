@@ -23,6 +23,7 @@ setup(
             'video_publisher  = surgical_perception.video_publisher:main',
             'pose_estimator   = surgical_perception.pose_estimator:main',
             'twin_sync_node   = surgical_perception.twin_sync_node:main',
+            'rviz_markers     = surgical_perception.rviz_markers:main',
             'stereo_depth_node = surgical_perception.stereo_depth_node:main',
         ],
     },

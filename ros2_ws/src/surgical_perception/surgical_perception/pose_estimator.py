@@ -1,149 +1,138 @@
+"""
+Coordinate frame transformation node.
+
+REWRITTEN. Previously this node re-derived 3D positions from pixel
+coordinates using its own (incorrect) intrinsics, silently overriding
+the stereo node's output whenever stereo depth was unavailable.
+
+It now performs exactly one job: convert 3D points from the camera
+OPTICAL frame into the Gazebo WORLD frame, and forward orientation.
+No camera intrinsics live here any more.
+
+  B1  wrong intrinsics deleted (not patched -- removed entirely)
+  B2  shaft_yaw_rad from mask PCA is forwarded, replacing the old
+      binary bbox aspect-ratio guess
+  B3  operates on tip_px / tip-derived 3D, never the shaft centroid
+  B5  optical -> world frame conversion (REP-103)
+
+Frame conventions
+  camera optical : X right,   Y down, Z forward   (OpenCV)
+  ROS / Gazebo   : X forward, Y left, Z up        (REP-103)
+      x_w = z_o ,  y_w = -x_o ,  z_w = -y_o
+"""
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 import numpy as np
 import json
+import math
+
+# Rotation: camera optical frame -> ROS body/world frame (REP-103)
+R_OPT2ROS = np.array([[0.0,  0.0, 1.0],
+                      [-1.0, 0.0, 0.0],
+                      [0.0, -1.0, 0.0]], dtype=np.float64)
 
 
 class PoseEstimatorNode(Node):
     def __init__(self):
         super().__init__('pose_estimator')
 
-        # Camera intrinsics scaled from 1280x1024 to 1920x1080
-        self.fx = 1068.39 * (1920 / 1280)   # 1602.59
-        self.fy = 1068.19 * (1080 / 1024)   # 1126.94
-        self.cx = 600.90  * (1920 / 1280)   # 901.35
-        self.cy = 500.74  * (1080 / 1024)   # 528.28
+        # Where the endoscope sits in the Gazebo world.
+        # Arbitrary but fixed: lifts the scene to a visible height and
+        # points the camera along +X.
+        self.declare_parameter('camera_origin_x', 0.0)
+        self.declare_parameter('camera_origin_y', 0.0)
+        self.declare_parameter('camera_origin_z', 0.50)
+        self.declare_parameter('scene_scale', 1.0)
 
-        # Distortion coefficients [k1, k2, p1, p2, k3]
-        self.dist_coeffs = np.array(
-            [-0.00087, 0.00238, 0.00012, 0.00000, 0.00000],
-            dtype=np.float64
-        )
+        self.cam_origin = np.array([
+            self.get_parameter('camera_origin_x').value,
+            self.get_parameter('camera_origin_y').value,
+            self.get_parameter('camera_origin_z').value], dtype=np.float64)
+        self.scale = float(self.get_parameter('scene_scale').value)
 
-        # Assumed depth per instrument type in metres
-        # Used as fallback when stereo depth is unavailable
-        self.assumed_depth = {
-            'Large_Needle_Driver_Left'  : 0.15,
-            'Large_Needle_Driver_Right' : 0.15,
-            'Prograsp_Forceps_Left'     : 0.15,
-            'Prograsp_Forceps_Right'    : 0.15,
-            'Maryland_Bipolar_Forceps'  : 0.12,
-            'Bipolar_Forceps'           : 0.12,
-            'Monopolar_Curved_Scissors' : 0.18,
-            'Grasping_Retractor_Right'  : 0.15,
-        }
-        self.default_depth = 0.15
-
-        # Subscribe to stereo-enhanced detections
         self.sub = self.create_subscription(
-            String,
-            '/instrument_detections_3d',
-            self.detection_callback,
-            10
-        )
-
-        # Publish 3D poses
+            String, '/instrument_detections_3d', self.callback, 10)
         self.pub = self.create_publisher(
-            String,
-            '/instrument_poses_3d',
-            10
-        )
+            String, '/instrument_poses_3d', 10)
 
         self.get_logger().info(
-            f'Pose estimator ready ✅\n'
-            f'  fx={self.fx:.2f}, fy={self.fy:.2f}\n'
-            f'  cx={self.cx:.2f}, cy={self.cy:.2f}\n'
-            f'  Subscribed to: /instrument_detections_3d (stereo-enhanced)'
-        )
+            'Pose estimator ready (frame transform only)\n'
+            '  optical -> world : x_w=z_o, y_w=-x_o, z_w=-y_o\n'
+            f'  camera origin    : {self.cam_origin.tolist()}\n'
+            '  no intrinsics used in this node')
 
-    def pixel_to_3d(self, cx_px, cy_px, class_name):
-        """
-        Fallback: Convert 2D pixel centroid to 3D using assumed depth.
-        Used when stereo depth is unavailable.
-        Formula: X = (u - cx) * Z / fx
-                 Y = (v - cy) * Z / fy
-                 Z = assumed depth
-        """
-        Z      = self.assumed_depth.get(class_name, self.default_depth)
-        u_norm = (cx_px - self.cx) / self.fx
-        v_norm = (cy_px - self.cy) / self.fy
-        X      = u_norm * Z
-        Y      = v_norm * Z
-        return round(X, 4), round(Y, 4), round(Z, 4)
+    # ------------------------------------------------------------------
+    def optical_to_world(self, p_opt):
+        """3D point, camera optical frame -> Gazebo world frame."""
+        return self.cam_origin + self.scale * (R_OPT2ROS @ np.asarray(p_opt))
 
-    def estimate_orientation(self, bbox):
+    def shaft_direction_world(self, yaw_img):
         """
-        Estimate instrument orientation from bounding box aspect ratio.
-        Returns roll, pitch, yaw in radians.
-        Simplified estimate — Phase 5 replaces with full PnP.
+        Convert the in-image shaft direction into a world-frame unit vector.
+
+        yaw_img = atan2(dy, dx) in image pixel coords (y increases downward),
+        pointing from the instrument body toward the jaws. In the optical
+        frame that is (cos y, sin y, 0); the out-of-plane component is not
+        observable from a single view, so it is taken as zero and this is
+        recorded as a known limitation.
         """
-        x1, y1, x2, y2 = bbox
-        width  = x2 - x1
-        height = y2 - y1
-        yaw    = 0.0 if width > height else 1.5708
-        return 0.0, 0.0, round(yaw, 4)
+        d_opt = np.array([math.cos(yaw_img), math.sin(yaw_img), 0.0])
+        d_w   = R_OPT2ROS @ d_opt
+        n     = np.linalg.norm(d_w)
+        return (d_w / n) if n > 1e-9 else np.array([1.0, 0.0, 0.0])
 
-    def detection_callback(self, msg):
-        data       = json.loads(msg.data)
-        detections = data.get('detections', [])
-        frame_id   = data.get('frame_id', 0)
-
+    # ------------------------------------------------------------------
+    def callback(self, msg):
+        data  = json.loads(msg.data)
         poses = []
-        for det in detections:
-            class_name   = det['class_name']
-            bbox         = det['bbox']
-            depth_method = det.get('depth_method', 'assumed')
 
-            # Use stereo 3D position if already computed by stereo_depth_node
-            if 'position_3d' in det and depth_method == 'stereo':
-                pos  = det['position_3d']
-                X, Y, Z = pos['x'], pos['y'], pos['z']
+        for det in data.get('detections', []):
+            p3 = det.get('position_3d')
+            if p3 is None:
+                continue                      # stereo node owns 3D; skip if absent
+
+            p_opt = [p3['x'], p3['y'], p3['z']]
+            p_w   = self.optical_to_world(p_opt)
+
+            yaw_img = det.get('shaft_yaw_rad')
+            if yaw_img is None:
+                d_w, yaw_known = np.array([1.0, 0.0, 0.0]), False
             else:
-                # Fallback: compute from centroid + assumed depth
-                cx_px, cy_px = det['centroid_px']
-                X, Y, Z      = self.pixel_to_3d(cx_px, cy_px, class_name)
-                depth_method = 'assumed'
-
-            roll, pitch, yaw = self.estimate_orientation(bbox)
+                d_w, yaw_known = self.shaft_direction_world(float(yaw_img)), True
 
             poses.append({
-                'class_id'    : det['class_id'],
-                'class_name'  : class_name,
-                'confidence'  : det['confidence'],
-                'position_3d' : {
-                    'x': round(X, 4),
-                    'y': round(Y, 4),
-                    'z': round(Z, 4)
-                },
-                'orientation' : {
-                    'roll' : roll,
-                    'pitch': pitch,
-                    'yaw'  : yaw
-                },
-                'centroid_px' : det['centroid_px'],
-                'depth_method': depth_method,
-                'frame_id'    : frame_id
+                'class_id':      det['class_id'],
+                'class_name':    det['class_name'],
+                'confidence':    det['confidence'],
+                # world frame, metres -- what the twin consumes
+                'position_3d':   {'x': round(float(p_w[0]), 5),
+                                  'y': round(float(p_w[1]), 5),
+                                  'z': round(float(p_w[2]), 5)},
+                # camera frame retained for evaluation / reprojection
+                'position_cam':  {'x': p3['x'], 'y': p3['y'], 'z': p3['z']},
+                'shaft_dir_world': [round(float(v), 5) for v in d_w],
+                'shaft_yaw_rad': det.get('shaft_yaw_rad'),
+                'yaw_observed':  yaw_known,
+                'depth_method':  det.get('depth_method', 'unknown'),
+                'tip_px':        det.get('tip_px'),
+                'centroid_px':   det.get('centroid_px'),
+                'frame_id':      data.get('frame_id', 0),
             })
 
-        # Publish 3D poses
-        out_msg      = String()
-        out_msg.data = json.dumps({
-            'frame_id' : frame_id,
+        out = String()
+        out.data = json.dumps({
+            'frame_id':  data.get('frame_id', 0),
             'timestamp': data.get('timestamp', 0),
-            'poses'    : poses
-        })
-        self.pub.publish(out_msg)
+            'frame':     'gazebo_world',
+            'poses':     poses})
+        self.pub.publish(out)
 
-        if poses:
-            stereo_count  = sum(
-                1 for p in poses if p['depth_method'] == 'stereo'
-            )
-            assumed_count = len(poses) - stereo_count
+        if poses and data.get('frame_id', 0) % 50 == 0:
+            ns = sum(1 for p in poses if p['depth_method'] == 'stereo')
             self.get_logger().info(
-                f'Frame {frame_id}: {len(poses)} poses published '
-                f'({stereo_count} stereo depth, {assumed_count} assumed depth)'
-            )
+                f"frame {data.get('frame_id')}: {len(poses)} poses "
+                f"({ns} stereo depth)")
 
 
 def main(args=None):
@@ -152,7 +141,7 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        node.get_logger().info('Pose estimator shutting down...')
+        pass
     finally:
         node.destroy_node()
         if rclpy.ok():

@@ -1,252 +1,225 @@
+"""
+Stereo depth estimation with proper rectification.
+
+Fixes over previous version:
+  2.1  loads corrected intrinsics from config (fx == fy, square pixels)
+  2.2  performs stereoRectify + remap before SGBM
+  2.3  distortion coefficients actually applied
+  2.4  physiologically-motivated depth gate + disparity quality checks
+  2.5  time-synchronised left/right via message_filters
+"""
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import String
 from cv_bridge import CvBridge
+import message_filters
 import cv2
 import numpy as np
+import yaml
 import json
+from pathlib import Path
+
+CALIB = "/home/inoruske/surgical_twin_ws/config/camera_calib.yaml"
 
 
 class StereoDepthNode(Node):
     def __init__(self):
         super().__init__('stereo_depth_node')
 
-        # Camera intrinsics scaled to 1920x1080
-        scale_x = 1920 / 1280
-        scale_y = 1080 / 1024
+        self.declare_parameter('calib_path', CALIB)
+        self.declare_parameter('depth_min_m', 0.02)   # 3 cm
+        self.declare_parameter('depth_max_m', 0.15)   # 20 cm
+        self.declare_parameter('max_depth_jump_m', 0.015)
 
-        self.fx = 1068.39 * scale_x   # 1602.59
-        self.fy = 1068.19 * scale_y   # 1126.94
-        self.cx = 600.90  * scale_x   # 901.35
-        self.cy = 500.74  * scale_y   # 528.28
+        calib_path = self.get_parameter('calib_path').value
+        self.dmin  = self.get_parameter('depth_min_m').value
+        self.dmax  = self.get_parameter('depth_max_m').value
+        self.djump = self.get_parameter('max_depth_jump_m').value
 
-        # Stereo baseline in metres (from calibration: -4.2773mm)
-        self.baseline = abs(-4.2773) / 1000.0  # convert mm to metres
+        with open(calib_path) as f:
+            cfg = yaml.safe_load(f)
 
-        # Distortion coefficients
-        self.dist_coeffs = np.array(
-            [-0.00087, 0.00238, 0.00012, 0.00000, 0.00000],
-            dtype=np.float64
+        W, H = cfg['image_width'], cfg['image_height']
+        self.size = (W, H)
+
+        L, R_ = cfg['left'], cfg['right']
+        self.K1 = np.array([[L['fx'], 0, L['cx']],
+                            [0, L['fy'], L['cy']],
+                            [0, 0, 1]], dtype=np.float64)
+        self.D1 = np.array(L['dist'], dtype=np.float64)
+        self.K2 = np.array([[R_['fx'], 0, R_['cx']],
+                            [0, R_['fy'], R_['cy']],
+                            [0, 0, 1]], dtype=np.float64)
+        self.D2 = np.array(R_['dist'], dtype=np.float64)
+
+        Rmat = np.array(cfg['stereo']['R'], dtype=np.float64)
+        Tvec = np.array(cfg['stereo']['T_m'], dtype=np.float64).reshape(3, 1)
+
+        # ---- Rectification (Finding 2.2) ----
+        self.R1, self.R2, self.P1, self.P2, self.Q, _, _ = cv2.stereoRectify(
+            self.K1, self.D1, self.K2, self.D2, self.size,
+            Rmat, Tvec, flags=cv2.CALIB_ZERO_DISPARITY, alpha=0
         )
+        self.map1x, self.map1y = cv2.initUndistortRectifyMap(
+            self.K1, self.D1, self.R1, self.P1, self.size, cv2.CV_32FC1)
+        self.map2x, self.map2y = cv2.initUndistortRectifyMap(
+            self.K2, self.D2, self.R2, self.P2, self.size, cv2.CV_32FC1)
 
-        # Camera matrix
-        self.K = np.array([
-            [self.fx, 0,       self.cx],
-            [0,       self.fy, self.cy],
-            [0,       0,       1      ]
-        ], dtype=np.float64)
+        # Rectified focal length & baseline drive the depth equation
+        self.fx_rect   = float(self.P1[0, 0])
+        self.baseline  = float(abs(self.P2[0, 3] / self.P2[0, 0]))
 
-        # Stereo matcher - Semi-Global Block Matching (SGBM)
-        # Best balance of accuracy vs speed for surgical video
+        # Valid-pixel mask: exclude synthetic padding, warped into rect frame
+        ar = cfg['active_region']
+        raw_mask = np.zeros((H, W), np.uint8)
+        raw_mask[ar['y']:ar['y']+ar['h'], ar['x']:ar['x']+ar['w']] = 255
+        self.valid_mask = cv2.remap(raw_mask, self.map1x, self.map1y,
+                                    cv2.INTER_NEAREST) > 127
+
         self.stereo = cv2.StereoSGBM_create(
-            minDisparity    = 0,
-            numDisparities  = 64,    # max disparity range
-            blockSize       = 7,     # matching block size
-            P1              = 8  * 3 * 7 ** 2,
-            P2              = 32 * 3 * 7 ** 2,
-            disp12MaxDiff   = 1,
-            uniquenessRatio = 10,
-            speckleWindowSize = 100,
-            speckleRange    = 32,
-            preFilterCap    = 63,
-            mode            = cv2.STEREO_SGBM_MODE_SGBM_3WAY
-        )
+            minDisparity=0, numDisparities=192, blockSize=7,
+            P1=8*3*7**2, P2=32*3*7**2,
+            disp12MaxDiff=1, uniquenessRatio=12,
+            speckleWindowSize=150, speckleRange=2,
+            preFilterCap=63, mode=cv2.STEREO_SGBM_MODE_SGBM_3WAY)
 
-        self.bridge      = CvBridge()
-        self.left_frame  = None
-        self.right_frame = None
+        self.bridge   = CvBridge()
+        self.disp     = None
+        self.last_depth = {}
+        self.stats = {'stereo': 0, 'gate': 0, 'nodisp': 0, 'jump': 0}
 
-        # Subscribers for left and right frames
-        self.left_sub = self.create_subscription(
-            Image,
-            '/camera/image_raw',
-            self.left_callback,
-            10
-        )
-        self.right_sub = self.create_subscription(
-            Image,
-            '/camera/right/image_raw',
-            self.right_callback,
-            10
-        )
+        # ---- Time-synchronised stereo subscription (Finding 2.5) ----
+        ls = message_filters.Subscriber(self, Image, '/camera/image_raw')
+        rs = message_filters.Subscriber(self, Image, '/camera/right/image_raw')
+        self.sync = message_filters.ApproximateTimeSynchronizer(
+            [ls, rs], queue_size=5, slop=0.02)
+        self.sync.registerCallback(self.stereo_callback)
 
-        # Subscribe to detections to add stereo depth
-        self.detection_sub = self.create_subscription(
-            String,
-            '/instrument_detections',
-            self.detection_callback,
-            10
-        )
+        self.create_subscription(String, '/instrument_detections',
+                                 self.detection_callback, 10)
 
-        # Publish depth-enhanced detections
         self.depth_pub = self.create_publisher(
-            String,
-            '/instrument_detections_3d',
-            10
-        )
-
-        # Publish disparity image for visualisation
-        self.disparity_pub = self.create_publisher(
-            Image,
-            '/disparity_image',
-            10
-        )
+            String, '/instrument_detections_3d', 10)
+        self.disp_pub  = self.create_publisher(Image, '/disparity_image', 10)
 
         self.get_logger().info(
-            f'Stereo depth node ready ✅\n'
-            f'  Baseline: {self.baseline*1000:.2f}mm\n'
-            f'  fx={self.fx:.2f}, fy={self.fy:.2f}'
-        )
+            f"Stereo depth node ready (rectified)\n"
+            f"  fx_rect  = {self.fx_rect:.2f}\n"
+            f"  baseline = {self.baseline*1000:.4f} mm\n"
+            f"  gate     = [{self.dmin:.3f}, {self.dmax:.3f}] m\n"
+            f"  valid px = {self.valid_mask.sum()/self.valid_mask.size*100:.1f}%")
 
-    def left_callback(self, msg):
-        self.left_frame = self.bridge.imgmsg_to_cv2(
-            msg, desired_encoding='bgr8'
-        )
+    # ------------------------------------------------------------------
+    def stereo_callback(self, lmsg, rmsg):
+        left  = self.bridge.imgmsg_to_cv2(lmsg, 'bgr8')
+        right = self.bridge.imgmsg_to_cv2(rmsg, 'bgr8')
 
-    def right_callback(self, msg):
-        self.right_frame = self.bridge.imgmsg_to_cv2(
-            msg, desired_encoding='bgr8'
-        )
+        lr = cv2.remap(left,  self.map1x, self.map1y, cv2.INTER_LINEAR)
+        rr = cv2.remap(right, self.map2x, self.map2y, cv2.INTER_LINEAR)
 
-    def compute_disparity(self):
-        """Compute disparity map from stereo pair."""
-        if self.left_frame is None or self.right_frame is None:
-            return None
+        lg = cv2.cvtColor(lr, cv2.COLOR_BGR2GRAY)
+        rg = cv2.cvtColor(rr, cv2.COLOR_BGR2GRAY)
 
-        # Convert to grayscale for stereo matching
-        left_gray  = cv2.cvtColor(self.left_frame,  cv2.COLOR_BGR2GRAY)
-        right_gray = cv2.cvtColor(self.right_frame, cv2.COLOR_BGR2GRAY)
+        d = self.stereo.compute(lg, rg).astype(np.float32) / 16.0
+        d[~self.valid_mask] = np.nan
+        d[d <= 0.5] = np.nan          # sub-pixel noise floor
+        self.disp = d
 
-        # Compute disparity
-        disparity = self.stereo.compute(
-            left_gray, right_gray
-        ).astype(np.float32) / 16.0
+        vis = cv2.normalize(np.nan_to_num(d), None, 0, 255,
+                            cv2.NORM_MINMAX, cv2.CV_8U)
+        self.disp_pub.publish(self.bridge.cv2_to_imgmsg(
+            cv2.applyColorMap(vis, cv2.COLORMAP_PLASMA), 'bgr8'))
 
-        # Filter invalid disparities
-        disparity[disparity <= 0] = np.nan
+    # ------------------------------------------------------------------
+    def rectify_point(self, u, v):
+        """Map a raw-image pixel into rectified image coordinates."""
+        pt = np.array([[[float(u), float(v)]]], dtype=np.float64)
+        out = cv2.undistortPoints(pt, self.K1, self.D1,
+                                  R=self.R1, P=self.P1)
+        return float(out[0, 0, 0]), float(out[0, 0, 1])
 
-        return disparity
+    def sample_depth(self, u, v, win=7):
+        if self.disp is None:
+            return None, 'nodisp'
+        h, w = self.disp.shape
+        ur, vr = self.rectify_point(u, v)
+        ui, vi = int(round(ur)), int(round(vr))
+        if not (0 <= ui < w and 0 <= vi < h):
+            return None, 'nodisp'
 
-    def disparity_to_depth(self, disparity_value):
-        """
-        Convert disparity to depth using stereo formula:
-        Z = (fx * baseline) / disparity
-        """
-        if disparity_value is None or np.isnan(disparity_value) or disparity_value <= 0:
-            return None
-        return (self.fx * self.baseline) / disparity_value
+        patch = self.disp[max(0, vi-win):min(h, vi+win+1),
+                          max(0, ui-win):min(w, ui+win+1)]
+        vals = patch[~np.isnan(patch)]
+        if vals.size < 12:
+            return None, 'nodisp'
 
-    def get_depth_at_centroid(self, disparity_map, cx, cy, window=5):
-        """
-        Sample disparity at centroid with a small window
-        for robustness against noise.
-        """
-        if disparity_map is None:
-            return None
+        # Reject multi-modal patches (instrument edge straddling background)
+        if float(np.std(vals)) > 6.0:
+            return None, 'nodisp'
 
-        h, w = disparity_map.shape
-        x1 = max(0, cx - window)
-        x2 = min(w, cx + window)
-        y1 = max(0, cy - window)
-        y2 = min(h, cy + window)
+        return self.fx_rect * self.baseline / float(np.median(vals)), 'stereo'
 
-        region = disparity_map[y1:y2, x1:x2]
-        valid  = region[~np.isnan(region)]
-
-        if len(valid) == 0:
-            return None
-
-        # Use median for robustness against outliers
-        median_disparity = np.median(valid)
-        return self.disparity_to_depth(median_disparity)
-
-    def pixel_to_3d_stereo(self, cx_px, cy_px, depth_z):
-        """
-        Convert 2D pixel + stereo depth to 3D camera coordinates.
-        """
-        X = (cx_px - self.cx) * depth_z / self.fx
-        Y = (cy_px - self.cy) * depth_z / self.fy
-        return round(X, 4), round(Y, 4), round(depth_z, 4)
-
+    # ------------------------------------------------------------------
     def detection_callback(self, msg):
-        data       = json.loads(msg.data)
-        detections = data.get('detections', [])
+        data = json.loads(msg.data)
+        out  = []
 
-        # Compute disparity map if stereo frames available
-        disparity_map = self.compute_disparity()
+        for det in data.get('detections', []):
+            u, v = det.get('tip_px', det['centroid_px'])
+            cls  = det['class_name']
 
-        # Publish disparity visualisation
-        if disparity_map is not None:
-            disp_vis = cv2.normalize(
-                np.nan_to_num(disparity_map),
-                None, 0, 255,
-                cv2.NORM_MINMAX, cv2.CV_8U
-            )
-            disp_color = cv2.applyColorMap(disp_vis, cv2.COLORMAP_PLASMA)
-            disp_msg   = self.bridge.cv2_to_imgmsg(
-                disp_color, encoding='bgr8'
-            )
-            self.disparity_pub.publish(disp_msg)
+            z, why = self.sample_depth(u, v)
 
-        enhanced_detections = []
-        for det in detections:
-            cx_px, cy_px = det['centroid_px']
-            class_name   = det['class_name']
+            if z is not None and not (self.dmin <= z <= self.dmax):
+                z, why = None, 'gate'
 
-            # Try stereo depth first
-            depth_z      = None
-            depth_method = 'assumed'
+            # Temporal plausibility: instruments cannot jump in depth
+            if z is not None and cls in self.last_depth:
+                if abs(z - self.last_depth[cls]) > self.djump:
+                    z, why = None, 'jump'
 
-            if disparity_map is not None:
-                depth_z = self.get_depth_at_centroid(
-                    disparity_map, cx_px, cy_px
-                )
-                if depth_z is not None:
-                    # Sanity check: surgical instruments are 5-50cm away
-                    if 0.05 <= depth_z <= 0.50:
-                        depth_method = 'stereo'
-                    else:
-                        depth_z = None  # reject unrealistic depth
+            if z is None:
+                method = 'assumed'
+                z = 0.055                    # measured median working distance
+                self.stats[why] = self.stats.get(why, 0) + 1
+            else:
+                method = 'stereo'
+                self.last_depth[cls] = z
+                self.stats['stereo'] += 1
 
-            # Fallback to assumed depth if stereo fails
-            if depth_z is None:
-                depth_z = 0.15
-                depth_method = 'assumed'
+            # Back-project using RECTIFIED intrinsics, then report in
+            # rectified-left frame (consistent with the disparity source)
+            ur, vr = self.rectify_point(u, v)
+            X = (ur - self.P1[0, 2]) * z / self.P1[0, 0]
+            Y = (vr - self.P1[1, 2]) * z / self.P1[1, 1]
 
-            X, Y, Z = self.pixel_to_3d_stereo(cx_px, cy_px, depth_z)
+            out.append({**det,
+                        'position_3d':  {'x': round(X, 5),
+                                         'y': round(Y, 5),
+                                         'z': round(z, 5)},
+                        'depth_method': method,
+                        'reject_reason': None if method == 'stereo' else why,
+                        'centroid_rect': [round(ur, 1), round(vr, 1)],
+                        'depth_m': round(z, 5)})
 
-            enhanced_detections.append({
-                **det,
-                'position_3d' : {'x': X, 'y': Y, 'z': Z},
-                'depth_method': depth_method,
-                'depth_m'     : round(depth_z, 4),
-            })
-
-        # Publish enhanced detections
-        out_msg      = String()
-        out_msg.data = json.dumps({
-            'frame_id'  : data['frame_id'],
-            'timestamp' : data['timestamp'],
+        m = String()
+        m.data = json.dumps({
+            'frame_id':  data['frame_id'],
+            'timestamp': data['timestamp'],
             'image_size': data.get('image_size', [1920, 1080]),
-            'detections': enhanced_detections,
-            'stereo_available': disparity_map is not None
-        })
-        self.depth_pub.publish(out_msg)
+            'detections': out,
+            'stereo_available': self.disp is not None})
+        self.depth_pub.publish(m)
 
-        # Log stereo vs assumed usage
-        stereo_count  = sum(
-            1 for d in enhanced_detections
-            if d['depth_method'] == 'stereo'
-        )
-        assumed_count = len(enhanced_detections) - stereo_count
-
-        if enhanced_detections:
+        if data['frame_id'] % 50 == 0:
+            tot = sum(self.stats.values()) or 1
             self.get_logger().info(
-                f'Frame {data["frame_id"]}: '
-                f'{stereo_count} stereo depth, '
-                f'{assumed_count} assumed depth'
-            )
+                f"depth stats  stereo={self.stats['stereo']} "
+                f"({self.stats['stereo']/tot*100:.0f}%)  "
+                f"gate={self.stats.get('gate',0)} "
+                f"nodisp={self.stats.get('nodisp',0)} "
+                f"jump={self.stats.get('jump',0)}")
 
 
 def main(args=None):
@@ -255,7 +228,7 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        node.get_logger().info('Stereo depth node shutting down...')
+        pass
     finally:
         node.destroy_node()
         if rclpy.ok():

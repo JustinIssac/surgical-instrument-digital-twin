@@ -12,11 +12,11 @@ class VideoPublisher(Node):
         super().__init__('video_publisher')
         self.declare_parameter(
             'frames_path',
-            '/home/inoruske/surgical_twin_ws/test_data'
+            '/home/inoruske/surgical_twin_ws/demo_data'
         )
         self.declare_parameter(
             'right_frames_path',
-            '/home/inoruske/surgical_twin_ws/test_data_right'
+            '/home/inoruske/surgical_twin_ws/demo_data_right'
         )
         self.declare_parameter('fps', 10.0)
 
@@ -48,6 +48,7 @@ class VideoPublisher(Node):
         )
 
     def publish_frame(self):
+        stamp = self.get_clock().now().to_msg()
         if not self.left_frames:
             self.get_logger().error('No frames found!')
             return
@@ -59,7 +60,7 @@ class VideoPublisher(Node):
             msg                 = self.bridge.cv2_to_imgmsg(
                 left_frame, encoding='bgr8'
             )
-            msg.header.stamp    = self.get_clock().now().to_msg()
+            msg.header.stamp    = stamp
             msg.header.frame_id = 'camera_left'
             self.left_pub.publish(msg)
 
@@ -71,7 +72,7 @@ class VideoPublisher(Node):
                 msg                 = self.bridge.cv2_to_imgmsg(
                     right_frame, encoding='bgr8'
                 )
-                msg.header.stamp    = self.get_clock().now().to_msg()
+                msg.header.stamp    = stamp
                 msg.header.frame_id = 'camera_right'
                 self.right_pub.publish(msg)
 

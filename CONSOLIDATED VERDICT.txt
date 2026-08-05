@@ -1,0 +1,26 @@
+⚖️ CONSOLIDATED VERDICT
+
+Ranked by "how likely is this to be found, and how badly does it hurt"
+
+#	Finding	Severity	Fixable by Aug 21?
+1	Intrinsic rescaling wrong (fx 42% off, non-square pixels)	🔴 Critical	✅ Yes — hours
+2	Temporal leakage inflating 0.958	🔴 Critical	✅ Yes — 1 day to measure
+3	Part-level tip labels discarded; tracking shaft centroid	🔴 Critical	⚠️ Partial — 2-3 days
+4	No stereo rectification	🔴 Critical	✅ Yes — 1 day
+5	Depth values are noise; sanity gate too loose	🔴 Critical	✅ Yes — follows from 1 & 4
+6	Demo running on training data	🟠 High	✅ Yes — minutes
+7	EoM physically absurd (10.5 m)	🟠 High	✅ Yes — follows from 5
+8	Orientation is a binary guess	🟠 High	✅ Yes — half a day
+9	No TF tree / frame convention mismatch	🟠 High	✅ Yes — 1 day
+10	No data association in tracking	🟠 High	⚠️ Partial — acknowledge
+11	Left/right stereo not synchronised	🟠 High	✅ Yes — hours
+12	Distortion coeffs loaded, never used	🟠 High	✅ Yes — with rectification
+13	Class taxonomy incoherent	🟠 High	❌ Document, don't refactor
+14	SOTA comparison unsupported	🟠 High	✅ Yes — literature table
+15	Zero evaluation of Phases 3–5	🟠 High	✅ Yes — this is the plan
+16	End-to-end latency never measured	🟡 Medium	✅ Yes — 2 hours
+17	Kalman filter never justified	🟡 Medium	✅ Yes — 1 day
+18	No unknown-instrument state	🟡 Medium	❌ Discuss as limitation
+19	Untyped JSON messages, no rviz	🟡 Medium	❌ Defend the choice
+20	No CIs, single seed	🟡 Medium	⚠️ Partial
+21	Robustness testing never done	🟡 Medium	⚠️ Small version possible
