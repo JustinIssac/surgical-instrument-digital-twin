@@ -205,8 +205,22 @@ class StereoDepthNode(Node):
 
             if z is None:
                 method = 'assumed'
-                z = 0.055                    # measured median working distance
+                # Use this instrument's last good stereo depth rather than a
+                # global constant. A constant makes the tracked point JUMP
+                # (~26mm) whenever stereo drops out, which breaks data
+                # association downstream and spawns duplicate tracks.
+                if cls in self.last_depth:
+                    z_prev, f_prev = self.last_depth[cls]
+                    if data['frame_id'] - f_prev <= 30:
+                        z = z_prev
+                        method = 'held'
+                    else:
+                        z = 0.055
+                else:
+                    z = 0.055
                 self.stats[why] = self.stats.get(why, 0) + 1
+                if method == 'held':
+                    self.stats['held'] = self.stats.get('held', 0) + 1
             else:
                 method = 'stereo'
                 self.last_depth[cls] = (z, data['frame_id'])

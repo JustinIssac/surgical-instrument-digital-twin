@@ -120,6 +120,7 @@ class PoseEstimatorNode(Node):
                 'identity':      det.get('identity', 'known'),
                 'predicted_class': det.get('predicted_class'),
                 'tip_px':        det.get('tip_px'),
+                'axis_len_px':   det.get('axis_len_px'),
                 'centroid_px':   det.get('centroid_px'),
                 'frame_id':      data.get('frame_id', 0),
             })

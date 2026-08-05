@@ -20,9 +20,17 @@ import gz.msgs10.entity_pb2 as entity_pb2
 import numpy as np
 import json, math, time
 
-GATE_M       = 0.035    # max association distance (m)
+# Association gate is ANISOTROPIC: lateral position comes from the mask
+# centroid and is precise; depth comes from stereo and is an order of
+# magnitude noisier. A single spherical gate would have to be loosened to
+# the depth tolerance, causing lateral mismatches.
+GATE_LATERAL_M = 0.020
+GATE_DEPTH_M   = 0.060
 CONFIRM_HITS = 3        # detections before a track is spawned
-MAX_MISSES   = 8        # frames coasting before a track dies
+MAX_MISSES   = 6        # ~1s at 6.4Hz; longer leaves stale tracks across
+                        # sequence cuts, where the scene changes entirely
+DUP_GATE_M   = 0.045    # suppress a new track this close to a confirmed
+                        # track of the same class        # frames coasting before a track dies
 
 
 class Track:
@@ -47,6 +55,7 @@ class Track:
         self.last_pos  = np.array(pos, dtype=np.float64)
         self.stamp     = stamp
         self.dir_world = np.array([1.0, 0.0, 0.0])
+        self.axis_len_px = None
 
     def predict(self, stamp):
         dt = max(1e-3, min(0.5, stamp - self.stamp))   # clamp against stalls
@@ -57,7 +66,8 @@ class Track:
         self.P = F @ self.P @ F.T + Q
         return self.x[:3]
 
-    def update(self, pos, class_id, dir_world, identity='known'):
+    def update(self, pos, class_id, dir_world, identity='known',
+               axis_len=None):
         z = np.array(pos, dtype=np.float64)
         y = z - self.H @ self.x
         S = self.H @ self.P @ self.H.T + np.eye(3) * self.r
@@ -77,6 +87,8 @@ class Track:
         # majority vote -> immune to single-frame label flips
         self.class_id = max(self.class_votes, key=self.class_votes.get)
 
+        if axis_len is not None:
+            self.axis_len_px = axis_len
         if dir_world is not None:
             self.dir_world = np.asarray(dir_world, dtype=np.float64)
 
@@ -154,7 +166,7 @@ class TwinSyncNode(Node):
 
         self.get_logger().info(
             f'Twin sync ready — track-based association\n'
-            f'  gate {GATE_M*1000:.0f} mm, confirm {CONFIRM_HITS}, '
+            f'  gate lateral {GATE_LATERAL_M*1000:.0f} mm / depth {GATE_DEPTH_M*1000:.0f} mm, confirm {CONFIRM_HITS}, '
             f'max misses {MAX_MISSES}')
 
     # ------------------------------------------------------------------
@@ -251,9 +263,11 @@ class TwinSyncNode(Node):
         for ti, t in enumerate(self.tracks):
             for di in unmatched:
                 p = dets[di]['position_3d']
-                d = float(np.linalg.norm(
-                    t.position - np.array([p['x'], p['y'], p['z']])))
-                if d <= GATE_M:
+                dv = t.position - np.array([p['x'], p['y'], p['z']])
+                d_depth   = abs(float(dv[0]))          # world X = optical Z
+                d_lateral = float(np.hypot(dv[1], dv[2]))
+                d = float(np.linalg.norm(dv))
+                if d_lateral <= GATE_LATERAL_M and d_depth <= GATE_DEPTH_M:
                     # class agreement halves the effective cost
                     cost = d * (0.5 if dets[di]['class_id'] == t.class_id else 1.0)
                     pairs.append((cost, ti, di))
@@ -265,13 +279,24 @@ class TwinSyncNode(Node):
             self.tracks[ti].update([p['x'], p['y'], p['z']],
                                    dets[di]['class_id'],
                                    dets[di].get('shaft_dir_world'),
-                                   dets[di].get('identity', 'known'))
+                                   dets[di].get('identity', 'known'),
+                                   dets[di].get('axis_len_px'))
             assigned_t.add(ti); assigned_d.add(di)
 
-        # unmatched detections -> new tracks
+        # unmatched detections -> new tracks, unless a confirmed track of
+        # the same class already occupies that neighbourhood (duplicate
+        # suppression: association can fail transiently on depth noise,
+        # and without this each failure spawns a permanent duplicate)
         for di, d in enumerate(dets):
             if di in assigned_d: continue
             p = d['position_3d']
+            pv = np.array([p['x'], p['y'], p['z']])
+            dup = any(t.confirmed
+                      and t.class_id == d['class_id']
+                      and float(np.linalg.norm(t.position - pv)) < DUP_GATE_M
+                      for t in self.tracks)
+            if dup:
+                continue
             self.tracks.append(Track([p['x'], p['y'], p['z']],
                                      d['class_id'], d['class_name'], stamp,
                                      d.get('identity', 'known')))
@@ -305,6 +330,7 @@ class TwinSyncNode(Node):
                 'path_len_m': round(t.path_len, 5),
                 'hits': t.hits, 'misses': t.misses,
                 'shaft_dir':  [round(float(v), 5) for v in t.dir_world],
+                'axis_len_px': t.axis_len_px,
             } for t in self.tracks if t.confirmed]})
         self.filtered_pub.publish(out)
 

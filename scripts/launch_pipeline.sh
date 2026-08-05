@@ -21,7 +21,7 @@ start() {  # start <name> <delay>
 }
 
 if [[ "$1" == "--gazebo" ]]; then
-  echo "starting Gazebo..."; gz sim -v 2 empty.sdf > "$LOG/gazebo.log" 2>&1 &
+  echo "starting Gazebo..."; gz sim -v 2 ~/surgical_twin_ws/models/surgical_scene.sdf > "$LOG/gazebo.log" 2>&1 &
   PIDS+=($!); sleep 8
 fi
 

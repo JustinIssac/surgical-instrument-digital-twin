@@ -67,7 +67,7 @@ class RvizMarkerNode(Node):
     def __init__(self):
         super().__init__('rviz_markers')
 
-        self.declare_parameter('trail_len', 120)
+        self.declare_parameter('trail_len', 40)
         self.declare_parameter('camera_z', 0.50)
         self.trail_len = int(self.get_parameter('trail_len').value)
         cam_z          = float(self.get_parameter('camera_z').value)
@@ -138,7 +138,14 @@ class RvizMarkerNode(Node):
 
             # --- shaft arrow, proximal -> distal ---
             a = self._base(tid*10 + 1, Marker.ARROW, stamp)
-            tail = pos - d * 0.06
+            # B20: arrow length from the observed pixel extent,
+            # converted to metres via the pinhole relation, so
+            # rviz and Gazebo agree on instrument geometry
+            apx = tr.get('axis_len_px')
+            depth = abs(float(pos[0]))
+            L = (float(apx) * depth / 1125.55) if apx else 0.06
+            L = min(max(L, 0.02), 0.35)
+            tail = pos - d * L
             a.points = [Point(x=float(tail[0]), y=float(tail[1]), z=float(tail[2])),
                         Point(x=float(pos[0]),  y=float(pos[1]),  z=float(pos[2]))]
             a.scale.x, a.scale.y, a.scale.z = 0.004, 0.009, 0.010
@@ -150,13 +157,11 @@ class RvizMarkerNode(Node):
             t.pose.position.x = float(pos[0])
             t.pose.position.y = float(pos[1])
             t.pose.position.z = float(pos[2]) + 0.022
-            t.scale.z = 0.012
+            t.scale.z = 0.007
             t.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=0.9)
             label = ("UNKNOWN (pred: "
                      + str(tr.get("predicted_class", "?")) + ")") if unknown else name
-            t.text = (f"#{tid} {label}\n"
-                      f"{tr.get('speed_mps',0)*1000:.0f} mm/s  "
-                      f"path {tr.get('path_len_m',0)*1000:.0f} mm")
+            t.text = f"{label}  {tr.get('path_len_m',0)*1000:.0f}mm"
             arr.markers.append(t)
 
             # --- trajectory trail ---
