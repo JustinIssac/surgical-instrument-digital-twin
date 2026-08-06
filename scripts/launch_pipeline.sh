@@ -9,10 +9,18 @@ source /opt/ros/jazzy/setup.bash
 source ~/surgical_twin_ws/install/setup.bash
 export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$HOME/surgical_twin_ws/models
 
+if ! nvidia-smi >/dev/null 2>&1; then
+  echo "ERROR: no NVIDIA driver on kernel $(uname -r)."
+  echo "Reboot and select 6.17.0-22-generic (Advanced options for Ubuntu)."
+  exit 1
+fi
+
 LOG=~/surgical_twin_ws/logs; mkdir -p "$LOG"
 PIDS=()
 cleanup() { echo; echo "shutting down..."; for p in "${PIDS[@]}"; do kill "$p" 2>/dev/null || true; done; }
 trap cleanup EXIT INT TERM
+
+LOOP=${LOOP:-true}
 
 start() {  # start <name> <delay>
   echo "  -> $1"
@@ -31,7 +39,10 @@ start stereo_depth_node 3
 start pose_estimator    2
 start twin_sync_node    2
 start rviz_markers      2
-start video_publisher   2
+echo "  -> video_publisher (loop=$LOOP)"
+ros2 run surgical_perception video_publisher \
+    --ros-args -p loop:=$LOOP > "$LOG/video_publisher.log" 2>&1 &
+PIDS+=($!); sleep 2
 
 echo; echo "running. logs -> $LOG"
 echo "  rviz2 -d ~/surgical_twin_ws/config/surgical.rviz"
