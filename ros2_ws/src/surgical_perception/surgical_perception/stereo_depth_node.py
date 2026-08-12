@@ -14,6 +14,7 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import String
 from cv_bridge import CvBridge
 import message_filters
+from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
 import cv2
 import numpy as np
 import yaml
@@ -90,6 +91,17 @@ class StereoDepthNode(Node):
             speckleWindowSize=150, speckleRange=2,
             preFilterCap=63, mode=cv2.STEREO_SGBM_MODE_SGBM_3WAY)
 
+        # Input capability governs whether metric depth is even possible.
+        # Without this the node silently substitutes a constant when stereo
+        # is unavailable, producing a confident but fabricated 3D twin.
+        self.depth_mode = 'stereo'      # assume stereo until told otherwise
+        self.capability = None
+        self.create_subscription(
+            String, '/input_capability', self.capability_callback,
+            QoSProfile(depth=1,
+                       durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                       reliability=ReliabilityPolicy.RELIABLE))
+
         self.bridge   = CvBridge()
         self.disp     = None
         self.last_depth = {}    # cls -> (depth, frame_id)
@@ -117,6 +129,23 @@ class StereoDepthNode(Node):
             f"  valid px = {self.valid_mask.sum()/self.valid_mask.size*100:.1f}%")
 
     # ------------------------------------------------------------------
+    def capability_callback(self, msg):
+        try:
+            cap = json.loads(msg.data)
+        except Exception:
+            return
+        self.capability = cap
+        self.depth_mode = cap.get('depth_mode', 'stereo')
+        if self.depth_mode != 'stereo':
+            self.get_logger().warn(
+                f"input is {cap.get('kind')} at "
+                f"{cap.get('width')}x{cap.get('height')} "
+                f"(calib_valid={cap.get('calib_valid')}) -- "
+                f"metric stereo depth UNAVAILABLE. Reporting 2D only; "
+                f"no depth will be fabricated.")
+        else:
+            self.get_logger().info('input supports metric stereo depth')
+
     def stereo_callback(self, lmsg, rmsg):
         import time as _t; _t0 = _t.monotonic()
         left  = self.bridge.imgmsg_to_cv2(lmsg, 'bgr8')
@@ -179,6 +208,13 @@ class StereoDepthNode(Node):
 
     # ------------------------------------------------------------------
     def detection_callback(self, msg):
+        # Exactly one node may own /instrument_detections_3d. When stereo is
+        # unavailable, mono_depth_node takes over; publishing empty results
+        # here as well makes twin_sync see alternating null/valid messages,
+        # which destroys track continuity.
+        if self.depth_mode != 'stereo':
+            return
+
         data = json.loads(msg.data)
         out  = []
 
@@ -202,6 +238,7 @@ class StereoDepthNode(Node):
                 gap = max(1, data['frame_id'] - f_prev)
                 if gap <= 15 and abs(z - z_prev) > self.djump * gap:
                     z, why = None, 'jump'
+
 
             if z is None:
                 method = 'assumed'

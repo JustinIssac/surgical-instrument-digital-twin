@@ -1,0 +1,6 @@
+model: depth-anything/Depth-Anything-V2-Small-hf
+a: 2.7931653444110363
+b: 7.481327080116192
+n_samples: 298
+median_err_mm: 5.534470068305513
+note: 1/Z_metres = a*d_rel + b, fitted against SGBM stereo

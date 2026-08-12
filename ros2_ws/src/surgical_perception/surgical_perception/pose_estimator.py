@@ -90,7 +90,21 @@ class PoseEstimatorNode(Node):
         for det in data.get('detections', []):
             p3 = det.get('position_3d')
             if p3 is None:
-                continue                      # stereo node owns 3D; skip if absent
+                # No metric depth available. Forward the 2D result so the
+                # detector's output is still usable and visible, but do not
+                # synthesise a 3D position.
+                poses.append({
+                    'class_id':      det['class_id'],
+                    'class_name':    det['class_name'],
+                    'confidence':    det['confidence'],
+                    'position_3d':   None,
+                    'depth_method':  det.get('depth_method', 'unavailable'),
+                    'identity':      det.get('identity', 'known'),
+                    'tip_px':        det.get('tip_px'),
+                    'centroid_px':   det.get('centroid_px'),
+                    'shaft_yaw_rad': det.get('shaft_yaw_rad'),
+                    'frame_id':      data.get('frame_id', 0)})
+                continue
 
             p_opt = [p3['x'], p3['y'], p3['z']]
             p_w   = self.optical_to_world(p_opt)

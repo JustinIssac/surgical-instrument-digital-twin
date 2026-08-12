@@ -25,6 +25,7 @@ setup(
             'twin_sync_node   = surgical_perception.twin_sync_node:main',
             'rviz_markers     = surgical_perception.rviz_markers:main',
             'stereo_depth_node = surgical_perception.stereo_depth_node:main',
+            'mono_depth_node  = surgical_perception.mono_depth_node:main',
         ],
     },
 )

@@ -175,6 +175,7 @@ class TwinSyncNode(Node):
         self.spawned = {}      # track_id -> gazebo model name  (INVARIANT:
                                # keys must always be a subset of live ids)
         self.last_src_frame = None
+        self.pending_removal = set()   # models Gazebo did not confirm
 
         self.pub = self.create_publisher(String, '/instrument_poses_filtered', 10)
         self.create_subscription(String, '/instrument_poses_3d', self.callback, 10)
@@ -214,14 +215,30 @@ class TwinSyncNode(Node):
         if self._gz_request('create', req, ef_pb2.EntityFactory, 800):
             self.spawned[track.id] = track.model_name
 
-    def _despawn(self, tid):
-        name = self.spawned.pop(tid, None)
-        if not name:
-            return
+    def _remove_model(self, name):
         ent = entity_pb2.Entity()
         ent.name = name
         ent.type = entity_pb2.Entity.MODEL
-        self._gz_request('remove', ent, entity_pb2.Entity, 200)
+        return self._gz_request('remove', ent, entity_pb2.Entity, 500)
+
+    def _despawn(self, tid):
+        """Remove a track's Gazebo model.
+
+        The bookkeeping entry is only dropped once Gazebo confirms removal.
+        Popping first meant a failed/timed-out request orphaned the model:
+        it stayed in the scene but was no longer known to reconciliation,
+        so it could never be cleaned up. Those are the frozen instruments.
+        """
+        name = self.spawned.get(tid)
+        if not name:
+            return
+        if self._remove_model(name):
+            self.spawned.pop(tid, None)
+            self.pending_removal.discard(name)
+        else:
+            # keep retrying on subsequent frames
+            self.spawned.pop(tid, None)
+            self.pending_removal.add(name)
 
     def _move(self, track):
         if track.id not in self.spawned:
@@ -261,8 +278,10 @@ class TwinSyncNode(Node):
         data  = json.loads(msg.data)
         stamp = time.monotonic()
 
+        # a pose without metric depth cannot be placed in the 3D twin
         dets = [d for d in data.get('poses', [])
-                if d.get('confidence', 0) >= MIN_CONF and 'position_3d' in d]
+                if d.get('confidence', 0) >= MIN_CONF
+                and d.get('position_3d') is not None]
 
         for t in self.tracks:
             t.predict(stamp)
@@ -330,6 +349,13 @@ class TwinSyncNode(Node):
         live = {t.id for t in self.tracks}
         for tid in [k for k in self.spawned if k not in live]:
             self._despawn(tid)
+
+        # retry removals Gazebo did not confirm, so a dropped request
+        # cannot leave a permanently frozen model in the scene
+        if self.pending_removal:
+            for name in list(self.pending_removal):
+                if self._remove_model(name):
+                    self.pending_removal.discard(name)
 
         out = String()
         out.data = json.dumps({

@@ -13,14 +13,22 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import String
 from cv_bridge import CvBridge
+from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
+import json
 import cv2
 import numpy as np
 import json
 import math
 from ultralytics import YOLO
 
-# Active (non-padded) image region, measured from the dataset
-ACTIVE = dict(x=328, y=32, w=1272, h=1016)
+# Active (non-padded) image region. Detected at runtime from temporal
+# variance: synthetic letterbox padding is constant across frames and so
+# has exactly zero variance, while real image pixels never do. The value
+# below is only a fallback for the EndoVis 1920x1080 layout -- hardcoding
+# it would invert the tip estimator's distal-end test on any differently
+# framed video, pointing instruments backwards.
+ACTIVE_FALLBACK = dict(x=328, y=32, w=1272, h=1016)
+ACTIVE_PROBE_FRAMES = 20
 TAIL_FRAC = 0.08          # chosen by sweep against GT jaw labels
 
 
@@ -58,20 +66,58 @@ class PerceptionNode(Node):
         self.create_subscription(
             Image, '/camera/image_raw', self.image_callback, 10)
 
+        # Input capability drives an on-screen banner. Without it a
+        # monocular run shows an empty twin with no explanation, which
+        # reads as a crash rather than as correct degradation.
+        self.capability = None
+        self.create_subscription(
+            String, '/input_capability', self._capability_cb,
+            QoSProfile(depth=1,
+                       durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                       reliability=ReliabilityPolicy.RELIABLE))
+
+        self.active = None            # detected on the first N frames
+        self._probe = []
         self.bridge = CvBridge()
         self.frame_count = 0
         self.get_logger().info(
             f'Perception node ready (tip estimation, tail_frac={self.tail_frac})')
 
     # ------------------------------------------------------------------
-    @staticmethod
-    def _border_dist(pt):
+    def _detect_active_region(self, img):
+        """Accumulate frames, then locate the non-constant image region."""
+        g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        self._probe.append(g)
+        if len(self._probe) < ACTIVE_PROBE_FRAMES:
+            return None
+        var  = np.stack(self._probe).var(axis=0)
+        live = var > 0.5
+        cols = np.where(live.any(axis=0))[0]
+        rows = np.where(live.any(axis=1))[0]
+        self._probe = []
+        h, w = g.shape
+        if cols.size < 32 or rows.size < 32:
+            self.get_logger().warn(
+                'active-region detection failed (static input?) — '
+                'using full frame')
+            return dict(x=0, y=0, w=w, h=h)
+        a = dict(x=int(cols.min()), y=int(rows.min()),
+                 w=int(cols.max()-cols.min()+1),
+                 h=int(rows.max()-rows.min()+1))
+        # a near-full-frame result simply means there is no letterbox
+        self.get_logger().info(
+            f"active region detected: x={a['x']} y={a['y']} "
+            f"{a['w']}x{a['h']} (frame {w}x{h})")
+        return a
+
+    def _border_dist_pt(self, pt):
         """Distance to nearest edge of the active image region.
         The instrument enters through a trocar at the image periphery,
         so the DISTAL end is the one further from any border."""
+        a = self.active or ACTIVE_FALLBACK
         x, y = pt
-        return min(x - ACTIVE['x'], ACTIVE['x'] + ACTIVE['w'] - x,
-                   y - ACTIVE['y'], ACTIVE['y'] + ACTIVE['h'] - y)
+        return min(x - a['x'], a['x'] + a['w'] - x,
+                   y - a['y'], a['y'] + a['h'] - y)
 
     def estimate_tip(self, mask_bin):
         """
@@ -95,7 +141,7 @@ class PerceptionNode(Node):
         pos = mean + axis * t.max()
         neg = mean + axis * t.min()
 
-        if self._border_dist(pos) >= self._border_dist(neg):
+        if self._border_dist_pt(pos) >= self._border_dist_pt(neg):
             sel, direction = t >= np.quantile(t, 1 - self.tail_frac), axis
         else:
             sel, direction = t <= np.quantile(t, self.tail_frac), -axis
@@ -109,10 +155,44 @@ class PerceptionNode(Node):
         return tip, mean, yaw, float(t.max() - t.min())
 
     # ------------------------------------------------------------------
+    def _capability_cb(self, msg):
+        try:
+            self.capability = json.loads(msg.data)
+        except Exception:
+            pass
+
+    def _draw_banner(self, img):
+        cap = self.capability
+        if cap is None:
+            return
+        stereo = cap.get('depth_mode') == 'stereo'
+        if stereo:
+            text = (f"STEREO + CALIBRATED  |  3D twin active  |  "
+                    f"{cap.get('width')}x{cap.get('height')}")
+            colour, bg = (255, 255, 255), (0, 110, 0)
+        else:
+            reason = ("no second view" if not cap.get('has_stereo')
+                      else "calibration does not match this resolution")
+            text = (f"MONOCULAR - 2D TRACKING ONLY  |  depth disabled "
+                    f"({reason})  |  {cap.get('width')}x{cap.get('height')}")
+            colour, bg = (255, 255, 255), (0, 90, 190)
+        h, w = img.shape[:2]
+        bar = max(34, h // 22)
+        cv2.rectangle(img, (0, 0), (w, bar), bg, -1)
+        scale = bar / 46.0
+        cv2.putText(img, text, (14, int(bar * 0.72)),
+                    cv2.FONT_HERSHEY_SIMPLEX, scale, colour,
+                    max(1, int(scale * 2)), cv2.LINE_AA)
+
     def image_callback(self, msg):
         frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         img_h, img_w = frame.shape[:2]
         self.frame_count += 1
+
+        if self.active is None:
+            got = self._detect_active_region(frame)
+            if got is not None:
+                self.active = got
 
         results = self.model(frame, conf=self.conf, verbose=False)[0]
         detections = []
@@ -185,6 +265,7 @@ class PerceptionNode(Node):
                 cv2.circle(ann, (tx, ty), 22, (0, 165, 255), 3)
                 cv2.putText(ann, 'UNKNOWN', (tx + 26, ty - 8),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
+        self._draw_banner(ann)
         self.image_pub.publish(self.bridge.cv2_to_imgmsg(ann, encoding='bgr8'))
 
         if self.frame_count % 30 == 0:

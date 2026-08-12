@@ -21,6 +21,8 @@ cleanup() { echo; echo "shutting down..."; for p in "${PIDS[@]}"; do kill "$p" 2
 trap cleanup EXIT INT TERM
 
 LOOP=${LOOP:-true}
+MODE=${MODE:-auto}   # auto | mono | stereo_pair | sbs
+SRC=${SRC:-}
 
 start() {  # start <name> <delay>
   echo "  -> $1"
@@ -36,12 +38,15 @@ fi
 echo "starting pipeline..."
 start perception_node   8     # model load takes longest
 start stereo_depth_node 3
+start mono_depth_node   6   # idles unless stereo is unavailable
 start pose_estimator    2
 start twin_sync_node    2
 start rviz_markers      2
 echo "  -> video_publisher (loop=$LOOP)"
+VP_ARGS="-p loop:=$LOOP -p stereo_mode:=$MODE"
+[ -n "$SRC" ] && VP_ARGS="$VP_ARGS -p source:=$SRC"
 ros2 run surgical_perception video_publisher \
-    --ros-args -p loop:=$LOOP > "$LOG/video_publisher.log" 2>&1 &
+    --ros-args $VP_ARGS > "$LOG/video_publisher.log" 2>&1 &
 PIDS+=($!); sleep 2
 
 echo; echo "running. logs -> $LOG"
