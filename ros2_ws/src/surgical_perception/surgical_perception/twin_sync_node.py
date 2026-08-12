@@ -38,7 +38,7 @@ CONFIRM_UNKNOWN = 5      # unknowns need more evidence: at conf 0.25-0.55
                          # specular highlights, and each would spawn a track
 MAX_MISSES     = 10      # frames coasting before a track dies
 DUP_GATE_M     = 0.045   # suppress new track this close to an existing one
-MIN_CONF       = 0.25    # below this a detection is ignored entirely
+MIN_CONF       = 0.12    # matches perception_node's floor; see note there
 
 CLASS_NAMES = ['Large_Needle_Driver_Left','Large_Needle_Driver_Right',
                'Prograsp_Forceps_Left','Prograsp_Forceps_Right',

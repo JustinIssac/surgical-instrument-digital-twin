@@ -38,7 +38,13 @@ class PerceptionNode(Node):
 
         self.declare_parameter(
             'model_path', '/home/inoruske/surgical_twin_ws/models/best_temporal.pt')
-        self.declare_parameter('confidence_threshold', 0.25)
+        # 0.12 rather than 0.25: instruments outside the trained classes still
+# produce weak but correctly-localised detections (measured on EndoVis
+# test ds9/ds10, where an unrecognised instrument scored 0.15-0.19 with
+# an accurate box). Below 0.25 they were discarded entirely, so the
+# UNKNOWN path never saw them. False positives admitted at this floor are
+# filtered downstream by CONFIRM_UNKNOWN=5 consecutive detections.
+        self.declare_parameter('confidence_threshold', 0.12)
         self.declare_parameter('device', 'cuda')
         self.declare_parameter('tail_frac', TAIL_FRAC)
         # B11: below this, a detection is reported but marked UNKNOWN
