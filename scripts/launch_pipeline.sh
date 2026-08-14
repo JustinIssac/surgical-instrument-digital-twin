@@ -35,6 +35,14 @@ if [[ "$1" == "--gazebo" ]]; then
   PIDS+=($!); sleep 8
 fi
 
+# reconstructed tissue surface, if built
+if [ -f "$HOME/surgical_twin_ws/models/tissue/model.sdf" ] && [ "$1" == "--gazebo" ]; then
+  gz service -s /world/empty/create --reqtype gz.msgs.EntityFactory \
+    --reptype gz.msgs.Boolean --timeout 4000 \
+    --req 'sdf_filename: "'$HOME'/surgical_twin_ws/models/tissue/model.sdf", name: "tissue"' \
+    > /dev/null 2>&1 && echo "  -> tissue surface"
+fi
+
 echo "starting pipeline..."
 start perception_node   8     # model load takes longest
 start stereo_depth_node 3

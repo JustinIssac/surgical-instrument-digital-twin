@@ -1,0 +1,4131 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <model name="tissue">
+    <static>true</static>
+    <link name="t0">
+      <pose>0.09798 -0.01728 0.54351 -1.0040 0.3484 -2.5284</pose>
+      <visual name="v">
+        <geometry><box><size>0.00852 0.00582 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.409 0.181 0.168 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t1">
+      <pose>0.09230 -0.02112 0.54099 -0.7870 0.3561 -2.5637</pose>
+      <visual name="v">
+        <geometry><box><size>0.00785 0.00653 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.237 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.193 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t2">
+      <pose>0.08698 -0.02447 0.53863 -0.6133 0.3621 -2.5926</pose>
+      <visual name="v">
+        <geometry><box><size>0.00718 0.00747 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.249 0.113 0.105 1</ambient>
+          <diffuse>0.452 0.205 0.191 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t3">
+      <pose>0.08206 -0.02740 0.53644 -0.4828 0.3674 -2.6194</pose>
+      <visual name="v">
+        <geometry><box><size>0.00656 0.00845 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.259 0.119 0.110 1</ambient>
+          <diffuse>0.471 0.216 0.201 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t4">
+      <pose>0.07749 -0.02994 0.53442 -0.3891 0.3728 -2.6481</pose>
+      <visual name="v">
+        <geometry><box><size>0.00601 0.00937 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.269 0.124 0.116 1</ambient>
+          <diffuse>0.489 0.226 0.210 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t5">
+      <pose>0.07324 -0.03214 0.53253 -0.3256 0.3789 -2.6826</pose>
+      <visual name="v">
+        <geometry><box><size>0.00554 0.01017 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.278 0.129 0.120 1</ambient>
+          <diffuse>0.506 0.235 0.219 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t6">
+      <pose>0.06923 -0.03402 0.53075 -0.2872 0.3860 -2.7264</pose>
+      <visual name="v">
+        <geometry><box><size>0.00515 0.01083 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.287 0.134 0.125 1</ambient>
+          <diffuse>0.521 0.244 0.227 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t7">
+      <pose>0.06542 -0.03558 0.52906 -0.2705 0.3940 -2.7824</pose>
+      <visual name="v">
+        <geometry><box><size>0.00484 0.01132 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.295 0.139 0.129 1</ambient>
+          <diffuse>0.536 0.253 0.235 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t8">
+      <pose>0.06175 -0.03682 0.52742 -0.2732 0.4024 -2.8518</pose>
+      <visual name="v">
+        <geometry><box><size>0.00460 0.01162 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.303 0.143 0.134 1</ambient>
+          <diffuse>0.551 0.261 0.243 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t9">
+      <pose>0.07147 0.03617 0.52794 -1.2815 -0.3692 0.1419</pose>
+      <visual name="v">
+        <geometry><box><size>0.01254 0.00477 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.282 0.132 0.123 1</ambient>
+          <diffuse>0.513 0.239 0.223 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t10">
+      <pose>0.08204 0.03721 0.53206 -1.3772 -0.3722 0.0488</pose>
+      <visual name="v">
+        <geometry><box><size>0.01281 0.00470 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.259 0.119 0.110 1</ambient>
+          <diffuse>0.471 0.216 0.201 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t11">
+      <pose>0.09258 0.03714 0.53619 -1.5196 -0.3717 -0.0723</pose>
+      <visual name="v">
+        <geometry><box><size>0.01236 0.00533 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.237 0.106 0.098 1</ambient>
+          <diffuse>0.430 0.193 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t12">
+      <pose>0.10234 0.03568 0.54000 1.4235 -0.3630 -0.2384</pose>
+      <visual name="v">
+        <geometry><box><size>0.01117 0.00687 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.216 0.094 0.087 1</ambient>
+          <diffuse>0.392 0.171 0.159 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t13">
+      <pose>0.11052 0.03273 0.54320 1.1975 -0.3344 -0.4757</pose>
+      <visual name="v">
+        <geometry><box><size>0.00952 0.00885 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.198 0.084 0.078 1</ambient>
+          <diffuse>0.361 0.153 0.142 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t14">
+      <pose>0.11648 0.02838 0.54553 1.0278 -0.2635 -0.8092</pose>
+      <visual name="v">
+        <geometry><box><size>0.00793 0.01065 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.186 0.077 0.071 1</ambient>
+          <diffuse>0.337 0.140 0.129 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t15">
+      <pose>0.11993 0.02292 0.54687 0.9621 -0.1358 -1.2136</pose>
+      <visual name="v">
+        <geometry><box><size>0.00707 0.01181 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.178 0.073 0.067 1</ambient>
+          <diffuse>0.324 0.132 0.122 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t16">
+      <pose>0.12092 0.01676 0.54726 0.9630 0.0066 -1.5877</pose>
+      <visual name="v">
+        <geometry><box><size>0.00711 0.01211 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.176 0.071 0.066 1</ambient>
+          <diffuse>0.320 0.130 0.120 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t17">
+      <pose>0.11983 0.01032 0.54684 1.0002 0.1118 -1.8621</pose>
+      <visual name="v">
+        <geometry><box><size>0.00759 0.01160 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.178 0.073 0.067 1</ambient>
+          <diffuse>0.324 0.132 0.122 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t18">
+      <pose>0.11719 0.00394 0.54581 1.0706 0.1767 -2.0452</pose>
+      <visual name="v">
+        <geometry><box><size>0.00800 0.01048 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.184 0.076 0.070 1</ambient>
+          <diffuse>0.335 0.138 0.128 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t19">
+      <pose>0.11354 -0.00214 0.54438 1.1790 0.2157 -2.1660</pose>
+      <visual name="v">
+        <geometry><box><size>0.00814 0.00904 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.192 0.080 0.074 1</ambient>
+          <diffuse>0.349 0.146 0.135 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t20">
+      <pose>0.10933 -0.00780 0.54273 1.3340 0.2398 -2.2466</pose>
+      <visual name="v">
+        <geometry><box><size>0.00802 0.00755 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.201 0.086 0.079 1</ambient>
+          <diffuse>0.365 0.156 0.144 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t21">
+      <pose>0.10490 -0.01299 0.54100 1.5450 0.2550 -2.3008</pose>
+      <visual name="v">
+        <geometry><box><size>0.00770 0.00632 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.210 0.091 0.084 1</ambient>
+          <diffuse>0.382 0.165 0.153 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t22">
+      <pose>0.10050 -0.01772 0.53928 -1.3326 0.2649 -2.3378</pose>
+      <visual name="v">
+        <geometry><box><size>0.00727 0.00560 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.220 0.096 0.089 1</ambient>
+          <diffuse>0.400 0.175 0.162 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t23">
+      <pose>0.09623 -0.02202 0.53761 -1.0472 0.2717 -2.3644</pose>
+      <visual name="v">
+        <geometry><box><size>0.00680 0.00555 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.101 0.094 1</ambient>
+          <diffuse>0.416 0.185 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t24">
+      <pose>0.09217 -0.02593 0.53602 -0.7890 0.2773 -2.3865</pose>
+      <visual name="v">
+        <geometry><box><size>0.00633 0.00608 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.193 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t25">
+      <pose>0.08831 -0.02948 0.53452 -0.5877 0.2830 -2.4098</pose>
+      <visual name="v">
+        <geometry><box><size>0.00590 0.00696 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.246 0.111 0.103 1</ambient>
+          <diffuse>0.447 0.202 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t26">
+      <pose>0.08463 -0.03270 0.53308 -0.4451 0.2902 -2.4402</pose>
+      <visual name="v">
+        <geometry><box><size>0.00552 0.00798 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.254 0.116 0.107 1</ambient>
+          <diffuse>0.461 0.210 0.195 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t27">
+      <pose>0.08108 -0.03558 0.53169 -0.3513 0.2999 -2.4833</pose>
+      <visual name="v">
+        <geometry><box><size>0.00520 0.00898 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.112 1</ambient>
+          <diffuse>0.475 0.218 0.203 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t28">
+      <pose>0.07759 -0.03812 0.53033 -0.2966 0.3126 -2.5442</pose>
+      <visual name="v">
+        <geometry><box><size>0.00495 0.00989 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.269 0.124 0.116 1</ambient>
+          <diffuse>0.489 0.226 0.210 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t29">
+      <pose>0.07411 -0.04030 0.52897 -0.2745 0.3278 -2.6261</pose>
+      <visual name="v">
+        <geometry><box><size>0.00476 0.01064 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.276 0.128 0.119 1</ambient>
+          <diffuse>0.502 0.233 0.217 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t30">
+      <pose>0.07057 -0.04209 0.52758 -0.2809 0.3439 -2.7295</pose>
+      <visual name="v">
+        <geometry><box><size>0.00465 0.01117 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.284 0.133 0.124 1</ambient>
+          <diffuse>0.516 0.241 0.225 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t31">
+      <pose>0.07435 0.03763 0.52510 -1.2756 -0.3243 0.0934</pose>
+      <visual name="v">
+        <geometry><box><size>0.01123 0.00488 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.276 0.128 0.119 1</ambient>
+          <diffuse>0.501 0.233 0.217 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t32">
+      <pose>0.08380 0.03801 0.52829 -1.3922 -0.3255 -0.0192</pose>
+      <visual name="v">
+        <geometry><box><size>0.01099 0.00481 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.256 0.117 0.108 1</ambient>
+          <diffuse>0.465 0.212 0.197 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t33">
+      <pose>0.09279 0.03722 0.53132 -1.5682 -0.3213 -0.1678</pose>
+      <visual name="v">
+        <geometry><box><size>0.01021 0.00552 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.236 0.106 0.098 1</ambient>
+          <diffuse>0.430 0.192 0.178 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t34">
+      <pose>0.10070 0.03511 0.53400 1.3406 -0.3050 -0.3693</pose>
+      <visual name="v">
+        <geometry><box><size>0.00903 0.00702 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.219 0.096 0.089 1</ambient>
+          <diffuse>0.399 0.175 0.162 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t35">
+      <pose>0.10702 0.03169 0.53613 1.1142 -0.2644 -0.6400</pose>
+      <visual name="v">
+        <geometry><box><size>0.00779 0.00879 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.206 0.088 0.082 1</ambient>
+          <diffuse>0.374 0.161 0.149 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t36">
+      <pose>0.11143 0.02715 0.53762 0.9744 -0.1881 -0.9719</pose>
+      <visual name="v">
+        <geometry><box><size>0.00691 0.01035 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.196 0.083 0.077 1</ambient>
+          <diffuse>0.357 0.151 0.140 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t37">
+      <pose>0.11388 0.02177 0.53844 0.9216 -0.0872 -1.3087</pose>
+      <visual name="v">
+        <geometry><box><size>0.00661 0.01135 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.191 0.080 0.074 1</ambient>
+          <diffuse>0.347 0.146 0.135 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t38">
+      <pose>0.11455 0.01588 0.53867 0.9162 0.0052 -1.5861</pose>
+      <visual name="v">
+        <geometry><box><size>0.00674 0.01168 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.190 0.079 0.073 1</ambient>
+          <diffuse>0.345 0.144 0.133 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t39">
+      <pose>0.11379 0.00980 0.53842 0.9377 0.0717 -1.7851</pose>
+      <visual name="v">
+        <geometry><box><size>0.00699 0.01139 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.191 0.080 0.074 1</ambient>
+          <diffuse>0.348 0.146 0.135 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t40">
+      <pose>0.11200 0.00377 0.53781 0.9821 0.1148 -1.9192</pose>
+      <visual name="v">
+        <geometry><box><size>0.00714 0.01061 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.195 0.082 0.076 1</ambient>
+          <diffuse>0.355 0.150 0.139 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t41">
+      <pose>0.10955 -0.00207 0.53699 1.0518 0.1416 -2.0068</pose>
+      <visual name="v">
+        <geometry><box><size>0.00711 0.00953 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.200 0.085 0.079 1</ambient>
+          <diffuse>0.364 0.155 0.144 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t42">
+      <pose>0.10676 -0.00762 0.53604 1.1540 0.1578 -2.0616</pose>
+      <visual name="v">
+        <geometry><box><size>0.00694 0.00831 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.206 0.089 0.082 1</ambient>
+          <diffuse>0.375 0.161 0.149 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t43">
+      <pose>0.10383 -0.01286 0.53505 1.3000 0.1671 -2.0939</pose>
+      <visual name="v">
+        <geometry><box><size>0.00667 0.00714 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.213 0.092 0.086 1</ambient>
+          <diffuse>0.387 0.168 0.156 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t44">
+      <pose>0.10091 -0.01780 0.53407 1.5025 0.1720 -2.1114</pose>
+      <visual name="v">
+        <geometry><box><size>0.00635 0.00617 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.219 0.096 0.089 1</ambient>
+          <diffuse>0.398 0.174 0.162 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t45">
+      <pose>0.09809 -0.02245 0.53311 -1.3784 0.1748 -2.1212</pose>
+      <visual name="v">
+        <geometry><box><size>0.00603 0.00558 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.409 0.180 0.167 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t46">
+      <pose>0.09537 -0.02683 0.53220 -1.0879 0.1773 -2.1305</pose>
+      <visual name="v">
+        <geometry><box><size>0.00572 0.00550 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t47">
+      <pose>0.09274 -0.03096 0.53131 -0.8201 0.1818 -2.1466</pose>
+      <visual name="v">
+        <geometry><box><size>0.00543 0.00590 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.236 0.106 0.098 1</ambient>
+          <diffuse>0.430 0.192 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t48">
+      <pose>0.09016 -0.03483 0.53044 -0.6113 0.1902 -2.1775</pose>
+      <visual name="v">
+        <geometry><box><size>0.00518 0.00664 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.440 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t49">
+      <pose>0.08754 -0.03842 0.52955 -0.4664 0.2042 -2.2311</pose>
+      <visual name="v">
+        <geometry><box><size>0.00496 0.00754 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.248 0.112 0.104 1</ambient>
+          <diffuse>0.450 0.204 0.189 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t50">
+      <pose>0.08481 -0.04167 0.52863 -0.3769 0.2247 -2.3144</pose>
+      <visual name="v">
+        <geometry><box><size>0.00479 0.00845 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.253 0.115 0.107 1</ambient>
+          <diffuse>0.461 0.210 0.195 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t51">
+      <pose>0.08188 -0.04453 0.52764 -0.3351 0.2507 -2.4320</pose>
+      <visual name="v">
+        <geometry><box><size>0.00467 0.00926 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.260 0.119 0.111 1</ambient>
+          <diffuse>0.472 0.216 0.201 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t52">
+      <pose>0.07867 -0.04692 0.52656 -0.3365 0.2788 -2.5831</pose>
+      <visual name="v">
+        <geometry><box><size>0.00464 0.00988 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.267 0.123 0.114 1</ambient>
+          <diffuse>0.485 0.223 0.208 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t53">
+      <pose>0.07712 0.03903 0.52193 -1.2447 -0.2769 0.0259</pose>
+      <visual name="v">
+        <geometry><box><size>0.00981 0.00510 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.270 0.125 0.116 1</ambient>
+          <diffuse>0.491 0.227 0.211 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t54">
+      <pose>0.08532 0.03871 0.52426 -1.3782 -0.2753 -0.1154</pose>
+      <visual name="v">
+        <geometry><box><size>0.00920 0.00497 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.252 0.115 0.107 1</ambient>
+          <diffuse>0.459 0.209 0.194 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t55">
+      <pose>0.09271 0.03719 0.52636 1.5582 -0.2651 -0.3022</pose>
+      <visual name="v">
+        <geometry><box><size>0.00829 0.00556 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.236 0.106 0.098 1</ambient>
+          <diffuse>0.430 0.192 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t56">
+      <pose>0.09886 0.03447 0.52811 1.3039 -0.2383 -0.5463</pose>
+      <visual name="v">
+        <geometry><box><size>0.00730 0.00680 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.223 0.098 0.091 1</ambient>
+          <diffuse>0.406 0.179 0.166 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t57">
+      <pose>0.10350 0.03065 0.52943 1.0907 -0.1874 -0.8410</pose>
+      <visual name="v">
+        <geometry><box><size>0.00656 0.00824 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.213 0.093 0.086 1</ambient>
+          <diffuse>0.388 0.168 0.156 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t58">
+      <pose>0.10654 0.02596 0.53029 0.9721 -0.1168 -1.1455</pose>
+      <visual name="v">
+        <geometry><box><size>0.00623 0.00946 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.207 0.089 0.082 1</ambient>
+          <diffuse>0.376 0.162 0.150 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t59">
+      <pose>0.10810 0.02066 0.53074 0.9232 -0.0463 -1.4070</pose>
+      <visual name="v">
+        <geometry><box><size>0.00624 0.01026 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.203 0.087 0.081 1</ambient>
+          <diffuse>0.370 0.158 0.147 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t60">
+      <pose>0.10843 0.01503 0.53083 0.9117 0.0088 -1.6016</pose>
+      <visual name="v">
+        <geometry><box><size>0.00640 0.01056 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.203 0.087 0.080 1</ambient>
+          <diffuse>0.369 0.158 0.146 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t61">
+      <pose>0.10783 0.00929 0.53066 0.9228 0.0462 -1.7342</pose>
+      <visual name="v">
+        <geometry><box><size>0.00652 0.01042 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.204 0.087 0.081 1</ambient>
+          <diffuse>0.371 0.159 0.147 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t62">
+      <pose>0.10661 0.00359 0.53031 0.9521 0.0696 -1.8185</pose>
+      <visual name="v">
+        <geometry><box><size>0.00653 0.00993 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.207 0.089 0.082 1</ambient>
+          <diffuse>0.376 0.162 0.150 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t63">
+      <pose>0.10504 -0.00198 0.52987 1.0006 0.0828 -1.8671</pose>
+      <visual name="v">
+        <geometry><box><size>0.00644 0.00920 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.210 0.091 0.084 1</ambient>
+          <diffuse>0.382 0.165 0.153 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t64">
+      <pose>0.10331 -0.00737 0.52937 1.0722 0.0889 -1.8896</pose>
+      <visual name="v">
+        <geometry><box><size>0.00627 0.00835 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.214 0.093 0.086 1</ambient>
+          <diffuse>0.389 0.169 0.157 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t65">
+      <pose>0.10157 -0.01258 0.52888 1.1739 0.0900 -1.8938</pose>
+      <visual name="v">
+        <geometry><box><size>0.00607 0.00746 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.217 0.095 0.088 1</ambient>
+          <diffuse>0.395 0.173 0.160 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t66">
+      <pose>0.09989 -0.01762 0.52840 1.3144 0.0883 -1.8873</pose>
+      <visual name="v">
+        <geometry><box><size>0.00587 0.00664 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.221 0.097 0.090 1</ambient>
+          <diffuse>0.402 0.176 0.164 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t67">
+      <pose>0.09832 -0.02250 0.52796 1.5002 0.0857 -1.8778</pose>
+      <visual name="v">
+        <geometry><box><size>0.00568 0.00599 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.224 0.099 0.092 1</ambient>
+          <diffuse>0.408 0.180 0.167 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t68">
+      <pose>0.09683 -0.02725 0.52753 -1.4136 0.0845 -1.8732</pose>
+      <visual name="v">
+        <geometry><box><size>0.00550 0.00560 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.228 0.101 0.094 1</ambient>
+          <diffuse>0.414 0.183 0.170 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t69">
+      <pose>0.09539 -0.03185 0.52712 -1.1661 0.0869 -1.8821</pose>
+      <visual name="v">
+        <geometry><box><size>0.00534 0.00554 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.419 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t70">
+      <pose>0.09390 -0.03628 0.52670 -0.9328 0.0952 -1.9134</pose>
+      <visual name="v">
+        <geometry><box><size>0.00517 0.00581 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.425 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t71">
+      <pose>0.09227 -0.04049 0.52624 -0.7403 0.1117 -1.9765</pose>
+      <visual name="v">
+        <geometry><box><size>0.00500 0.00632 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.237 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.193 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t72">
+      <pose>0.09037 -0.04440 0.52570 -0.6000 0.1381 -2.0814</pose>
+      <visual name="v">
+        <geometry><box><size>0.00482 0.00694 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.109 0.101 1</ambient>
+          <diffuse>0.439 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t73">
+      <pose>0.08807 -0.04790 0.52504 -0.5170 0.1738 -2.2365</pose>
+      <visual name="v">
+        <geometry><box><size>0.00468 0.00754 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.246 0.111 0.104 1</ambient>
+          <diffuse>0.448 0.203 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t74">
+      <pose>0.08526 -0.05084 0.52424 -0.4964 0.2142 -2.4421</pose>
+      <visual name="v">
+        <geometry><box><size>0.00466 0.00799 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.252 0.115 0.107 1</ambient>
+          <diffuse>0.459 0.209 0.194 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t75">
+      <pose>0.07996 0.04047 0.51848 -1.1836 -0.2266 -0.0698</pose>
+      <visual name="v">
+        <geometry><box><size>0.00839 0.00544 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.264 0.121 0.113 1</ambient>
+          <diffuse>0.480 0.220 0.205 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t76">
+      <pose>0.08685 0.03940 0.52007 -1.3293 -0.2201 -0.2526</pose>
+      <visual name="v">
+        <geometry><box><size>0.00758 0.00516 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.249 0.113 0.105 1</ambient>
+          <diffuse>0.453 0.205 0.191 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t77">
+      <pose>0.09268 0.03718 0.52142 -1.5588 -0.2012 -0.4889</pose>
+      <visual name="v">
+        <geometry><box><size>0.00674 0.00551 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.237 0.106 0.098 1</ambient>
+          <diffuse>0.430 0.192 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t78">
+      <pose>0.09722 0.03389 0.52247 1.3177 -0.1641 -0.7718</pose>
+      <visual name="v">
+        <geometry><box><size>0.00611 0.00642 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.227 0.100 0.093 1</ambient>
+          <diffuse>0.412 0.182 0.169 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t79">
+      <pose>0.10039 0.02973 0.52320 1.1193 -0.1119 -1.0630</pose>
+      <visual name="v">
+        <geometry><box><size>0.00583 0.00748 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.220 0.096 0.089 1</ambient>
+          <diffuse>0.400 0.175 0.163 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t80">
+      <pose>0.10228 0.02492 0.52364 1.0110 -0.0586 -1.3140</pose>
+      <visual name="v">
+        <geometry><box><size>0.00585 0.00838 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.216 0.094 0.087 1</ambient>
+          <diffuse>0.393 0.171 0.159 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t81">
+      <pose>0.10310 0.01971 0.52382 0.9605 -0.0161 -1.5011</pose>
+      <visual name="v">
+        <geometry><box><size>0.00599 0.00897 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.214 0.093 0.086 1</ambient>
+          <diffuse>0.389 0.169 0.157 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t82">
+      <pose>0.10310 0.01429 0.52382 0.9421 0.0131 -1.6274</pose>
+      <visual name="v">
+        <geometry><box><size>0.00612 0.00922 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.214 0.093 0.086 1</ambient>
+          <diffuse>0.389 0.169 0.157 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t83">
+      <pose>0.10254 0.00883 0.52370 0.9444 0.0309 -1.7051</pose>
+      <visual name="v">
+        <geometry><box><size>0.00616 0.00916 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.215 0.094 0.087 1</ambient>
+          <diffuse>0.392 0.171 0.158 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t84">
+      <pose>0.10168 0.00342 0.52350 0.9635 0.0401 -1.7455</pose>
+      <visual name="v">
+        <geometry><box><size>0.00611 0.00888 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.217 0.095 0.088 1</ambient>
+          <diffuse>0.395 0.172 0.160 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t85">
+      <pose>0.10069 -0.00190 0.52327 0.9992 0.0429 -1.7578</pose>
+      <visual name="v">
+        <geometry><box><size>0.00601 0.00843 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.219 0.096 0.089 1</ambient>
+          <diffuse>0.399 0.175 0.162 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t86">
+      <pose>0.09971 -0.00712 0.52304 1.0538 0.0411 -1.7498</pose>
+      <visual name="v">
+        <geometry><box><size>0.00589 0.00789 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.221 0.097 0.090 1</ambient>
+          <diffuse>0.403 0.177 0.164 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t87">
+      <pose>0.09883 -0.01224 0.52284 1.1302 0.0363 -1.7288</pose>
+      <visual name="v">
+        <geometry><box><size>0.00578 0.00731 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.223 0.098 0.091 1</ambient>
+          <diffuse>0.406 0.179 0.166 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t88">
+      <pose>0.09809 -0.01730 0.52267 1.2317 0.0304 -1.7026</pose>
+      <visual name="v">
+        <geometry><box><size>0.00569 0.00675 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.409 0.180 0.167 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t89">
+      <pose>0.09749 -0.02231 0.52253 1.3593 0.0250 -1.6792</pose>
+      <visual name="v">
+        <geometry><box><size>0.00563 0.00625 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.226 0.100 0.093 1</ambient>
+          <diffuse>0.411 0.182 0.169 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t90">
+      <pose>0.09699 -0.02729 0.52241 1.5105 0.0221 -1.6668</pose>
+      <visual name="v">
+        <geometry><box><size>0.00558 0.00587 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.227 0.101 0.093 1</ambient>
+          <diffuse>0.413 0.183 0.170 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t91">
+      <pose>0.09652 -0.03222 0.52230 -1.4639 0.0237 -1.6734</pose>
+      <visual name="v">
+        <geometry><box><size>0.00552 0.00565 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.228 0.101 0.094 1</ambient>
+          <diffuse>0.415 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t92">
+      <pose>0.09595 -0.03707 0.52217 -1.2919 0.0315 -1.7075</pose>
+      <visual name="v">
+        <geometry><box><size>0.00541 0.00560 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.095 1</ambient>
+          <diffuse>0.417 0.185 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t93">
+      <pose>0.09516 -0.04176 0.52199 -1.1270 0.0479 -1.7796</pose>
+      <visual name="v">
+        <geometry><box><size>0.00524 0.00571 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.174 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t94">
+      <pose>0.09397 -0.04617 0.52172 -0.9827 0.0751 -1.9026</pose>
+      <visual name="v">
+        <geometry><box><size>0.00501 0.00590 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.425 0.189 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t95">
+      <pose>0.09221 -0.05015 0.52131 -0.8775 0.1144 -2.0910</pose>
+      <visual name="v">
+        <geometry><box><size>0.00479 0.00609 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.193 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t96">
+      <pose>0.08971 -0.05350 0.52073 -0.8380 0.1608 -2.3487</pose>
+      <visual name="v">
+        <geometry><box><size>0.00472 0.00619 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t97">
+      <pose>0.08301 0.04201 0.51476 -1.0892 -0.1722 -0.2086</pose>
+      <visual name="v">
+        <geometry><box><size>0.00704 0.00588 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.257 0.118 0.109 1</ambient>
+          <diffuse>0.468 0.214 0.199 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t98">
+      <pose>0.08855 0.04017 0.51575 -1.2427 -0.1589 -0.4485</pose>
+      <visual name="v">
+        <geometry><box><size>0.00625 0.00541 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.245 0.111 0.103 1</ambient>
+          <diffuse>0.446 0.201 0.187 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t99">
+      <pose>0.09290 0.03726 0.51652 -1.4909 -0.1310 -0.7362</pose>
+      <visual name="v">
+        <geometry><box><size>0.00568 0.00549 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.236 0.106 0.098 1</ambient>
+          <diffuse>0.429 0.192 0.178 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t100">
+      <pose>0.09600 0.03347 0.51707 1.3844 -0.0912 -1.0307</pose>
+      <visual name="v">
+        <geometry><box><size>0.00546 0.00603 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.094 1</ambient>
+          <diffuse>0.417 0.185 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t101">
+      <pose>0.09792 0.02900 0.51741 1.1967 -0.0507 -1.2813</pose>
+      <visual name="v">
+        <geometry><box><size>0.00552 0.00673 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.410 0.181 0.168 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t102">
+      <pose>0.09886 0.02409 0.51758 1.0899 -0.0188 -1.4650</pose>
+      <visual name="v">
+        <geometry><box><size>0.00569 0.00734 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.223 0.098 0.091 1</ambient>
+          <diffuse>0.406 0.179 0.166 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t103">
+      <pose>0.09906 0.01893 0.51762 1.0333 0.0028 -1.5865</pose>
+      <visual name="v">
+        <geometry><box><size>0.00584 0.00775 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.223 0.098 0.091 1</ambient>
+          <diffuse>0.405 0.178 0.165 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t104">
+      <pose>0.09876 0.01369 0.51756 1.0067 0.0156 -1.6585</pose>
+      <visual name="v">
+        <geometry><box><size>0.00590 0.00793 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.223 0.098 0.091 1</ambient>
+          <diffuse>0.406 0.179 0.166 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t105">
+      <pose>0.09819 0.00846 0.51746 1.0007 0.0215 -1.6922</pose>
+      <visual name="v">
+        <geometry><box><size>0.00588 0.00792 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.409 0.180 0.167 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t106">
+      <pose>0.09753 0.00328 0.51734 1.0116 0.0223 -1.6968</pose>
+      <visual name="v">
+        <geometry><box><size>0.00581 0.00776 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.226 0.100 0.093 1</ambient>
+          <diffuse>0.411 0.182 0.169 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t107">
+      <pose>0.09691 -0.00183 0.51723 1.0387 0.0193 -1.6795</pose>
+      <visual name="v">
+        <geometry><box><size>0.00572 0.00751 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.227 0.101 0.093 1</ambient>
+          <diffuse>0.414 0.183 0.170 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t108">
+      <pose>0.09644 -0.00688 0.51715 1.0823 0.0136 -1.6476</pose>
+      <visual name="v">
+        <geometry><box><size>0.00566 0.00720 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.228 0.101 0.094 1</ambient>
+          <diffuse>0.415 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t109">
+      <pose>0.09615 -0.01191 0.51710 1.1425 0.0067 -1.6087</pose>
+      <visual name="v">
+        <geometry><box><size>0.00563 0.00687 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.094 1</ambient>
+          <diffuse>0.417 0.185 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t110">
+      <pose>0.09605 -0.01694 0.51708 1.2182 0.0000 -1.5709</pose>
+      <visual name="v">
+        <geometry><box><size>0.00565 0.00655 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.094 1</ambient>
+          <diffuse>0.417 0.185 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t111">
+      <pose>0.09614 -0.02200 0.51710 1.3062 -0.0051 -1.5418</pose>
+      <visual name="v">
+        <geometry><box><size>0.00569 0.00626 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.094 1</ambient>
+          <diffuse>0.417 0.185 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t112">
+      <pose>0.09633 -0.02710 0.51713 1.4016 -0.0075 -1.5288</pose>
+      <visual name="v">
+        <geometry><box><size>0.00574 0.00602 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.101 0.094 1</ambient>
+          <diffuse>0.416 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t113">
+      <pose>0.09654 -0.03223 0.51717 1.4984 -0.0057 -1.5390</pose>
+      <visual name="v">
+        <geometry><box><size>0.00574 0.00585 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.228 0.101 0.094 1</ambient>
+          <diffuse>0.415 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t114">
+      <pose>0.09661 -0.03733 0.51718 -1.5504 0.0017 -1.5805</pose>
+      <visual name="v">
+        <geometry><box><size>0.00566 0.00574 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.228 0.101 0.094 1</ambient>
+          <diffuse>0.415 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t115">
+      <pose>0.09639 -0.04230 0.51714 -1.4667 0.0166 -1.6644</pose>
+      <visual name="v">
+        <geometry><box><size>0.00546 0.00567 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.101 0.094 1</ambient>
+          <diffuse>0.416 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t116">
+      <pose>0.09565 -0.04700 0.51701 -1.3982 0.0416 -1.8073</pose>
+      <visual name="v">
+        <geometry><box><size>0.00517 0.00562 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.230 0.102 0.095 1</ambient>
+          <diffuse>0.418 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t117">
+      <pose>0.09417 -0.05122 0.51675 -1.3575 0.0785 -2.0291</pose>
+      <visual name="v">
+        <geometry><box><size>0.00488 0.00554 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.233 0.104 0.097 1</ambient>
+          <diffuse>0.424 0.189 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t118">
+      <pose>0.09176 -0.05472 0.51632 -1.3649 0.1224 -2.3350</pose>
+      <visual name="v">
+        <geometry><box><size>0.00478 0.00540 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.434 0.194 0.181 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t119">
+      <pose>0.08634 0.04370 0.51076 -0.9696 -0.1136 -0.4131</pose>
+      <visual name="v">
+        <geometry><box><size>0.00590 0.00641 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.250 0.113 0.106 1</ambient>
+          <diffuse>0.455 0.206 0.192 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t120">
+      <pose>0.09054 0.04107 0.51128 -1.1347 -0.0936 -0.7178</pose>
+      <visual name="v">
+        <geometry><box><size>0.00534 0.00575 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.101 1</ambient>
+          <diffuse>0.438 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t121">
+      <pose>0.09350 0.03751 0.51165 -1.3948 -0.0641 -1.0290</pose>
+      <visual name="v">
+        <geometry><box><size>0.00517 0.00555 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.097 1</ambient>
+          <diffuse>0.427 0.191 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t122">
+      <pose>0.09532 0.03323 0.51187 1.4912 -0.0347 -1.2884</pose>
+      <visual name="v">
+        <geometry><box><size>0.00530 0.00576 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t123">
+      <pose>0.09619 0.02849 0.51198 1.3131 -0.0121 -1.4736</pose>
+      <visual name="v">
+        <geometry><box><size>0.00552 0.00614 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.094 1</ambient>
+          <diffuse>0.416 0.185 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t124">
+      <pose>0.09634 0.02347 0.51200 1.2043 0.0027 -1.5928</pose>
+      <visual name="v">
+        <geometry><box><size>0.00569 0.00650 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.101 0.094 1</ambient>
+          <diffuse>0.416 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t125">
+      <pose>0.09603 0.01835 0.51196 1.1402 0.0112 -1.6612</pose>
+      <visual name="v">
+        <geometry><box><size>0.00577 0.00675 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.094 1</ambient>
+          <diffuse>0.417 0.185 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t126">
+      <pose>0.09546 0.01323 0.51189 1.1053 0.0149 -1.6907</pose>
+      <visual name="v">
+        <geometry><box><size>0.00575 0.00686 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.102 0.095 1</ambient>
+          <diffuse>0.419 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t127">
+      <pose>0.09484 0.00817 0.51181 1.0916 0.0149 -1.6903</pose>
+      <visual name="v">
+        <geometry><box><size>0.00568 0.00686 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.232 0.103 0.096 1</ambient>
+          <diffuse>0.422 0.188 0.174 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t128">
+      <pose>0.09429 0.00317 0.51174 1.0955 0.0120 -1.6669</pose>
+      <visual name="v">
+        <geometry><box><size>0.00559 0.00678 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.233 0.104 0.096 1</ambient>
+          <diffuse>0.424 0.189 0.175 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t129">
+      <pose>0.09390 -0.00177 0.51170 1.1155 0.0070 -1.6273</pose>
+      <visual name="v">
+        <geometry><box><size>0.00553 0.00665 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.425 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t130">
+      <pose>0.09374 -0.00669 0.51168 1.1499 0.0010 -1.5790</pose>
+      <visual name="v">
+        <geometry><box><size>0.00551 0.00650 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.105 0.097 1</ambient>
+          <diffuse>0.426 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t131">
+      <pose>0.09382 -0.01162 0.51169 1.1962 -0.0051 -1.5298</pose>
+      <visual name="v">
+        <geometry><box><size>0.00555 0.00634 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.426 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t132">
+      <pose>0.09414 -0.01660 0.51173 1.2502 -0.0104 -1.4876</pose>
+      <visual name="v">
+        <geometry><box><size>0.00564 0.00620 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.233 0.104 0.097 1</ambient>
+          <diffuse>0.424 0.189 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t133">
+      <pose>0.09464 -0.02166 0.51179 1.3066 -0.0138 -1.4594</pose>
+      <visual name="v">
+        <geometry><box><size>0.00575 0.00608 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.232 0.103 0.096 1</ambient>
+          <diffuse>0.422 0.188 0.175 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t134">
+      <pose>0.09525 -0.02680 0.51187 1.3594 -0.0148 -1.4516</pose>
+      <visual name="v">
+        <geometry><box><size>0.00584 0.00600 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t135">
+      <pose>0.09584 -0.03200 0.51194 1.4028 -0.0125 -1.4705</pose>
+      <visual name="v">
+        <geometry><box><size>0.00586 0.00594 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.230 0.102 0.095 1</ambient>
+          <diffuse>0.418 0.185 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t136">
+      <pose>0.09625 -0.03719 0.51199 1.4314 -0.0057 -1.5247</pose>
+      <visual name="v">
+        <geometry><box><size>0.00577 0.00591 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.101 0.094 1</ambient>
+          <diffuse>0.416 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t137">
+      <pose>0.09626 -0.04225 0.51199 1.4389 0.0070 -1.6272</pose>
+      <visual name="v">
+        <geometry><box><size>0.00553 0.00589 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.101 0.094 1</ambient>
+          <diffuse>0.416 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t138">
+      <pose>0.09563 -0.04699 0.51191 1.4185 0.0281 -1.7981</pose>
+      <visual name="v">
+        <geometry><box><size>0.00518 0.00587 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.230 0.102 0.095 1</ambient>
+          <diffuse>0.419 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t139">
+      <pose>0.09412 -0.05119 0.51172 1.3658 0.0585 -2.0603</pose>
+      <visual name="v">
+        <geometry><box><size>0.00486 0.00585 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.233 0.104 0.097 1</ambient>
+          <diffuse>0.424 0.189 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t140">
+      <pose>0.09151 -0.05457 0.51140 1.2934 0.0923 -2.4087</pose>
+      <visual name="v">
+        <geometry><box><size>0.00485 0.00586 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.239 0.107 0.100 1</ambient>
+          <diffuse>0.435 0.195 0.181 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t141">
+      <pose>0.09001 0.04556 0.50642 -0.8628 -0.0543 -0.7048</pose>
+      <visual name="v">
+        <geometry><box><size>0.00512 0.00697 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.440 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t142">
+      <pose>0.09286 0.04212 0.50662 -1.0556 -0.0358 -1.0444</pose>
+      <visual name="v">
+        <geometry><box><size>0.00499 0.00615 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.236 0.106 0.098 1</ambient>
+          <diffuse>0.429 0.192 0.178 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t143">
+      <pose>0.09453 0.03792 0.50674 -1.3123 -0.0177 -1.3203</pose>
+      <visual name="v">
+        <geometry><box><size>0.00520 0.00574 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.233 0.104 0.096 1</ambient>
+          <diffuse>0.423 0.188 0.175 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t144">
+      <pose>0.09522 0.03320 0.50679 -1.5388 -0.0043 -1.5106</pose>
+      <visual name="v">
+        <geometry><box><size>0.00549 0.00567 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t145">
+      <pose>0.09518 0.02819 0.50679 1.4426 0.0042 -1.6297</pose>
+      <visual name="v">
+        <geometry><box><size>0.00570 0.00579 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t146">
+      <pose>0.09468 0.02307 0.50675 1.3375 0.0089 -1.6964</pose>
+      <visual name="v">
+        <geometry><box><size>0.00579 0.00594 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.232 0.103 0.096 1</ambient>
+          <diffuse>0.422 0.188 0.175 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t147">
+      <pose>0.09394 0.01796 0.50670 1.2707 0.0109 -1.7240</pose>
+      <visual name="v">
+        <geometry><box><size>0.00576 0.00604 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.425 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t148">
+      <pose>0.09315 0.01291 0.50664 1.2310 0.0107 -1.7213</pose>
+      <visual name="v">
+        <geometry><box><size>0.00566 0.00609 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.098 1</ambient>
+          <diffuse>0.428 0.191 0.178 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t149">
+      <pose>0.09246 0.00796 0.50659 1.2123 0.0088 -1.6948</pose>
+      <visual name="v">
+        <geometry><box><size>0.00554 0.00608 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.237 0.106 0.099 1</ambient>
+          <diffuse>0.431 0.193 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t150">
+      <pose>0.09195 0.00309 0.50656 1.2110 0.0057 -1.6505</pose>
+      <visual name="v">
+        <geometry><box><size>0.00544 0.00603 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.433 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t151">
+      <pose>0.09169 -0.00173 0.50654 1.2243 0.0018 -1.5954</pose>
+      <visual name="v">
+        <geometry><box><size>0.00539 0.00597 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.239 0.107 0.099 1</ambient>
+          <diffuse>0.434 0.195 0.181 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t152">
+      <pose>0.09171 -0.00655 0.50654 1.2488 -0.0024 -1.5372</pose>
+      <visual name="v">
+        <geometry><box><size>0.00541 0.00592 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.239 0.107 0.099 1</ambient>
+          <diffuse>0.434 0.194 0.181 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t153">
+      <pose>0.09201 -0.01140 0.50656 1.2798 -0.0062 -1.4839</pose>
+      <visual name="v">
+        <geometry><box><size>0.00549 0.00587 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.433 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t154">
+      <pose>0.09255 -0.01632 0.50660 1.3116 -0.0091 -1.4430</pose>
+      <visual name="v">
+        <geometry><box><size>0.00562 0.00585 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.237 0.106 0.098 1</ambient>
+          <diffuse>0.431 0.193 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t155">
+      <pose>0.09327 -0.02135 0.50665 1.3384 -0.0107 -1.4207</pose>
+      <visual name="v">
+        <geometry><box><size>0.00575 0.00585 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.098 1</ambient>
+          <diffuse>0.428 0.191 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t156">
+      <pose>0.09406 -0.02646 0.50671 1.3540 -0.0105 -1.4227</pose>
+      <visual name="v">
+        <geometry><box><size>0.00584 0.00587 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.425 0.189 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t157">
+      <pose>0.09476 -0.03164 0.50676 1.3527 -0.0082 -1.4557</pose>
+      <visual name="v">
+        <geometry><box><size>0.00583 0.00592 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.232 0.103 0.096 1</ambient>
+          <diffuse>0.422 0.188 0.174 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t158">
+      <pose>0.09520 -0.03678 0.50679 1.3280 -0.0029 -1.5295</pose>
+      <visual name="v">
+        <geometry><box><size>0.00569 0.00599 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t159">
+      <pose>0.09512 -0.04174 0.50678 1.2730 0.0064 -1.6601</pose>
+      <visual name="v">
+        <geometry><box><size>0.00540 0.00609 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.421 0.187 0.174 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t160">
+      <pose>0.09427 -0.04632 0.50672 1.1852 0.0211 -1.8711</pose>
+      <visual name="v">
+        <geometry><box><size>0.00503 0.00624 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.233 0.104 0.096 1</ambient>
+          <diffuse>0.424 0.189 0.175 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t161">
+      <pose>0.09241 -0.05026 0.50659 1.0811 0.0408 -2.1798</pose>
+      <visual name="v">
+        <geometry><box><size>0.00480 0.00646 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.237 0.106 0.099 1</ambient>
+          <diffuse>0.431 0.193 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t162">
+      <pose>0.08934 -0.05328 0.50637 1.0031 0.0592 -2.5520</pose>
+      <visual name="v">
+        <geometry><box><size>0.00499 0.00676 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t163">
+      <pose>0.09395 0.04755 0.50170 -0.8339 -0.0087 -1.0653</pose>
+      <visual name="v">
+        <geometry><box><size>0.00492 0.00746 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.425 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t164">
+      <pose>0.09546 0.04330 0.50172 -1.0520 -0.0037 -1.3644</pose>
+      <visual name="v">
+        <geometry><box><size>0.00523 0.00653 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.102 0.095 1</ambient>
+          <diffuse>0.419 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t165">
+      <pose>0.09592 0.03848 0.50173 -1.2779 -0.0001 -1.5625</pose>
+      <visual name="v">
+        <geometry><box><size>0.00562 0.00598 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.230 0.102 0.095 1</ambient>
+          <diffuse>0.417 0.185 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t166">
+      <pose>0.09562 0.03333 0.50173 -1.4594 0.0020 -1.6830</pose>
+      <visual name="v">
+        <geometry><box><size>0.00589 0.00574 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.230 0.102 0.095 1</ambient>
+          <diffuse>0.419 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t167">
+      <pose>0.09482 0.02808 0.50171 1.5517 0.0032 -1.7495</pose>
+      <visual name="v">
+        <geometry><box><size>0.00598 0.00566 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.232 0.103 0.096 1</ambient>
+          <diffuse>0.422 0.188 0.174 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t168">
+      <pose>0.09377 0.02285 0.50169 1.4621 0.0037 -1.7770</pose>
+      <visual name="v">
+        <geometry><box><size>0.00594 0.00565 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.426 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t169">
+      <pose>0.09269 0.01772 0.50167 1.4026 0.0037 -1.7745</pose>
+      <visual name="v">
+        <geometry><box><size>0.00579 0.00564 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.236 0.106 0.098 1</ambient>
+          <diffuse>0.430 0.192 0.179 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t170">
+      <pose>0.09171 0.01271 0.50166 1.3660 0.0032 -1.7477</pose>
+      <visual name="v">
+        <geometry><box><size>0.00562 0.00563 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.239 0.107 0.099 1</ambient>
+          <diffuse>0.434 0.194 0.181 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t171">
+      <pose>0.09094 0.00783 0.50164 1.3478 0.0024 -1.7018</pose>
+      <visual name="v">
+        <geometry><box><size>0.00546 0.00560 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.240 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.196 0.182 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t172">
+      <pose>0.09045 0.00304 0.50163 1.3441 0.0013 -1.6429</pose>
+      <visual name="v">
+        <geometry><box><size>0.00535 0.00557 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.101 1</ambient>
+          <diffuse>0.439 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t173">
+      <pose>0.09026 -0.00170 0.50163 1.3514 0.0001 -1.5781</pose>
+      <visual name="v">
+        <geometry><box><size>0.00531 0.00554 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.439 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t174">
+      <pose>0.09038 -0.00645 0.50163 1.3648 -0.0010 -1.5158</pose>
+      <visual name="v">
+        <geometry><box><size>0.00535 0.00553 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.109 0.101 1</ambient>
+          <diffuse>0.439 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t175">
+      <pose>0.09077 -0.01124 0.50164 1.3788 -0.0019 -1.4638</pose>
+      <visual name="v">
+        <geometry><box><size>0.00544 0.00555 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t176">
+      <pose>0.09140 -0.01612 0.50165 1.3874 -0.0026 -1.4289</pose>
+      <visual name="v">
+        <geometry><box><size>0.00557 0.00558 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.239 0.107 0.100 1</ambient>
+          <diffuse>0.435 0.195 0.181 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t177">
+      <pose>0.09215 -0.02109 0.50166 1.3849 -0.0028 -1.4170</pose>
+      <visual name="v">
+        <geometry><box><size>0.00569 0.00563 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t178">
+      <pose>0.09291 -0.02614 0.50168 1.3655 -0.0025 -1.4338</pose>
+      <visual name="v">
+        <geometry><box><size>0.00574 0.00571 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.236 0.106 0.098 1</ambient>
+          <diffuse>0.429 0.192 0.178 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t179">
+      <pose>0.09350 -0.03122 0.50169 1.3226 -0.0015 -1.4872</pose>
+      <visual name="v">
+        <geometry><box><size>0.00567 0.00581 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.097 1</ambient>
+          <diffuse>0.427 0.191 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t180">
+      <pose>0.09370 -0.03620 0.50169 1.2493 0.0003 -1.5895</pose>
+      <visual name="v">
+        <geometry><box><size>0.00547 0.00596 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.105 0.097 1</ambient>
+          <diffuse>0.426 0.190 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t181">
+      <pose>0.09326 -0.04093 0.50168 1.1422 0.0034 -1.7603</pose>
+      <visual name="v">
+        <geometry><box><size>0.00514 0.00619 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.098 1</ambient>
+          <diffuse>0.428 0.191 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t182">
+      <pose>0.09191 -0.04516 0.50166 1.0146 0.0079 -2.0211</pose>
+      <visual name="v">
+        <geometry><box><size>0.00484 0.00651 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.433 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t183">
+      <pose>0.08945 -0.04865 0.50161 0.9085 0.0129 -2.3664</pose>
+      <visual name="v">
+        <geometry><box><size>0.00482 0.00696 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t184">
+      <pose>0.08574 -0.05113 0.50155 0.8634 0.0165 -2.7257</pose>
+      <visual name="v">
+        <geometry><box><size>0.00530 0.00748 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.251 0.114 0.106 1</ambient>
+          <diffuse>0.457 0.208 0.193 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t185">
+      <pose>0.09793 0.04957 0.49655 -0.9124 0.0057 -1.4085</pose>
+      <visual name="v">
+        <geometry><box><size>0.00538 0.00772 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.410 0.181 0.168 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t186">
+      <pose>0.09816 0.04453 0.49654 -1.1198 -0.0016 -1.6170</pose>
+      <visual name="v">
+        <geometry><box><size>0.00590 0.00678 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.409 0.180 0.167 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t187">
+      <pose>0.09753 0.03912 0.49657 -1.2964 -0.0059 -1.7400</pose>
+      <visual name="v">
+        <geometry><box><size>0.00624 0.00619 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.226 0.100 0.093 1</ambient>
+          <diffuse>0.411 0.182 0.169 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t188">
+      <pose>0.09636 0.03359 0.49661 -1.4294 -0.0083 -1.8076</pose>
+      <visual name="v">
+        <geometry><box><size>0.00636 0.00586 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.101 0.094 1</ambient>
+          <diffuse>0.416 0.184 0.171 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t189">
+      <pose>0.09493 0.02811 0.49666 -1.5243 -0.0092 -1.8365</pose>
+      <visual name="v">
+        <geometry><box><size>0.00629 0.00568 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.232 0.103 0.096 1</ambient>
+          <diffuse>0.421 0.187 0.174 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t190">
+      <pose>0.09346 0.02277 0.49671 1.5518 -0.0092 -1.8361</pose>
+      <visual name="v">
+        <geometry><box><size>0.00610 0.00557 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.097 1</ambient>
+          <diffuse>0.427 0.191 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t191">
+      <pose>0.09210 0.01760 0.49676 1.5090 -0.0084 -1.8116</pose>
+      <visual name="v">
+        <geometry><box><size>0.00585 0.00550 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t192">
+      <pose>0.09098 0.01261 0.49680 1.4837 -0.0069 -1.7672</pose>
+      <visual name="v">
+        <geometry><box><size>0.00561 0.00544 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.240 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.196 0.182 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t193">
+      <pose>0.09016 0.00777 0.49683 1.4721 -0.0048 -1.7078</pose>
+      <visual name="v">
+        <geometry><box><size>0.00542 0.00539 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.440 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t194">
+      <pose>0.08967 0.00302 0.49684 1.4701 -0.0024 -1.6397</pose>
+      <visual name="v">
+        <geometry><box><size>0.00530 0.00536 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t195">
+      <pose>0.08951 -0.00169 0.49685 1.4733 -0.0000 -1.5709</pose>
+      <visual name="v">
+        <geometry><box><size>0.00527 0.00535 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t196">
+      <pose>0.08966 -0.00640 0.49684 1.4764 0.0021 -1.5097</pose>
+      <visual name="v">
+        <geometry><box><size>0.00531 0.00536 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t197">
+      <pose>0.09007 -0.01116 0.49683 1.4739 0.0038 -1.4638</pose>
+      <visual name="v">
+        <geometry><box><size>0.00540 0.00538 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.440 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t198">
+      <pose>0.09066 -0.01599 0.49681 1.4604 0.0046 -1.4397</pose>
+      <visual name="v">
+        <geometry><box><size>0.00551 0.00543 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.101 1</ambient>
+          <diffuse>0.438 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t199">
+      <pose>0.09132 -0.02090 0.49678 1.4303 0.0045 -1.4432</pose>
+      <visual name="v">
+        <geometry><box><size>0.00558 0.00548 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.239 0.107 0.100 1</ambient>
+          <diffuse>0.435 0.195 0.182 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t200">
+      <pose>0.09189 -0.02585 0.49677 1.3772 0.0032 -1.4809</pose>
+      <visual name="v">
+        <geometry><box><size>0.00556 0.00556 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.433 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t201">
+      <pose>0.09216 -0.03077 0.49676 1.2938 0.0003 -1.5629</pose>
+      <visual name="v">
+        <geometry><box><size>0.00543 0.00568 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.193 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t202">
+      <pose>0.09190 -0.03551 0.49676 1.1752 -0.0047 -1.7044</pose>
+      <visual name="v">
+        <geometry><box><size>0.00518 0.00588 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.433 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t203">
+      <pose>0.09086 -0.03988 0.49680 1.0302 -0.0122 -1.9251</pose>
+      <visual name="v">
+        <geometry><box><size>0.00489 0.00620 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.240 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.196 0.182 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t204">
+      <pose>0.08882 -0.04364 0.49687 0.8973 -0.0216 -2.2310</pose>
+      <visual name="v">
+        <geometry><box><size>0.00478 0.00667 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.245 0.110 0.103 1</ambient>
+          <diffuse>0.445 0.201 0.187 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t205">
+      <pose>0.08560 -0.04656 0.49699 0.8241 -0.0298 -2.5788</pose>
+      <visual name="v">
+        <geometry><box><size>0.00506 0.00725 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.252 0.114 0.106 1</ambient>
+          <diffuse>0.458 0.208 0.193 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t206">
+      <pose>0.08119 -0.04842 0.49714 0.8153 -0.0341 -2.8899</pose>
+      <visual name="v">
+        <geometry><box><size>0.00577 0.00788 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.111 1</ambient>
+          <diffuse>0.475 0.218 0.203 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t207">
+      <pose>0.10157 0.05141 0.49101 -1.0737 -0.0081 -1.6621</pose>
+      <visual name="v">
+        <geometry><box><size>0.00628 0.00756 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.217 0.095 0.088 1</ambient>
+          <diffuse>0.395 0.173 0.160 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t208">
+      <pose>0.10062 0.04564 0.49110 -1.2408 -0.0192 -1.7896</pose>
+      <visual name="v">
+        <geometry><box><size>0.00674 0.00675 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.220 0.096 0.089 1</ambient>
+          <diffuse>0.399 0.175 0.162 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t209">
+      <pose>0.09905 0.03973 0.49124 -1.3659 -0.0252 -1.8595</pose>
+      <visual name="v">
+        <geometry><box><size>0.00690 0.00624 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.223 0.098 0.091 1</ambient>
+          <diffuse>0.405 0.178 0.165 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t210">
+      <pose>0.09718 0.03388 0.49140 -1.4543 -0.0279 -1.8912</pose>
+      <visual name="v">
+        <geometry><box><size>0.00681 0.00593 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.227 0.100 0.093 1</ambient>
+          <diffuse>0.412 0.182 0.169 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t211">
+      <pose>0.09527 0.02821 0.49157 -1.5143 -0.0281 -1.8944</pose>
+      <visual name="v">
+        <geometry><box><size>0.00656 0.00573 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t212">
+      <pose>0.09349 0.02278 0.49173 -1.5526 -0.0264 -1.8741</pose>
+      <visual name="v">
+        <geometry><box><size>0.00624 0.00559 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.097 1</ambient>
+          <diffuse>0.427 0.191 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t213">
+      <pose>0.09197 0.01758 0.49186 1.5674 -0.0230 -1.8337</pose>
+      <visual name="v">
+        <geometry><box><size>0.00591 0.00549 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.433 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t214">
+      <pose>0.09077 0.01258 0.49197 1.5584 -0.0181 -1.7770</pose>
+      <visual name="v">
+        <geometry><box><size>0.00562 0.00541 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t215">
+      <pose>0.08992 0.00775 0.49205 1.5579 -0.0122 -1.7091</pose>
+      <visual name="v">
+        <geometry><box><size>0.00541 0.00536 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.441 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t216">
+      <pose>0.08943 0.00301 0.49209 1.5613 -0.0059 -1.6372</pose>
+      <visual name="v">
+        <geometry><box><size>0.00528 0.00533 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t217">
+      <pose>0.08928 -0.00168 0.49210 1.5635 0.0001 -1.5696</pose>
+      <visual name="v">
+        <geometry><box><size>0.00525 0.00532 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t218">
+      <pose>0.08943 -0.00638 0.49209 1.5594 0.0049 -1.5148</pose>
+      <visual name="v">
+        <geometry><box><size>0.00529 0.00533 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t219">
+      <pose>0.08979 -0.01112 0.49206 1.5438 0.0080 -1.4802</pose>
+      <visual name="v">
+        <geometry><box><size>0.00536 0.00535 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.441 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t220">
+      <pose>0.09026 -0.01592 0.49201 1.5115 0.0087 -1.4722</pose>
+      <visual name="v">
+        <geometry><box><size>0.00543 0.00537 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.439 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t221">
+      <pose>0.09070 -0.02076 0.49198 1.4565 0.0065 -1.4970</pose>
+      <visual name="v">
+        <geometry><box><size>0.00544 0.00539 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.101 1</ambient>
+          <diffuse>0.438 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t222">
+      <pose>0.09093 -0.02558 0.49196 1.3714 0.0007 -1.5632</pose>
+      <visual name="v">
+        <geometry><box><size>0.00536 0.00544 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.240 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.196 0.182 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t223">
+      <pose>0.09072 -0.03029 0.49197 1.2493 -0.0099 -1.6830</pose>
+      <visual name="v">
+        <geometry><box><size>0.00517 0.00556 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.101 1</ambient>
+          <diffuse>0.438 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t224">
+      <pose>0.08984 -0.03471 0.49205 1.0943 -0.0263 -1.8727</pose>
+      <visual name="v">
+        <geometry><box><size>0.00493 0.00578 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.441 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t225">
+      <pose>0.08805 -0.03864 0.49221 0.9385 -0.0477 -2.1410</pose>
+      <visual name="v">
+        <geometry><box><size>0.00480 0.00617 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.246 0.111 0.104 1</ambient>
+          <diffuse>0.448 0.203 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t226">
+      <pose>0.08518 -0.04186 0.49246 0.8348 -0.0687 -2.4628</pose>
+      <visual name="v">
+        <geometry><box><size>0.00496 0.00673 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.253 0.115 0.107 1</ambient>
+          <diffuse>0.459 0.209 0.194 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t227">
+      <pose>0.08117 -0.04414 0.49282 0.8023 -0.0824 -2.7734</pose>
+      <visual name="v">
+        <geometry><box><size>0.00551 0.00738 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.111 1</ambient>
+          <diffuse>0.475 0.218 0.203 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t228">
+      <pose>0.07606 -0.04536 0.49327 0.8155 -0.0876 -3.0236</pose>
+      <visual name="v">
+        <geometry><box><size>0.00632 0.00799 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.272 0.126 0.117 1</ambient>
+          <diffuse>0.495 0.229 0.213 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t229">
+      <pose>0.10423 0.05275 0.48523 -1.3044 -0.0352 -1.8216</pose>
+      <visual name="v">
+        <geometry><box><size>0.00727 0.00691 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.212 0.092 0.085 1</ambient>
+          <diffuse>0.385 0.167 0.155 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t230">
+      <pose>0.10231 0.04641 0.48550 -1.4186 -0.0452 -1.8959</pose>
+      <visual name="v">
+        <geometry><box><size>0.00750 0.00639 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.216 0.094 0.087 1</ambient>
+          <diffuse>0.392 0.171 0.159 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t231">
+      <pose>0.10004 0.04013 0.48582 -1.4949 -0.0500 -1.9316</pose>
+      <visual name="v">
+        <geometry><box><size>0.00742 0.00607 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.221 0.097 0.090 1</ambient>
+          <diffuse>0.401 0.176 0.163 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t232">
+      <pose>0.09770 0.03406 0.48615 -1.5431 -0.0510 -1.9394</pose>
+      <visual name="v">
+        <geometry><box><size>0.00713 0.00585 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.226 0.100 0.093 1</ambient>
+          <diffuse>0.410 0.181 0.168 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t233">
+      <pose>0.09550 0.02828 0.48647 -1.5704 -0.0490 -1.9245</pose>
+      <visual name="v">
+        <geometry><box><size>0.00673 0.00569 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.230 0.102 0.095 1</ambient>
+          <diffuse>0.419 0.186 0.173 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t234">
+      <pose>0.09357 0.02280 0.48674 1.5601 -0.0444 -1.8898</pose>
+      <visual name="v">
+        <geometry><box><size>0.00631 0.00557 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.097 1</ambient>
+          <diffuse>0.427 0.190 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t235">
+      <pose>0.09198 0.01758 0.48696 1.5611 -0.0374 -1.8382</pose>
+      <visual name="v">
+        <geometry><box><size>0.00593 0.00548 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.433 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t236">
+      <pose>0.09078 0.01259 0.48713 1.5705 -0.0285 -1.7737</pose>
+      <visual name="v">
+        <geometry><box><size>0.00561 0.00541 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t237">
+      <pose>0.08996 0.00775 0.48725 -1.5580 -0.0186 -1.7021</pose>
+      <visual name="v">
+        <geometry><box><size>0.00540 0.00538 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.441 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t238">
+      <pose>0.08951 0.00301 0.48731 -1.5464 -0.0086 -1.6315</pose>
+      <visual name="v">
+        <geometry><box><size>0.00529 0.00536 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t239">
+      <pose>0.08937 -0.00169 0.48733 -1.5418 0.0000 -1.5706</pose>
+      <visual name="v">
+        <geometry><box><size>0.00526 0.00536 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t240">
+      <pose>0.08949 -0.00639 0.48732 -1.5493 0.0061 -1.5277</pose>
+      <visual name="v">
+        <geometry><box><size>0.00528 0.00536 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t241">
+      <pose>0.08975 -0.01112 0.48728 1.5678 0.0086 -1.5099</pose>
+      <visual name="v">
+        <geometry><box><size>0.00533 0.00535 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.441 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t242">
+      <pose>0.09003 -0.01588 0.48724 1.5205 0.0066 -1.5239</pose>
+      <visual name="v">
+        <geometry><box><size>0.00534 0.00534 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.440 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t243">
+      <pose>0.09015 -0.02063 0.48722 1.4433 -0.0009 -1.5771</pose>
+      <visual name="v">
+        <geometry><box><size>0.00529 0.00533 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.440 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t244">
+      <pose>0.08992 -0.02530 0.48726 1.3284 -0.0154 -1.6799</pose>
+      <visual name="v">
+        <geometry><box><size>0.00516 0.00534 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.441 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t245">
+      <pose>0.08909 -0.02974 0.48737 1.1747 -0.0384 -1.8452</pose>
+      <visual name="v">
+        <geometry><box><size>0.00497 0.00545 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.444 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t246">
+      <pose>0.08746 -0.03379 0.48761 1.0062 -0.0692 -2.0816</pose>
+      <visual name="v">
+        <geometry><box><size>0.00485 0.00571 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.248 0.112 0.104 1</ambient>
+          <diffuse>0.450 0.204 0.190 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t247">
+      <pose>0.08483 -0.03723 0.48798 0.8757 -0.1016 -2.3741</pose>
+      <visual name="v">
+        <geometry><box><size>0.00496 0.00616 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.253 0.115 0.107 1</ambient>
+          <diffuse>0.461 0.210 0.195 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t248">
+      <pose>0.08111 -0.03986 0.48850 0.8166 -0.1258 -2.6729</pose>
+      <visual name="v">
+        <geometry><box><size>0.00539 0.00676 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.111 1</ambient>
+          <diffuse>0.475 0.218 0.203 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t249">
+      <pose>0.07633 -0.04151 0.48918 0.8131 -0.1376 -2.9281</pose>
+      <visual name="v">
+        <geometry><box><size>0.00609 0.00738 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.272 0.126 0.117 1</ambient>
+          <diffuse>0.494 0.228 0.213 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t250">
+      <pose>0.07065 -0.04213 0.48999 0.8348 -0.1408 -3.1245</pose>
+      <visual name="v">
+        <geometry><box><size>0.00683 0.00790 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.284 0.133 0.123 1</ambient>
+          <diffuse>0.516 0.241 0.224 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t251">
+      <pose>0.10507 0.05318 0.47951 1.5160 -0.0644 -1.9076</pose>
+      <visual name="v">
+        <geometry><box><size>0.00797 0.00618 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.210 0.091 0.084 1</ambient>
+          <diffuse>0.382 0.165 0.153 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t252">
+      <pose>0.10255 0.04652 0.48000 1.4631 -0.0719 -1.9493</pose>
+      <visual name="v">
+        <geometry><box><size>0.00794 0.00601 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.215 0.094 0.087 1</ambient>
+          <diffuse>0.392 0.171 0.158 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t253">
+      <pose>0.09992 0.04008 0.48052 1.4351 -0.0743 -1.9628</pose>
+      <visual name="v">
+        <geometry><box><size>0.00764 0.00585 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.221 0.097 0.090 1</ambient>
+          <diffuse>0.402 0.176 0.164 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t254">
+      <pose>0.09740 0.03396 0.48101 1.4252 -0.0728 -1.9539</pose>
+      <visual name="v">
+        <geometry><box><size>0.00721 0.00570 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.226 0.100 0.093 1</ambient>
+          <diffuse>0.412 0.182 0.169 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t255">
+      <pose>0.09515 0.02818 0.48145 1.4297 -0.0677 -1.9257</pose>
+      <visual name="v">
+        <geometry><box><size>0.00672 0.00557 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.231 0.103 0.095 1</ambient>
+          <diffuse>0.420 0.187 0.174 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t256">
+      <pose>0.09326 0.02272 0.48182 1.4459 -0.0594 -1.8805</pose>
+      <visual name="v">
+        <geometry><box><size>0.00626 0.00546 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.235 0.105 0.098 1</ambient>
+          <diffuse>0.428 0.191 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t257">
+      <pose>0.09176 0.01754 0.48211 1.4708 -0.0483 -1.8213</pose>
+      <visual name="v">
+        <geometry><box><size>0.00587 0.00539 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.434 0.194 0.181 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t258">
+      <pose>0.09066 0.01257 0.48232 1.5007 -0.0353 -1.7529</pose>
+      <visual name="v">
+        <geometry><box><size>0.00557 0.00534 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.101 1</ambient>
+          <diffuse>0.438 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t259">
+      <pose>0.08995 0.00775 0.48246 1.5301 -0.0217 -1.6826</pose>
+      <visual name="v">
+        <geometry><box><size>0.00538 0.00532 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.441 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t260">
+      <pose>0.08958 0.00301 0.48253 1.5530 -0.0094 -1.6188</pose>
+      <visual name="v">
+        <geometry><box><size>0.00528 0.00532 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t261">
+      <pose>0.08948 -0.00169 0.48255 1.5635 0.0001 -1.5703</pose>
+      <visual name="v">
+        <geometry><box><size>0.00526 0.00533 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t262">
+      <pose>0.08955 -0.00639 0.48254 1.5563 0.0050 -1.5450</pose>
+      <visual name="v">
+        <geometry><box><size>0.00528 0.00532 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t263">
+      <pose>0.08968 -0.01111 0.48251 1.5259 0.0041 -1.5500</pose>
+      <visual name="v">
+        <geometry><box><size>0.00529 0.00531 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t264">
+      <pose>0.08971 -0.01582 0.48251 1.4659 -0.0042 -1.5924</pose>
+      <visual name="v">
+        <geometry><box><size>0.00525 0.00527 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.109 0.102 1</ambient>
+          <diffuse>0.442 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t265">
+      <pose>0.08943 -0.02047 0.48256 1.3684 -0.0215 -1.6811</pose>
+      <visual name="v">
+        <geometry><box><size>0.00516 0.00524 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t266">
+      <pose>0.08864 -0.02494 0.48272 1.2296 -0.0493 -1.8268</pose>
+      <visual name="v">
+        <geometry><box><size>0.00502 0.00526 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.245 0.111 0.103 1</ambient>
+          <diffuse>0.446 0.201 0.187 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t267">
+      <pose>0.08711 -0.02908 0.48302 1.0647 -0.0874 -2.0370</pose>
+      <visual name="v">
+        <geometry><box><size>0.00492 0.00539 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.248 0.113 0.105 1</ambient>
+          <diffuse>0.452 0.205 0.190 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t268">
+      <pose>0.08466 -0.03271 0.48349 0.9203 -0.1295 -2.3022</pose>
+      <visual name="v">
+        <geometry><box><size>0.00500 0.00571 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.254 0.116 0.107 1</ambient>
+          <diffuse>0.461 0.210 0.195 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t269">
+      <pose>0.08118 -0.03563 0.48417 0.8396 -0.1640 -2.5847</pose>
+      <visual name="v">
+        <geometry><box><size>0.00536 0.00621 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.111 1</ambient>
+          <diffuse>0.475 0.218 0.203 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t270">
+      <pose>0.07666 -0.03767 0.48505 0.8196 -0.1840 -2.8386</pose>
+      <visual name="v">
+        <geometry><box><size>0.00597 0.00679 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.271 0.125 0.117 1</ambient>
+          <diffuse>0.492 0.228 0.212 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t271">
+      <pose>0.07123 -0.03874 0.48611 0.8322 -0.1916 -3.0421</pose>
+      <visual name="v">
+        <geometry><box><size>0.00665 0.00733 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.282 0.132 0.123 1</ambient>
+          <diffuse>0.514 0.240 0.223 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t272">
+      <pose>0.06512 -0.03884 0.48730 0.8565 -0.1923 3.0851</pose>
+      <visual name="v">
+        <geometry><box><size>0.00723 0.00769 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.296 0.139 0.130 1</ambient>
+          <diffuse>0.537 0.253 0.236 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t273">
+      <pose>0.10326 0.05226 0.47437 1.0893 -0.0883 -1.9357</pose>
+      <visual name="v">
+        <geometry><box><size>0.00809 0.00671 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.214 0.093 0.086 1</ambient>
+          <diffuse>0.389 0.169 0.157 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t274">
+      <pose>0.10063 0.04565 0.47502 1.0981 -0.0931 -1.9564</pose>
+      <visual name="v">
+        <geometry><box><size>0.00786 0.00645 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.219 0.096 0.089 1</ambient>
+          <diffuse>0.399 0.175 0.162 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t275">
+      <pose>0.09806 0.03933 0.47566 1.1150 -0.0926 -1.9542</pose>
+      <visual name="v">
+        <geometry><box><size>0.00745 0.00614 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.409 0.180 0.168 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t276">
+      <pose>0.09571 0.03337 0.47624 1.1403 -0.0877 -1.9327</pose>
+      <visual name="v">
+        <geometry><box><size>0.00696 0.00585 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.230 0.102 0.095 1</ambient>
+          <diffuse>0.418 0.186 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t277">
+      <pose>0.09369 0.02774 0.47674 1.1746 -0.0787 -1.8942</pose>
+      <visual name="v">
+        <geometry><box><size>0.00647 0.00559 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.105 0.097 1</ambient>
+          <diffuse>0.426 0.190 0.177 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t278">
+      <pose>0.09205 0.02243 0.47715 1.2178 -0.0662 -1.8412</pose>
+      <visual name="v">
+        <geometry><box><size>0.00604 0.00540 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.107 0.099 1</ambient>
+          <diffuse>0.432 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t279">
+      <pose>0.09081 0.01736 0.47746 1.2683 -0.0510 -1.7778</pose>
+      <visual name="v">
+        <geometry><box><size>0.00569 0.00527 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.100 1</ambient>
+          <diffuse>0.437 0.196 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t280">
+      <pose>0.08996 0.01247 0.47767 1.3219 -0.0345 -1.7101</pose>
+      <visual name="v">
+        <geometry><box><size>0.00545 0.00520 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.441 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t281">
+      <pose>0.08945 0.00770 0.47779 1.3719 -0.0187 -1.6464</pose>
+      <visual name="v">
+        <geometry><box><size>0.00531 0.00518 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t282">
+      <pose>0.08923 0.00300 0.47785 1.4109 -0.0061 -1.5953</pose>
+      <visual name="v">
+        <geometry><box><size>0.00525 0.00518 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t283">
+      <pose>0.08920 -0.00168 0.47786 1.4318 0.0014 -1.5650</pose>
+      <visual name="v">
+        <geometry><box><size>0.00525 0.00519 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.444 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t284">
+      <pose>0.08925 -0.00637 0.47785 1.4282 0.0019 -1.5632</pose>
+      <visual name="v">
+        <geometry><box><size>0.00525 0.00519 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t285">
+      <pose>0.08923 -0.01105 0.47785 1.3943 -0.0064 -1.5968</pose>
+      <visual name="v">
+        <geometry><box><size>0.00523 0.00517 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.200 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t286">
+      <pose>0.08895 -0.01569 0.47792 1.3232 -0.0255 -1.6738</pose>
+      <visual name="v">
+        <geometry><box><size>0.00516 0.00515 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.244 0.110 0.103 1</ambient>
+          <diffuse>0.445 0.201 0.186 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t287">
+      <pose>0.08822 -0.02019 0.47810 1.2111 -0.0571 -1.8033</pose>
+      <visual name="v">
+        <geometry><box><size>0.00506 0.00515 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.246 0.111 0.103 1</ambient>
+          <diffuse>0.447 0.202 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t288">
+      <pose>0.08682 -0.02443 0.47845 1.0679 -0.1011 -1.9920</pose>
+      <visual name="v">
+        <geometry><box><size>0.00499 0.00523 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.249 0.113 0.105 1</ambient>
+          <diffuse>0.453 0.205 0.191 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t289">
+      <pose>0.08456 -0.02823 0.47901 0.9308 -0.1517 -2.2341</pose>
+      <visual name="v">
+        <geometry><box><size>0.00506 0.00545 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.254 0.116 0.108 1</ambient>
+          <diffuse>0.462 0.210 0.196 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t290">
+      <pose>0.08131 -0.03141 0.47982 0.8440 -0.1964 -2.5008</pose>
+      <visual name="v">
+        <geometry><box><size>0.00536 0.00584 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.111 1</ambient>
+          <diffuse>0.474 0.217 0.202 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t291">
+      <pose>0.07704 -0.03381 0.48088 0.8158 -0.2257 -2.7512</pose>
+      <visual name="v">
+        <geometry><box><size>0.00590 0.00635 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.270 0.125 0.116 1</ambient>
+          <diffuse>0.491 0.227 0.211 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t292">
+      <pose>0.07185 -0.03530 0.48216 0.8238 -0.2395 -2.9597</pose>
+      <visual name="v">
+        <geometry><box><size>0.00654 0.00686 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.281 0.131 0.122 1</ambient>
+          <diffuse>0.511 0.238 0.222 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t293">
+      <pose>0.06595 -0.03587 0.48363 0.8465 -0.2433 -3.1235</pose>
+      <visual name="v">
+        <geometry><box><size>0.00710 0.00724 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.294 0.138 0.129 1</ambient>
+          <diffuse>0.534 0.251 0.234 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t294">
+      <pose>0.05962 -0.03555 0.48520 0.8725 -0.2419 3.0325</pose>
+      <visual name="v">
+        <geometry><box><size>0.00746 0.00742 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.307 0.146 0.136 1</ambient>
+          <diffuse>0.559 0.265 0.247 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t295">
+      <pose>0.09826 0.04973 0.47038 0.6317 -0.1002 -1.9109</pose>
+      <visual name="v">
+        <geometry><box><size>0.00750 0.00904 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.225 0.099 0.092 1</ambient>
+          <diffuse>0.408 0.180 0.167 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t296">
+      <pose>0.09604 0.04356 0.47105 0.6719 -0.1019 -1.9167</pose>
+      <visual name="v">
+        <geometry><box><size>0.00721 0.00823 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.229 0.102 0.094 1</ambient>
+          <diffuse>0.417 0.185 0.172 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t297">
+      <pose>0.09395 0.03769 0.47167 0.7118 -0.0978 -1.9023</pose>
+      <visual name="v">
+        <geometry><box><size>0.00681 0.00745 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.234 0.104 0.097 1</ambient>
+          <diffuse>0.425 0.190 0.176 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t298">
+      <pose>0.09212 0.03212 0.47223 0.7553 -0.0887 -1.8704</pose>
+      <visual name="v">
+        <geometry><box><size>0.00638 0.00676 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.238 0.106 0.099 1</ambient>
+          <diffuse>0.432 0.194 0.180 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t299">
+      <pose>0.09061 0.02683 0.47268 0.8063 -0.0753 -1.8237</pose>
+      <visual name="v">
+        <geometry><box><size>0.00598 0.00619 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.241 0.108 0.101 1</ambient>
+          <diffuse>0.438 0.197 0.183 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t300">
+      <pose>0.08946 0.02179 0.47303 0.8671 -0.0584 -1.7659</pose>
+      <visual name="v">
+        <geometry><box><size>0.00565 0.00575 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.243 0.110 0.102 1</ambient>
+          <diffuse>0.443 0.199 0.185 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t301">
+      <pose>0.08866 0.01695 0.47327 0.9373 -0.0396 -1.7026</pose>
+      <visual name="v">
+        <geometry><box><size>0.00540 0.00544 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.245 0.111 0.103 1</ambient>
+          <diffuse>0.446 0.201 0.187 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t302">
+      <pose>0.08818 0.01222 0.47341 1.0126 -0.0212 -1.6412</pose>
+      <visual name="v">
+        <geometry><box><size>0.00525 0.00523 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.246 0.111 0.103 1</ambient>
+          <diffuse>0.448 0.202 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t303">
+      <pose>0.08798 0.00758 0.47347 1.0844 -0.0058 -1.5902</pose>
+      <visual name="v">
+        <geometry><box><size>0.00518 0.00511 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.247 0.111 0.104 1</ambient>
+          <diffuse>0.448 0.203 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t304">
+      <pose>0.08798 0.00296 0.47347 1.1425 0.0039 -1.5578</pose>
+      <visual name="v">
+        <geometry><box><size>0.00517 0.00506 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.247 0.111 0.104 1</ambient>
+          <diffuse>0.448 0.203 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t305">
+      <pose>0.08807 -0.00166 0.47345 1.1773 0.0058 -1.5515</pose>
+      <visual name="v">
+        <geometry><box><size>0.00518 0.00505 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.246 0.111 0.104 1</ambient>
+          <diffuse>0.448 0.203 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t306">
+      <pose>0.08812 -0.00629 0.47343 1.1810 -0.0023 -1.5783</pose>
+      <visual name="v">
+        <geometry><box><size>0.00518 0.00505 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.246 0.111 0.103 1</ambient>
+          <diffuse>0.448 0.202 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t307">
+      <pose>0.08795 -0.01089 0.47348 1.1475 -0.0225 -1.6456</pose>
+      <visual name="v">
+        <geometry><box><size>0.00514 0.00506 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.247 0.112 0.104 1</ambient>
+          <diffuse>0.448 0.203 0.188 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t308">
+      <pose>0.08738 -0.01541 0.47365 1.0744 -0.0571 -1.7616</pose>
+      <visual name="v">
+        <geometry><box><size>0.00506 0.00510 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.248 0.112 0.104 1</ambient>
+          <diffuse>0.451 0.204 0.190 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t309">
+      <pose>0.08619 -0.01973 0.47401 0.9703 -0.1063 -1.9327</pose>
+      <visual name="v">
+        <geometry><box><size>0.00501 0.00519 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.250 0.114 0.106 1</ambient>
+          <diffuse>0.455 0.207 0.192 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t310">
+      <pose>0.08419 -0.02369 0.47462 0.8644 -0.1651 -2.1561</pose>
+      <visual name="v">
+        <geometry><box><size>0.00507 0.00539 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.255 0.116 0.108 1</ambient>
+          <diffuse>0.463 0.211 0.196 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t311">
+      <pose>0.08123 -0.02712 0.47551 0.7953 -0.2207 -2.4102</pose>
+      <visual name="v">
+        <geometry><box><size>0.00533 0.00571 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.111 1</ambient>
+          <diffuse>0.475 0.218 0.202 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t312">
+      <pose>0.07727 -0.02986 0.47670 0.7762 -0.2609 -2.6584</pose>
+      <visual name="v">
+        <geometry><box><size>0.00582 0.00614 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.270 0.124 0.116 1</ambient>
+          <diffuse>0.490 0.226 0.211 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t313">
+      <pose>0.07237 -0.03176 0.47818 0.7911 -0.2829 -2.8726</pose>
+      <visual name="v">
+        <geometry><box><size>0.00642 0.00659 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.280 0.130 0.121 1</ambient>
+          <diffuse>0.509 0.237 0.221 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t314">
+      <pose>0.06671 -0.03278 0.47989 0.8197 -0.2915 -3.0448</pose>
+      <visual name="v">
+        <geometry><box><size>0.00699 0.00695 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.292 0.137 0.128 1</ambient>
+          <diffuse>0.531 0.250 0.233 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t315">
+      <pose>0.06055 -0.03293 0.48174 0.8507 -0.2926 3.1029</pose>
+      <visual name="v">
+        <geometry><box><size>0.00736 0.00714 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.305 0.145 0.135 1</ambient>
+          <diffuse>0.555 0.263 0.245 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t316">
+      <pose>0.05420 -0.03233 0.48366 0.8797 -0.2899 2.9954</pose>
+      <visual name="v">
+        <geometry><box><size>0.00749 0.00711 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.319 0.153 0.142 1</ambient>
+          <diffuse>0.580 0.277 0.259 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t317">
+      <pose>0.09017 0.04564 0.46801 0.2621 -0.0910 -1.8310</pose>
+      <visual name="v">
+        <geometry><box><size>0.00637 0.01185 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.242 0.109 0.101 1</ambient>
+          <diffuse>0.440 0.198 0.184 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t318">
+      <pose>0.08874 0.04026 0.46852 0.2983 -0.0889 -1.8249</pose>
+      <visual name="v">
+        <geometry><box><size>0.00614 0.01058 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.245 0.111 0.103 1</ambient>
+          <diffuse>0.445 0.201 0.187 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t319">
+      <pose>0.08745 0.03508 0.46898 0.3339 -0.0805 -1.8001</pose>
+      <visual name="v">
+        <geometry><box><size>0.00585 0.00941 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.248 0.112 0.104 1</ambient>
+          <diffuse>0.450 0.204 0.190 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t320">
+      <pose>0.08639 0.03012 0.46935 0.3731 -0.0666 -1.7600</pose>
+      <visual name="v">
+        <geometry><box><size>0.00556 0.00838 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.250 0.113 0.105 1</ambient>
+          <diffuse>0.455 0.206 0.192 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t321">
+      <pose>0.08560 0.02535 0.46963 0.4203 -0.0486 -1.7083</pose>
+      <visual name="v">
+        <geometry><box><size>0.00531 0.00750 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.252 0.114 0.106 1</ambient>
+          <diffuse>0.458 0.208 0.193 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t322">
+      <pose>0.08509 0.02073 0.46981 0.4784 -0.0282 -1.6505</pose>
+      <visual name="v">
+        <geometry><box><size>0.00512 0.00679 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.253 0.115 0.107 1</ambient>
+          <diffuse>0.460 0.209 0.194 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t323">
+      <pose>0.08487 0.01622 0.46989 0.5482 -0.0081 -1.5935</pose>
+      <visual name="v">
+        <geometry><box><size>0.00502 0.00623 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.253 0.115 0.107 1</ambient>
+          <diffuse>0.460 0.210 0.195 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t324">
+      <pose>0.08488 0.01177 0.46989 0.6257 0.0091 -1.5451</pose>
+      <visual name="v">
+        <geometry><box><size>0.00498 0.00581 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.253 0.115 0.107 1</ambient>
+          <diffuse>0.460 0.210 0.195 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t325">
+      <pose>0.08508 0.00733 0.46982 0.7028 0.0204 -1.5132</pose>
+      <visual name="v">
+        <geometry><box><size>0.00499 0.00552 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.253 0.115 0.107 1</ambient>
+          <diffuse>0.460 0.209 0.194 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t326">
+      <pose>0.08537 0.00287 0.46972 0.7682 0.0233 -1.5050</pose>
+      <visual name="v">
+        <geometry><box><size>0.00502 0.00535 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.252 0.115 0.107 1</ambient>
+          <diffuse>0.459 0.208 0.194 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t327">
+      <pose>0.08563 -0.00162 0.46962 0.8107 0.0155 -1.5272</pose>
+      <visual name="v">
+        <geometry><box><size>0.00504 0.00526 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.252 0.114 0.106 1</ambient>
+          <diffuse>0.457 0.208 0.193 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t328">
+      <pose>0.08572 -0.00612 0.46959 0.8216 -0.0056 -1.5866</pose>
+      <visual name="v">
+        <geometry><box><size>0.00503 0.00524 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.251 0.114 0.106 1</ambient>
+          <diffuse>0.457 0.208 0.193 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t329">
+      <pose>0.08544 -0.01058 0.46969 0.7980 -0.0424 -1.6908</pose>
+      <visual name="v">
+        <geometry><box><size>0.00499 0.00529 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.252 0.115 0.107 1</ambient>
+          <diffuse>0.458 0.208 0.194 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t330">
+      <pose>0.08460 -0.01492 0.46999 0.7470 -0.0964 -1.8468</pose>
+      <visual name="v">
+        <geometry><box><size>0.00494 0.00540 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.254 0.116 0.108 1</ambient>
+          <diffuse>0.461 0.210 0.195 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t331">
+      <pose>0.08300 -0.01900 0.47056 0.6917 -0.1636 -2.0549</pose>
+      <visual name="v">
+        <geometry><box><size>0.00498 0.00559 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.257 0.118 0.109 1</ambient>
+          <diffuse>0.468 0.214 0.199 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t332">
+      <pose>0.08048 -0.02265 0.47145 0.6627 -0.2321 -2.2999</pose>
+      <visual name="v">
+        <geometry><box><size>0.00520 0.00588 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.263 0.121 0.112 1</ambient>
+          <diffuse>0.478 0.219 0.204 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t333">
+      <pose>0.07697 -0.02570 0.47269 0.6736 -0.2863 -2.5496</pose>
+      <visual name="v">
+        <geometry><box><size>0.00564 0.00623 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.270 0.125 0.116 1</ambient>
+          <diffuse>0.491 0.227 0.211 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t334">
+      <pose>0.07249 -0.02801 0.47428 0.7121 -0.3196 -2.7729</pose>
+      <visual name="v">
+        <geometry><box><size>0.00622 0.00660 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.280 0.130 0.121 1</ambient>
+          <diffuse>0.509 0.237 0.221 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t335">
+      <pose>0.06718 -0.02948 0.47617 0.7594 -0.3355 -2.9567</pose>
+      <visual name="v">
+        <geometry><box><size>0.00679 0.00689 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.291 0.137 0.127 1</ambient>
+          <diffuse>0.529 0.249 0.232 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t336">
+      <pose>0.06130 -0.03012 0.47825 0.8047 -0.3407 -3.1028</pose>
+      <visual name="v">
+        <geometry><box><size>0.00721 0.00704 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.304 0.144 0.134 1</ambient>
+          <diffuse>0.552 0.262 0.244 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t337">
+      <pose>0.05513 -0.02998 0.48044 0.8441 -0.3400 3.0642</pose>
+      <visual name="v">
+        <geometry><box><size>0.00740 0.00700 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.317 0.151 0.141 1</ambient>
+          <diffuse>0.576 0.275 0.257 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t338">
+      <pose>0.04895 -0.02919 0.48263 0.8775 -0.3363 2.9702</pose>
+      <visual name="v">
+        <geometry><box><size>0.00732 0.00677 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.330 0.159 0.148 1</ambient>
+          <diffuse>0.600 0.289 0.270 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t339">
+      <pose>0.07983 0.04041 0.46743 0.0088 -0.0492 -1.6919</pose>
+      <visual name="v">
+        <geometry><box><size>0.00505 0.01382 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.264 0.121 0.113 1</ambient>
+          <diffuse>0.480 0.221 0.205 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t340">
+      <pose>0.07932 0.03598 0.46764 0.0339 -0.0428 -1.6760</pose>
+      <visual name="v">
+        <geometry><box><size>0.00493 0.01246 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.265 0.122 0.114 1</ambient>
+          <diffuse>0.482 0.222 0.206 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t341">
+      <pose>0.07892 0.03166 0.46780 0.0603 -0.0297 -1.6437</pose>
+      <visual name="v">
+        <geometry><box><size>0.00480 0.01120 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.266 0.122 0.114 1</ambient>
+          <diffuse>0.484 0.223 0.207 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t342">
+      <pose>0.07871 0.02744 0.46789 0.0913 -0.0117 -1.5995</pose>
+      <visual name="v">
+        <geometry><box><size>0.00468 0.01007 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.266 0.123 0.114 1</ambient>
+          <diffuse>0.484 0.223 0.208 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t343">
+      <pose>0.07869 0.02330 0.46789 0.1297 0.0089 -1.5489</pose>
+      <visual name="v">
+        <geometry><box><size>0.00460 0.00909 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.266 0.123 0.114 1</ambient>
+          <diffuse>0.485 0.223 0.208 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t344">
+      <pose>0.07888 0.01922 0.46781 0.1772 0.0294 -1.4986</pose>
+      <visual name="v">
+        <geometry><box><size>0.00457 0.00825 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.266 0.123 0.114 1</ambient>
+          <diffuse>0.484 0.223 0.207 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t345">
+      <pose>0.07927 0.01515 0.46766 0.2332 0.0469 -1.4555</pose>
+      <visual name="v">
+        <geometry><box><size>0.00460 0.00756 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.265 0.122 0.114 1</ambient>
+          <diffuse>0.482 0.222 0.207 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t346">
+      <pose>0.07981 0.01106 0.46744 0.2941 0.0584 -1.4269</pose>
+      <visual name="v">
+        <geometry><box><size>0.00466 0.00702 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.264 0.121 0.113 1</ambient>
+          <diffuse>0.480 0.221 0.205 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t347">
+      <pose>0.08044 0.00693 0.46718 0.3538 0.0615 -1.4193</pose>
+      <visual name="v">
+        <geometry><box><size>0.00473 0.00660 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.263 0.121 0.112 1</ambient>
+          <diffuse>0.478 0.219 0.204 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t348">
+      <pose>0.08106 0.00273 0.46693 0.4039 0.0537 -1.4386</pose>
+      <visual name="v">
+        <geometry><box><size>0.00479 0.00631 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.112 1</ambient>
+          <diffuse>0.475 0.218 0.203 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t349">
+      <pose>0.08153 -0.00154 0.46673 0.4365 0.0324 -1.4913</pose>
+      <visual name="v">
+        <geometry><box><size>0.00482 0.00614 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.260 0.119 0.111 1</ambient>
+          <diffuse>0.473 0.217 0.202 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t350">
+      <pose>0.08170 -0.00583 0.46667 0.4472 -0.0056 -1.5846</pose>
+      <visual name="v">
+        <geometry><box><size>0.00480 0.00608 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.260 0.119 0.111 1</ambient>
+          <diffuse>0.473 0.217 0.202 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t351">
+      <pose>0.08136 -0.01008 0.46680 0.4398 -0.0630 -1.7260</pose>
+      <visual name="v">
+        <geometry><box><size>0.00475 0.00612 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.261 0.120 0.111 1</ambient>
+          <diffuse>0.474 0.217 0.202 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t352">
+      <pose>0.08034 -0.01417 0.46722 0.4305 -0.1385 -1.9195</pose>
+      <visual name="v">
+        <geometry><box><size>0.00476 0.00624 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.263 0.121 0.112 1</ambient>
+          <diffuse>0.478 0.220 0.204 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t353">
+      <pose>0.07845 -0.01795 0.46799 0.4439 -0.2220 -2.1569</pose>
+      <visual name="v">
+        <geometry><box><size>0.00492 0.00644 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.267 0.123 0.115 1</ambient>
+          <diffuse>0.485 0.224 0.208 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t354">
+      <pose>0.07558 -0.02127 0.46916 0.4935 -0.2951 -2.4114</pose>
+      <visual name="v">
+        <geometry><box><size>0.00529 0.00669 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.273 0.127 0.118 1</ambient>
+          <diffuse>0.497 0.230 0.214 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t355">
+      <pose>0.07172 -0.02395 0.47074 0.5685 -0.3452 -2.6495</pose>
+      <visual name="v">
+        <geometry><box><size>0.00584 0.00694 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.281 0.131 0.122 1</ambient>
+          <diffuse>0.512 0.239 0.222 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t356">
+      <pose>0.06698 -0.02588 0.47267 0.6483 -0.3726 -2.8507</pose>
+      <visual name="v">
+        <geometry><box><size>0.00643 0.00712 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.292 0.137 0.128 1</ambient>
+          <diffuse>0.530 0.249 0.232 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t357">
+      <pose>0.06154 -0.02701 0.47489 0.7198 -0.3845 -3.0122</pose>
+      <visual name="v">
+        <geometry><box><size>0.00691 0.00718 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.303 0.144 0.134 1</ambient>
+          <diffuse>0.551 0.261 0.243 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t358">
+      <pose>0.05570 -0.02737 0.47727 0.7792 -0.3874 -3.1406</pose>
+      <visual name="v">
+        <geometry><box><size>0.00718 0.00708 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.316 0.151 0.141 1</ambient>
+          <diffuse>0.574 0.274 0.256 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t359">
+      <pose>0.04974 -0.02705 0.47971 0.8274 -0.3856 3.0392</pose>
+      <visual name="v">
+        <geometry><box><size>0.00720 0.00682 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.329 0.158 0.147 1</ambient>
+          <diffuse>0.597 0.287 0.268 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t360">
+      <pose>0.04392 -0.02619 0.48208 0.8665 -0.3813 2.9543</pose>
+      <visual name="v">
+        <geometry><box><size>0.00697 0.00642 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.341 0.165 0.154 1</ambient>
+          <diffuse>0.620 0.300 0.280 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t361">
+      <pose>0.06848 0.03466 0.46841 -0.1491 0.0333 -1.4985</pose>
+      <visual name="v">
+        <geometry><box><size>0.00390 0.01441 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.288 0.135 0.126 1</ambient>
+          <diffuse>0.524 0.246 0.229 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t362">
+      <pose>0.06876 0.03119 0.46828 -0.1292 0.0432 -1.4769</pose>
+      <visual name="v">
+        <geometry><box><size>0.00390 0.01326 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.288 0.135 0.126 1</ambient>
+          <diffuse>0.523 0.245 0.228 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t363">
+      <pose>0.06914 0.02773 0.46811 -0.1060 0.0587 -1.4430</pose>
+      <visual name="v">
+        <geometry><box><size>0.00391 0.01218 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.287 0.134 0.125 1</ambient>
+          <diffuse>0.522 0.244 0.228 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t364">
+      <pose>0.06965 0.02428 0.46787 -0.0780 0.0771 -1.4026</pose>
+      <visual name="v">
+        <geometry><box><size>0.00393 0.01121 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.286 0.134 0.125 1</ambient>
+          <diffuse>0.520 0.243 0.227 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t365">
+      <pose>0.07032 0.02082 0.46757 -0.0443 0.0954 -1.3618</pose>
+      <visual name="v">
+        <geometry><box><size>0.00400 0.01034 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.284 0.133 0.124 1</ambient>
+          <diffuse>0.517 0.242 0.225 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t366">
+      <pose>0.07113 0.01733 0.46719 -0.0057 0.1109 -1.3271</pose>
+      <visual name="v">
+        <geometry><box><size>0.00409 0.00959 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.283 0.132 0.123 1</ambient>
+          <diffuse>0.514 0.240 0.223 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t367">
+      <pose>0.07206 0.01377 0.46676 0.0359 0.1208 -1.3044</pose>
+      <visual name="v">
+        <geometry><box><size>0.00421 0.00895 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.281 0.131 0.122 1</ambient>
+          <diffuse>0.510 0.238 0.222 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t368">
+      <pose>0.07307 0.01013 0.46629 0.0771 0.1230 -1.2995</pose>
+      <visual name="v">
+        <geometry><box><size>0.00433 0.00842 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.279 0.130 0.121 1</ambient>
+          <diffuse>0.506 0.236 0.219 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t369">
+      <pose>0.07409 0.00638 0.46582 0.1134 0.1151 -1.3175</pose>
+      <visual name="v">
+        <geometry><box><size>0.00443 0.00800 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.276 0.128 0.120 1</ambient>
+          <diffuse>0.502 0.233 0.217 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t370">
+      <pose>0.07501 0.00252 0.46540 0.1400 0.0944 -1.3641</pose>
+      <visual name="v">
+        <geometry><box><size>0.00449 0.00770 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.274 0.127 0.118 1</ambient>
+          <diffuse>0.499 0.231 0.215 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t371">
+      <pose>0.07569 -0.00143 0.46509 0.1539 0.0574 -1.4459</pose>
+      <visual name="v">
+        <geometry><box><size>0.00450 0.00750 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.273 0.126 0.118 1</ambient>
+          <diffuse>0.496 0.230 0.214 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t372">
+      <pose>0.07597 -0.00542 0.46496 0.1572 -0.0000 -1.5709</pose>
+      <visual name="v">
+        <geometry><box><size>0.00446 0.00740 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.272 0.126 0.117 1</ambient>
+          <diffuse>0.495 0.229 0.213 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t373">
+      <pose>0.07564 -0.00937 0.46511 0.1613 -0.0803 -1.7462</pose>
+      <visual name="v">
+        <geometry><box><size>0.00443 0.00739 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.273 0.126 0.118 1</ambient>
+          <diffuse>0.496 0.230 0.214 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="t374">
+      <pose>0.07455 -0.01315 0.46561 0.1879 -0.1781 -1.9718</pose>
+      <visual name="v">
+        <geometry><box><size>0.00449 0.00745 0.0025</size></box></geometry>
+        <material>
+          <ambient>0.275 0.128 0.119 1</ambient>
+          <diffuse>0.501 0.232 0.216 1</diffuse>
+          <specular>0.10 0.07 0.07 1</specular>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
