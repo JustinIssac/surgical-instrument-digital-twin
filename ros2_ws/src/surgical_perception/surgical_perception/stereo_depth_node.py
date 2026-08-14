@@ -32,6 +32,10 @@ class StereoDepthNode(Node):
         self.declare_parameter('depth_min_m', 0.02)   # 3 cm
         self.declare_parameter('depth_max_m', 0.15)   # 20 cm
         self.declare_parameter('max_depth_jump_m', 0.015)
+        # how many frames a stale depth may be held. At ~6.4Hz, 5 frames
+        # is under a second; the previous 30 was nearly 5s, long enough
+        # for an instrument to be anywhere.
+        self.declare_parameter('hold_frames', 5)
         # R2: SGBM at 1920x1080 with 192 disparities is far too slow for
         # 10 fps. Compute at reduced scale and upsample; disparity scales
         # linearly with image width so values are corrected accordingly.
@@ -41,6 +45,7 @@ class StereoDepthNode(Node):
         self.dmin  = self.get_parameter('depth_min_m').value
         self.dmax  = self.get_parameter('depth_max_m').value
         self.djump = self.get_parameter('max_depth_jump_m').value
+        self.hold_frames = int(self.get_parameter('hold_frames').value)
         self.dscale = float(self.get_parameter('disp_scale').value)
 
         with open(calib_path) as f:
@@ -240,24 +245,37 @@ class StereoDepthNode(Node):
                     z, why = None, 'jump'
 
 
+            age = None
             if z is None:
-                method = 'assumed'
-                # Use this instrument's last good stereo depth rather than a
-                # global constant. A constant makes the tracked point JUMP
-                # (~26mm) whenever stereo drops out, which breaks data
-                # association downstream and spawns duplicate tracks.
+                # Hold this instrument's last good stereo depth for a short
+                # window. An instrument cannot teleport, so a 1-5 frame old
+                # measurement is a defensible estimate -- and holding avoids
+                # the ~26mm jump that a global constant caused, which broke
+                # data association downstream.
+                #
+                # Beyond that window there is NO estimate. Previously a
+                # 0.055m constant was substituted and labelled 'assumed',
+                # which is fabrication: the reported 3D position had no
+                # relationship to the instrument's actual depth. Those
+                # positions fed the twin and the path-length metric.
+                # Now the detection is reported in 2D with depth marked
+                # unavailable, matching the monocular path.
                 if cls in self.last_depth:
                     z_prev, f_prev = self.last_depth[cls]
-                    if data['frame_id'] - f_prev <= 30:
-                        z = z_prev
-                        method = 'held'
-                    else:
-                        z = 0.055
-                else:
-                    z = 0.055
+                    age = data['frame_id'] - f_prev
+                    if age <= self.hold_frames:
+                        z, method = z_prev, 'held'
+                        self.stats['held'] = self.stats.get('held', 0) + 1
                 self.stats[why] = self.stats.get(why, 0) + 1
-                if method == 'held':
-                    self.stats['held'] = self.stats.get('held', 0) + 1
+
+            if z is None:
+                out.append({**det,
+                            'position_3d':   None,
+                            'depth_method':  'unavailable',
+                            'reject_reason': why,
+                            'depth_m':       None})
+                self.stats['unavailable'] = self.stats.get('unavailable', 0) + 1
+                continue
             else:
                 method = 'stereo'
                 self.last_depth[cls] = (z, data['frame_id'])
@@ -274,6 +292,7 @@ class StereoDepthNode(Node):
                                          'y': round(Y, 5),
                                          'z': round(z, 5)},
                         'depth_method': method,
+                        'depth_age_frames': age if method == 'held' else 0,
                         'reject_reason': None if method == 'stereo' else why,
                         'centroid_rect': [round(ur, 1), round(vr, 1)],
                         'depth_m': round(z, 5)})
@@ -294,7 +313,9 @@ class StereoDepthNode(Node):
                 f"({self.stats['stereo']/tot*100:.0f}%)  "
                 f"gate={self.stats.get('gate',0)} "
                 f"nodisp={self.stats.get('nodisp',0)} "
-                f"jump={self.stats.get('jump',0)}  "
+                f"jump={self.stats.get('jump',0)} "
+                f"held={self.stats.get('held',0)} "
+                f"unavail={self.stats.get('unavailable',0)}  "
                 f"sgbm={getattr(self, 'last_disp_ms', 0):.0f}ms")
 
 

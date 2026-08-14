@@ -1,0 +1,3 @@
+<?xml version="1.0" ?>
+<sdf version="1.8"><model name="instruments"><static>true</static>
+<link name="l"/></model></sdf>

@@ -37,7 +37,12 @@ CONFIRM_UNKNOWN = 5      # unknowns need more evidence: at conf 0.25-0.55
                          # the detector also fires on tissue folds and
                          # specular highlights, and each would spawn a track
 MAX_MISSES     = 10      # frames coasting before a track dies
-DUP_GATE_M     = 0.045   # suppress new track this close to an existing one
+# Duplicate suppression must be at least as permissive as the association
+# gate, otherwise a detection can fail association (on depth, gate 60mm)
+# yet still pass suppression (45mm) and spawn a redundant track.
+DUP_GATE_LATERAL_M = 0.025
+DUP_GATE_DEPTH_M   = 0.070
+COAST_BLOCK_M      = 0.055   # no new track near a coasting track of same class
 MIN_CONF       = 0.12    # matches perception_node's floor; see note there
 
 CLASS_NAMES = ['Large_Needle_Driver_Left','Large_Needle_Driver_Right',
@@ -62,7 +67,15 @@ class Track:
         self.x = np.array([*pos, 0.0, 0.0, 0.0], dtype=np.float64)
         self.P = np.diag([1e-3]*3 + [1e-2]*3)
         self.H = np.hstack([np.eye(3), np.zeros((3,3))])
-        self.q, self.r = 5e-3, 2e-4
+        # Tuned by ablation over 737 live pose samples across 5 instruments.
+        # Previous values (q=5e-3, r=2e-4) gave process noise 25x measurement
+        # noise, so the filter almost passed measurements through: 15% jitter
+        # reduction only. These give 34% at 6.2mm lag. Heavier settings reach
+        # 73% but at 14.5mm lag -- a quarter of the working distance.
+        # Note a 5-frame moving average performs equivalently to the heavy
+        # Kalman configuration (4.69 vs 4.24mm jitter, 14.59 vs 14.54mm lag),
+        # so the Kalman formulation is not itself the source of the benefit.
+        self.q, self.r = 5e-3, 1e-3
 
         self.hits, self.misses = 1, 0
         self.confirmed = False
@@ -139,24 +152,95 @@ def dir_to_quat(d):
     return (s * 0.5, v[0]/s, v[1]/s, v[2]/s)
 
 
-SDF = """<?xml version="1.0" ?>
+# Geometry per class. Classes 0 and 1 (Large Needle Driver) use the dVRK
+# CAD mesh, cropped to the usable head region. Remaining classes use
+# parametric geometry: borrowing a needle-driver mesh for a different
+# instrument type would misrepresent what the system detected.
+MESH_CLASSES = {0, 1}
+
+SDF_MESH = """<?xml version="1.0" ?>
 <sdf version="1.8">
   <model name="{name}">
     <static>true</static>
-    <link name="shaft">
-      <pose>0 0 -0.18 0 0 0</pose>
+    <link name="head">
       <visual name="v">
-        <geometry><cylinder><radius>0.005</radius><length>0.35</length></cylinder></geometry>
+        <geometry><mesh><uri>model://instruments/meshes/shaft_head.obj</uri></mesh></geometry>
+        <material>
+          <ambient>0.50 0.52 0.55 1</ambient><diffuse>0.72 0.75 0.79 1</diffuse>
+          <specular>0.95 0.95 0.95 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="jaw_l"><visual name="v">
+      <geometry><mesh><uri>model://instruments/meshes/gripper_left.OBJ</uri></mesh></geometry>
+      <material><ambient>0.60 0.62 0.65 1</ambient><diffuse>0.82 0.84 0.88 1</diffuse>
+      <specular>1 1 1 1</specular></material>
+    </visual></link>
+    <link name="jaw_r"><visual name="v">
+      <geometry><mesh><uri>model://instruments/meshes/gripper_right.OBJ</uri></mesh></geometry>
+      <material><ambient>0.60 0.62 0.65 1</ambient><diffuse>0.82 0.84 0.88 1</diffuse>
+      <specular>1 1 1 1</specular></material>
+    </visual></link>
+    <link name="shaft">
+      <pose>0 0 -0.055 0 0 0</pose>
+      <visual name="v">
+        <geometry><cylinder><radius>0.0032</radius><length>0.075</length></cylinder></geometry>
+        <material>
+          <ambient>0.09 0.09 0.10 1</ambient><diffuse>0.15 0.15 0.17 1</diffuse>
+          <specular>0.6 0.6 0.6 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="band">
+      <pose>0 0 -0.021 0 0 0</pose>
+      <visual name="v">
+        <geometry><cylinder><radius>0.0034</radius><length>0.004</length></cylinder></geometry>
         <material><ambient>{r} {g} {b} 1</ambient><diffuse>{r} {g} {b} 1</diffuse></material>
       </visual>
     </link>
+  </model>
+</sdf>"""
+
+SDF_PRIM = """<?xml version="1.0" ?>
+<sdf version="1.8">
+  <model name="{name}">
+    <static>true</static>
     <link name="jaws">
       <visual name="v">
-        <geometry><sphere><radius>0.008</radius></sphere></geometry>
-        <material><ambient>1 1 0 1</ambient><diffuse>1 1 0 1</diffuse></material>
+        <geometry><sphere><radius>0.0045</radius></sphere></geometry>
+        <material>
+          <ambient>0.65 0.66 0.68 1</ambient><diffuse>0.85 0.86 0.90 1</diffuse>
+          <specular>1 1 1 1</specular>
+        </material>
       </visual>
     </link>
-    <joint name="j" type="fixed"><parent>shaft</parent><child>jaws</child></joint>
+    <link name="wrist">
+      <pose>0 0 -0.008 0 0 0</pose>
+      <visual name="v">
+        <geometry><cylinder><radius>0.0035</radius><length>0.012</length></cylinder></geometry>
+        <material>
+          <ambient>0.55 0.56 0.58 1</ambient><diffuse>0.75 0.76 0.80 1</diffuse>
+          <specular>0.9 0.9 0.9 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="shaft">
+      <pose>0 0 -0.055 0 0 0</pose>
+      <visual name="v">
+        <geometry><cylinder><radius>0.0030</radius><length>0.075</length></cylinder></geometry>
+        <material>
+          <ambient>0.09 0.09 0.10 1</ambient><diffuse>0.15 0.15 0.17 1</diffuse>
+          <specular>0.6 0.6 0.6 1</specular>
+        </material>
+      </visual>
+    </link>
+    <link name="band">
+      <pose>0 0 -0.021 0 0 0</pose>
+      <visual name="v">
+        <geometry><cylinder><radius>0.0033</radius><length>0.004</length></cylinder></geometry>
+        <material><ambient>{r} {g} {b} 1</ambient><diffuse>{r} {g} {b} 1</diffuse></material>
+      </visual>
+    </link>
   </model>
 </sdf>"""
 
@@ -209,7 +293,9 @@ class TwinSyncNode(Node):
         r, g, b = PALETTE[track.class_id % len(PALETTE)] \
                   if track.identity != 'unknown' else (0.55, 0.55, 0.55)
         req = ef_pb2.EntityFactory()
-        req.sdf  = SDF.format(name=track.model_name, r=r, g=g, b=b)
+        tpl = SDF_MESH if (track.class_id in MESH_CLASSES
+                           and track.identity != 'unknown') else SDF_PRIM
+        req.sdf  = tpl.format(name=track.model_name, r=r, g=g, b=b)
         req.name = track.model_name
         req.pose.position.z = 0.5
         if self._gz_request('create', req, ef_pb2.EntityFactory, 800):
@@ -297,7 +383,13 @@ class TwinSyncNode(Node):
                 lat   = float(np.hypot(dv[1], dv[2]))
                 depth = abs(float(dv[0]))          # world X == optical Z
                 if lat <= GATE_LATERAL_M * k and depth <= GATE_DEPTH_M * k:
-                    cost = lat * (0.5 if d['class_id'] == t.class_id else 1.0)
+                    # Association is purely geometric. A class-match
+                    # discount was previously applied, but with two
+                    # physically identical instruments present (both Large
+                    # Needle Drivers in this sequence) it biases assignment
+                    # toward whichever track shares the label rather than
+                    # whichever is actually closer.
+                    cost = lat
                     pairs.append((cost, ti, di))
         pairs.sort()
 
@@ -320,8 +412,20 @@ class TwinSyncNode(Node):
             pv = np.array([p['x'], p['y'], p['z']])
             # suppress duplicates: association can fail transiently on depth
             # noise; without this, each failure spawns a permanent duplicate
-            if any(float(np.linalg.norm(t.position - pv)) < DUP_GATE_M
-                   for t in self.tracks):
+            blocked = False
+            for t in self.tracks:
+                dv  = t.position - pv
+                lat = float(np.hypot(dv[1], dv[2]))
+                dep = abs(float(dv[0]))
+                if lat < DUP_GATE_LATERAL_M and dep < DUP_GATE_DEPTH_M:
+                    blocked = True; break
+                # a track that just lost its detection will usually reacquire
+                # it; spawning a sibling in the meantime creates a permanent
+                # duplicate once both are confirmed
+                if (t.misses > 0 and t.class_id == d['class_id']
+                        and lat < COAST_BLOCK_M):
+                    blocked = True; break
+            if blocked:
                 continue
             self.tracks.append(Track(pv, d['class_id'],
                                      d.get('identity', 'known'), stamp))
