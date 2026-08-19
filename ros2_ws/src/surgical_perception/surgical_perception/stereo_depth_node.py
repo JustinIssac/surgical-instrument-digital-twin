@@ -10,7 +10,7 @@ Fixes over previous version:
 """
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, PointCloud2, PointField
 from std_msgs.msg import String
 from cv_bridge import CvBridge
 import message_filters
@@ -126,6 +126,30 @@ class StereoDepthNode(Node):
             String, '/instrument_detections_3d', 10)
         self.disp_pub  = self.create_publisher(Image, '/disparity_image', 10)
 
+        # ---- Tissue surface point cloud -------------------------------
+        # The disparity field is already computed every frame and all but a
+        # few instrument sample points discarded. Those discarded points are
+        # the tissue surface. Publishing them costs one back-projection.
+        #
+        # This supersedes the static Gazebo tissue backdrop, which was a
+        # quartic fit frozen at one frame and therefore unregistered to the
+        # per-frame instrument depths -- the reason instruments intersected
+        # it. Here both come from the same disparity field on the same
+        # frame, so disagreement is not possible by construction.
+        self.declare_parameter('publish_cloud', True)
+        self.declare_parameter('cloud_stride', 8)
+        self.declare_parameter('cloud_bbox_margin_px', 40)
+        self.cloud_on     = bool(self.get_parameter('publish_cloud').value)
+        self.cloud_stride = int(self.get_parameter('cloud_stride').value)
+        self.cloud_margin = int(self.get_parameter('cloud_bbox_margin_px').value)
+        self.cloud_pub = self.create_publisher(PointCloud2, '/tissue_cloud', 1)
+        self.cloud_boxes = []      # rectified bboxes, instrument exclusion
+        self.cloud_n = 0
+        # Separate subscription rather than extending detection_callback:
+        # this must not be able to affect the depth path.
+        self.create_subscription(String, '/instrument_detections',
+                                 self.cloud_bbox_callback, 10)
+
         self.get_logger().info(
             f"Stereo depth node ready (rectified)\n"
             f"  fx_rect  = {self.fx_rect:.2f}\n"
@@ -176,11 +200,107 @@ class StereoDepthNode(Node):
         d[d <= 0.5] = np.nan          # sub-pixel noise floor
         self.disp = d
         self.last_disp_ms = (_t.monotonic() - _t0) * 1000.0
+        if self.cloud_on:
+            try:
+                self.publish_tissue_cloud(d, lr, lmsg.header.stamp)
+            except Exception as e:      # never take the depth path down
+                self.get_logger().warn(f'tissue cloud failed: {e}')
+                self.cloud_on = False
 
         vis = cv2.normalize(np.nan_to_num(d), None, 0, 255,
                             cv2.NORM_MINMAX, cv2.CV_8U)
         self.disp_pub.publish(self.bridge.cv2_to_imgmsg(
             cv2.applyColorMap(vis, cv2.COLORMAP_PLASMA), 'bgr8'))
+
+    # ------------------------------------------------------------------
+    def cloud_bbox_callback(self, msg):
+        """Cache instrument bboxes in RECTIFIED coordinates.
+
+        Detections are published in raw image coordinates. The disparity
+        field is rectified, and the two differ by a principal-point offset
+        of ~97 px horizontally -- the same offset that invalidated every
+        disparity before Finding 2.2. Comparing raw bboxes against
+        rectified pixels would misplace the exclusion by that amount.
+        """
+        try:
+            dets = json.loads(msg.data).get('detections', [])
+        except Exception:
+            return
+        boxes = []
+        for det in dets:
+            b = det.get('bbox')
+            if not b:
+                continue
+            x1, y1 = self.rectify_point(b[0], b[1])
+            x2, y2 = self.rectify_point(b[2], b[3])
+            boxes.append((min(x1, x2), min(y1, y2), max(x1, x2), max(y1, y2)))
+        self.cloud_boxes = boxes
+
+    def publish_tissue_cloud(self, disp, lr, stamp):
+        """Back-project the disparity field to a coloured world-frame cloud.
+
+        Subsampled on a stride: the full frame is ~2M points, far beyond
+        what can be serialised at frame rate. Stride 8 gives ~32k, which
+        renders comfortably and is ample for a surface.
+        """
+        step = self.cloud_stride
+        d = disp[::step, ::step]
+        vv, uu = np.mgrid[0:disp.shape[0]:step, 0:disp.shape[1]:step]
+        vv = vv.astype(np.float32); uu = uu.astype(np.float32)
+
+        Q = self.Q
+        w = Q[3, 0]*uu + Q[3, 1]*vv + Q[3, 2]*d + Q[3, 3]
+        with np.errstate(invalid='ignore', divide='ignore'):
+            xo = (Q[0, 0]*uu + Q[0, 1]*vv + Q[0, 2]*d + Q[0, 3]) / w
+            yo = (Q[1, 0]*uu + Q[1, 1]*vv + Q[1, 2]*d + Q[1, 3]) / w
+            zo = (Q[2, 0]*uu + Q[2, 1]*vv + Q[2, 2]*d + Q[2, 3]) / w
+
+        # Same gates as the instrument path: active region, physiological
+        # depth range. A tissue point the instrument sampler would have
+        # rejected must not survive here either.
+        keep = (self.valid_mask[::step, ::step]
+                & np.isfinite(zo) & (w != 0)
+                & (zo >= self.dmin) & (zo <= self.dmax))
+
+        # Exclude instruments -- they are already drawn as CAD models, and
+        # would otherwise appear a second time as a blob of points.
+        m = self.cloud_margin
+        for (x1, y1, x2, y2) in self.cloud_boxes:
+            keep &= ~((uu >= x1-m) & (uu <= x2+m) &
+                      (vv >= y1-m) & (vv <= y2+m))
+
+        if not keep.any():
+            self.cloud_n = 0
+            return
+
+        # Optical -> world, REP-103, identical to the instrument path.
+        xw, yw, zw = zo[keep], -xo[keep], -yo[keep]
+        bgr = lr[::step, ::step][keep]
+
+        n = xw.size
+        arr = np.zeros(n, dtype=[('x', '<f4'), ('y', '<f4'),
+                                 ('z', '<f4'), ('rgb', '<u4')])
+        arr['x'] = xw; arr['y'] = yw; arr['z'] = zw
+        arr['rgb'] = (bgr[:, 2].astype(np.uint32) << 16 |
+                      bgr[:, 1].astype(np.uint32) << 8 |
+                      bgr[:, 0].astype(np.uint32))
+
+        msg = PointCloud2()
+        msg.header.stamp = stamp
+        msg.header.frame_id = 'world'
+        msg.height, msg.width = 1, n
+        msg.fields = [
+            PointField(name='x',   offset=0,  datatype=PointField.FLOAT32, count=1),
+            PointField(name='y',   offset=4,  datatype=PointField.FLOAT32, count=1),
+            PointField(name='z',   offset=8,  datatype=PointField.FLOAT32, count=1),
+            PointField(name='rgb', offset=12, datatype=PointField.FLOAT32, count=1)]
+        msg.is_bigendian = False
+        msg.point_step = 16
+        msg.row_step = 16 * n
+        msg.is_dense = True
+        msg.data = arr.tobytes()
+        self.cloud_pub.publish(msg)
+        self.cloud_n = n
 
     # ------------------------------------------------------------------
     def rectify_point(self, u, v):

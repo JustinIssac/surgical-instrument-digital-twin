@@ -37,12 +37,22 @@ class PoseEstimatorNode(Node):
     def __init__(self):
         super().__init__('pose_estimator')
 
-        # Where the endoscope sits in the Gazebo world.
-        # Arbitrary but fixed: lifts the scene to a visible height and
-        # points the camera along +X.
+        # World origin IS the camera optical centre.
+        #
+        # This was previously offset to (0, 0, 0.50) to lift the twin to a
+        # visible height above the Gazebo ground plane -- harmless while
+        # nothing else in the scene was derived from measurement. Once the
+        # tissue surface was back-projected from the same disparity field,
+        # the two paths disagreed by exactly that constant (477 mm), since
+        # the cloud is camera-relative and the instruments were not.
+        #
+        # With the offset removed, a reported coordinate is a true distance
+        # from the endoscope, and the two independent paths are directly
+        # comparable -- which is what makes tip-to-surface distance a
+        # meaningful measurement rather than one carrying a display constant.
         self.declare_parameter('camera_origin_x', 0.0)
         self.declare_parameter('camera_origin_y', 0.0)
-        self.declare_parameter('camera_origin_z', 0.50)
+        self.declare_parameter('camera_origin_z', 0.0)
         self.declare_parameter('scene_scale', 1.0)
 
         self.cam_origin = np.array([

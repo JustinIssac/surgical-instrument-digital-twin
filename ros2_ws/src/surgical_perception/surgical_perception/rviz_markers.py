@@ -68,7 +68,7 @@ class RvizMarkerNode(Node):
         super().__init__('rviz_markers')
 
         self.declare_parameter('trail_len', 40)
-        self.declare_parameter('camera_z', 0.50)
+        self.declare_parameter('camera_z', 0.0)   # must match pose_estimator
         self.trail_len = int(self.get_parameter('trail_len').value)
         cam_z          = float(self.get_parameter('camera_z').value)
 

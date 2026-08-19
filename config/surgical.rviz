@@ -55,6 +55,22 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /instrument_markers
       Value: true
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Tissue
+      Enabled: true
+      Topic:
+        Value: /tissue_cloud
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Style: Points
+      Size (Pixels): 3
+      Alpha: 1
+      Decay Time: 0
+      Position Transformer: XYZ
+      Color Transformer: RGB8
+      Selectable: false
     - Class: rviz_default_plugins/Image
       Enabled: true
       Max Value: 1
@@ -106,7 +122,7 @@ Visualization Manager:
       Focal Point:
         X: 0.05999999865889549
         Y: 0
-        Z: 0.5
+        Z: 0
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

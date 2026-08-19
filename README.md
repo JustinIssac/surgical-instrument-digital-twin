@@ -1,1 +1,7 @@
-Okay so there i one more aspect i want to work on while or as we work on this poster. The tools now look great, they look like they are somewhat  professional, but the gazebo still looks very plain and un attractive, this will in turn create little impression in the minds of the professor watching it, so what i am proposing is a surgical scenerio replication, it doesnt have to move but rather like a open body with these tools and its motion to give a little more realistic feel, also for ur info the view is still locked, i cant zoom in or out or rotate left or right.... and that might bring trouble for me at the final presentationsss
+source ~/.bashrc
+cd ~/surgical_twin_ws
+./launch_pipeline.sh --gazebo
+
+
+
+rviz2 -d ~/surgical_twin_ws/config/surgical.rviz
