@@ -35,8 +35,12 @@ if [[ "$1" == "--gazebo" ]]; then
   PIDS+=($!); sleep 8
 fi
 
-# reconstructed tissue surface, if built
-if [ -f "$HOME/surgical_twin_ws/models/tissue/model.sdf" ] && [ "$1" == "--gazebo" ]; then
+# Static tissue backdrop -- SUPERSEDED by the per-frame /tissue_cloud
+# published by stereo_depth_node and rendered in RViz. It was a quartic fit
+# frozen at one frame, unregistered to the per-frame instrument depths, and
+# it sits at the old camera_origin_z. Kept in the repo for the thesis
+# figures; disabled here. Set SPAWN_STATIC_TISSUE=1 to restore.
+if [ "${SPAWN_STATIC_TISSUE:-0}" == "1" ] && [ -f "$HOME/surgical_twin_ws/models/tissue/model.sdf" ] && [ "$1" == "--gazebo" ]; then
   gz service -s /world/empty/create --reqtype gz.msgs.EntityFactory \
     --reptype gz.msgs.Boolean --timeout 4000 \
     --req 'sdf_filename: "'$HOME'/surgical_twin_ws/models/tissue/model.sdf", name: "tissue"' \

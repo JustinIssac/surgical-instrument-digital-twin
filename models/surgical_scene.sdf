@@ -14,7 +14,7 @@
 
     <light type="directional" name="sun">
       <cast_shadows>false</cast_shadows>
-      <pose>0 0 2 0 0 0</pose>
+      <pose>0 0 1.5 0 0 0</pose>
       <diffuse>1.0 0.97 0.92 1</diffuse>
       <specular>0.7 0.7 0.7 1</specular>
       <direction>-0.3 0.2 -0.9</direction>
@@ -23,7 +23,7 @@
     <!-- 10cm reference grid at the working plane, so scale is legible -->
     <model name="scale_reference">
       <static>true</static>
-      <pose>0.06 0 0.44 0 0 0</pose>
+      <pose>0.06 0 -0.06 0 0 0</pose>
       <link name="l">
         <visual name="v">
           <geometry><box><size>0.10 0.10 0.001</size></box></geometry>
@@ -41,9 +41,9 @@
         <gz-gui><title>3D View</title><property key="showTitleBar" type="bool">false</property></gz-gui>
         <engine>ogre2</engine>
         <scene>scene</scene>
-        <ambient_light>0.5 0.5 0.5</ambient_light>
+        <ambient_light>0.25 0.25 0.28</ambient_light>
         <background_color>0.03 0.02 0.03</background_color>
-        <camera_pose>0.16 -0.16 0.60 0 0.45 2.30</camera_pose>
+        <camera_pose>0.18196 -0.20787 0.13823 0.0000 0.4500 2.3000</camera_pose>
         <camera_clip><near>0.002</near><far>200</far></camera_clip>
       </plugin>
       <plugin filename="GzSceneManager" name="Scene Manager"/>
@@ -56,7 +56,7 @@
       <plugin filename="EntityTree" name="Entity tree"/>
     </gui>
       <light type="point" name="fill">
-      <pose>0.02 -0.08 0.62 0 0 0</pose>
+      <pose>0.02 -0.08 0.12 0 0 0</pose>
       <diffuse>0.45 0.40 0.38 1</diffuse>
       <specular>0.3 0.3 0.3 1</specular>
       <attenuation><range>1.5</range><linear>0.6</linear></attenuation>
