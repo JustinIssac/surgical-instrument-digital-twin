@@ -138,7 +138,13 @@ class StereoDepthNode(Node):
         # frame, so disagreement is not possible by construction.
         self.declare_parameter('publish_cloud', True)
         self.declare_parameter('cloud_stride', 8)
-        self.declare_parameter('cloud_bbox_margin_px', 40)
+        # 12px, not 40. Detections are bboxes not masks, so some dilation is
+        # needed -- YOLO boxes are loosest at the distal boundary, exactly
+        # where the tip sits, and instrument pixels leaking into the tissue
+        # surface would corrupt the very measurement it supports. But 40px
+        # across three overlapping boxes removed 30% of the frame, as much
+        # as the rectification padding, hollowing out the working region.
+        self.declare_parameter('cloud_bbox_margin_px', 12)
         self.cloud_on     = bool(self.get_parameter('publish_cloud').value)
         self.cloud_stride = int(self.get_parameter('cloud_stride').value)
         self.cloud_margin = int(self.get_parameter('cloud_bbox_margin_px').value)
@@ -268,6 +274,23 @@ class StereoDepthNode(Node):
         for (x1, y1, x2, y2) in self.cloud_boxes:
             keep &= ~((uu >= x1-m) & (uu <= x2+m) &
                       (vv >= y1-m) & (vv <= y2+m))
+
+        # Attribution of dropped points, logged periodically. Distinguishes
+        # our own masking from properties of the data -- the former is a
+        # parameter to fix, the latter belongs in the limitations.
+        self._cd = getattr(self, '_cd', 0) + 1
+        if self._cd % 30 == 0:
+            tot = keep.size
+            in_fov = self.valid_mask[::step, ::step]
+            finite = np.isfinite(zo) & (w != 0)
+            near = finite & (zo < self.dmin)
+            far  = finite & (zo > self.dmax)
+            nodisp = in_fov & ~finite
+            excl = in_fov & finite & (zo >= self.dmin) & (zo <= self.dmax) & ~keep
+            self.get_logger().info(
+                f"cloud: {keep.sum()}/{tot} kept | "
+                f"outside-fov {(~in_fov).sum()} nodisp {nodisp.sum()} "
+                f"near {near.sum()} far {far.sum()} bbox-excluded {excl.sum()}")
 
         if not keep.any():
             self.cloud_n = 0
