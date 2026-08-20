@@ -1,17 +1,17 @@
-source_calibration: /mnt/d/surgical-twin/data/raw/instrument_5_8_training/instrument_dataset_8/camera_calibration.txt
+source_calibration: /mnt/d/surgical-twin/data/raw/instrument_1_4_training/instrument_dataset_3/camera_calibration.txt
 image_width: 1920
 image_height: 1080
 active_region:
   x: 320
   y: 32
-  w: 1273
-  h: 1018
-scale: 0.994336
+  w: 1280
+  h: 1019
+scale: 0.997559
 left:
-  fx: 1074.241
-  fy: 1074.062
-  cx: 911.749
-  cy: 543.457
+  fx: 1077.722
+  fy: 1077.543
+  cx: 913.667
+  cy: 545.114
   dist:
   - -0.0008
   - 0.00281
@@ -19,10 +19,10 @@ left:
   - 0.0
   - 0.0
 right:
-  fx: 1073.505
-  fy: 1073.296
-  cx: 1011.402
-  cy: 544.083
+  fx: 1076.984
+  fy: 1076.775
+  cx: 1013.642
+  cy: 545.743
   dist:
   - -0.00132
   - 0.00398
